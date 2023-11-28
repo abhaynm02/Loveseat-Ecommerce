@@ -9,18 +9,19 @@ import org.hibernate.validator.constraints.Length;
 @Setter
 public class UserDto {
     @NotBlank(message = "please enter the name !!! ")
-    @Length(min = 3,max = 20)
-    private  String name;
+    @Length(min = 3, max = 20)
+    @Pattern(regexp = "[A-Z][a-z]*",message = "only letters are allowed")
+    private String name;
     @Email
-    @Pattern(regexp = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$")
+    @Pattern(regexp = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$",message = "enter a proper email")
     private String email;
     @NotBlank(message = "must be 8 characters !!!")
-    @Length(min = 8,max = 20)
-    private  String password;
+    @Length(min = 8, max = 20)
+    private String password;
     @NotNull(message = "Phone number is required.")
     @Size(min = 10, max = 13, message = "Phone number must be between 10 and 13 characters long.")
     @Pattern(regexp = "^[0-9+]+$", message = "Only numbers and '+' are allowed")
-    private  String phone;
+    private String phone;
     @NotBlank(message = "re-enter your password!!")
     private String repeatPassword;
 

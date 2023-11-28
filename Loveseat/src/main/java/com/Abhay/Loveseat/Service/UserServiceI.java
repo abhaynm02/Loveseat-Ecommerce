@@ -19,11 +19,9 @@ public class UserServiceI implements UserService{
     private PasswordEncoder passwordEncoder;
     @Autowired
     private EmailUtil emailUtil;
-    @Autowired
-    private OtpUtil otpUtil;
+
     @Override
     public void save(UserDto user) {
-        String otp=otpUtil.generateOtp();
         String encodePassword =passwordEncoder.encode(user.getPassword());
         UserEntity userEntity =new UserEntity();
         userEntity.setName(user.getName());
@@ -31,38 +29,20 @@ public class UserServiceI implements UserService{
         userEntity.setPhone(user.getPhone());
         userEntity.setRole("ADMIN");
         userEntity.setStatus(true);
-        userEntity.setOtp(otp);
-        userEntity.setOtpGenerateTime(LocalTime.now());
-        emailUtil.sentOtpEmail(user.getEmail(),otp);
+        userEntity.setActive(true);
         userEntity.setPhone(user.getPhone());
         userEntity.setPassword(encodePassword);
         userRepository.save(userEntity);
 
     }
 
-    @Override
-    public boolean verifyAccount(String email, String otp) {
-        UserEntity user=userRepository.findByEmail(email);
-        if (user.getOtp().equals(otp)&& Duration.between(user.getOtpGenerateTime(),
-                LocalTime.now()).getSeconds()<(2*60)){
-            user.setActive(true);
-            userRepository.save(user);
-            return true;
-        }
-        return false;
-    }
     public boolean isEmailExists(String email){
         return userRepository.existsByEmail(email);
     }
 
-    @Override
-    public void resentOtp(String email) {
-        String resendOtp=otpUtil.generateOtp();
-        UserEntity user=userRepository.findByEmail(email);
-        user.setOtp(resendOtp);
-        emailUtil.sentOtpEmail(email,resendOtp);
-        userRepository.save(user);
 
+    public void SendOpt(String email,String otp){
 
+        emailUtil.sentOtpEmail(email,otp);
     }
 }

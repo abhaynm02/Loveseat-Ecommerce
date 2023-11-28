@@ -5,27 +5,24 @@ import jakarta.persistence.*;
 import java.time.LocalTime;
 
 @Entity
-@Table(name = "UserEntity",uniqueConstraints = @UniqueConstraint(columnNames = "email"))
+@Table(name = "UserEntity", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private String name;
-    private  String email;
+    private String email;
     private String password;
     private String role;
     private String phone;
-    private  String otp;
-    private LocalTime otpGenerateTime;
-    private  boolean active;
-    private  boolean status;
+    private boolean active;
+    private boolean status;
 
     public UserEntity() {
     }
 
     public UserEntity(long id, String name, String email,
                       String password, String role, String phone,
-                      String otp, LocalTime otpGenerateTime,
                       boolean active, boolean status) {
         this.id = id;
         this.name = name;
@@ -33,8 +30,6 @@ public class UserEntity {
         this.password = password;
         this.role = role;
         this.phone = phone;
-        this.otp = otp;
-        this.otpGenerateTime = otpGenerateTime;
         this.active = active;
         this.status = status;
     }
@@ -86,23 +81,6 @@ public class UserEntity {
     public void setPhone(String phone) {
         this.phone = phone;
     }
-
-    public String getOtp() {
-        return otp;
-    }
-
-    public void setOtp(String otp) {
-        this.otp = otp;
-    }
-
-    public LocalTime getOtpGenerateTime() {
-        return otpGenerateTime;
-    }
-
-    public void setOtpGenerateTime(LocalTime otpGenerateTime) {
-        this.otpGenerateTime = otpGenerateTime;
-    }
-
     public boolean isActive() {
         return active;
     }
@@ -128,8 +106,6 @@ public class UserEntity {
                 ", password='" + password + '\'' +
                 ", role='" + role + '\'' +
                 ", phone='" + phone + '\'' +
-                ", otp='" + otp + '\'' +
-                ", otpGenerateTime=" + otpGenerateTime +
                 ", active=" + active +
                 ", status=" + status +
                 '}';

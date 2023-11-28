@@ -28,33 +28,38 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests((requests)-> requests
-                        .requestMatchers("/register","/otp-page","/login","/user-register","/verify",
-                                "/static/**","/css/bootstrap.min.css","/css/tiny-slider.css","/css/style.css",
-                                "/resentOtp","/images/**"
-                                ).permitAll()
+                .authorizeHttpRequests((requests) -> requests
+                        .requestMatchers("/register", "/otp-page", "/login", "/user-register", "/verify",
+                                "/static/**", "/css/bootstrap.min.css", "/css/tiny-slider.css", "/css/style.css",
+                                "/resentOtp", "/images/**","/css/**","/js/**","/scss/**","/css/styles.min.css"
+                                ,"/libs/jquery/dist/jquery.min.js","/libs/bootstrap/dist/js/bootstrap.bundle.min.js"
+                                ,"/js/sidebarmenu.js","/js/app.min.js","/libs/apexcharts/dist/apexcharts.min.js",
+                                "/libs/simplebar/dist/simplebar.js","/js/dashboard.js"
+                        ).permitAll()
                         .requestMatchers("/home").hasAnyAuthority("USER")
                         .requestMatchers("/admin").hasAnyAuthority("ADMIN")
                         .anyRequest().authenticated())
 
-                .formLogin((form)->form
+                .formLogin((form) -> form
                         .loginPage("/login")
                         .failureUrl("/login?error")
                         .successHandler(customSuccessHandler)
                 )
-                .logout((logout)-> logout
+                .logout((logout) -> logout
                         .invalidateHttpSession(true)
                         .clearAuthentication(true)
                         .logoutSuccessUrl("/login"));
         return http.build();
 
     }
+
     @Autowired
-    public  void  configure(AuthenticationManagerBuilder auth)throws Exception{
+    public void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(customUserDetailService).passwordEncoder(passwordEncoder);
     }
-    public AuthenticationFailureHandler customAuthenticationFailureHandler(){
-        return  new SimpleUrlAuthenticationFailureHandler("/login?error=true");
+
+    public AuthenticationFailureHandler customAuthenticationFailureHandler() {
+        return new SimpleUrlAuthenticationFailureHandler("/login?error=true");
     }
 
 
