@@ -45,7 +45,7 @@
                         <span class="hide-menu">UI COMPONENTS</span>
                     </li>
                     <li class="sidebar-item">
-                        <a class="sidebar-link" href="#" aria-expanded="false">
+                        <a class="sidebar-link" href="/users" aria-expanded="false">
                 <span>
                   <i class="ti ti-article"></i>
                 </span>
@@ -55,7 +55,7 @@
                     <li class="sidebar-item">
                         <a class="sidebar-link" href="/categories" aria-expanded="false">
                 <span>
-                <i class="ti ti-file-description"></i>
+                  <i class="ti ti-file-description"></i>
                 </span>
                             <span class="hide-menu">Category</span>
                         </a>
@@ -178,81 +178,36 @@
             </nav>
         </header>
         <!--  Header End -->
-<!--        Start of userList-->
+        <!--        Start of userList-->
         <div>
             <h3>hee</h3>
-        </div>
-
-        <div class="container mt-5">
-            <div class="row">
-                <div class="col-md-8 offset-md-2">
-                    <h2 class="text-center mb-4">User List</h2>
-                    <form  th:action="@{/searchUser}" method="get">
-                        <div class="form-group">
-                            <input type="text" class="form-control-sm" id="search" name="name" placeholder="Search by name " required>
-                            <button type="submit" class="btn btn-primary ml-2">Search</button>
-                        </div>
-                    </form>
-                    <table class="table table-bordered">
-                        <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Username</th>
-                            <th>Email</th>
-                            <th>Phone</th>
-                            <th>Role</th>
-                            <th>Actions</th>
-                            <!-- Add more columns as needed -->
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr th:each="user : ${users}">
-                            <td th:text="${user.id}"></td>
-                            <td th:text="${user.name}"></td>
-                            <td th:text="${user.email}"></td>
-                            <td th:text="${user.phone}"></td>
-                            <td th:text="${user.role}"></td>
-                            <td>
-                                <form th:if="${user.id != 402 && user.active == true}" th:action="@{/block}" method="post">
-                                    <input type="hidden" name="userId" th:value="${user.id}" />
-                                    <button type="submit" class="btn btn-sm btn-danger" >Block</button>
-                                </form>
-                                <form th:if="${user.id != 402 && user.active == false}" th:action="@{/unblock}" method="post">
-                                    <input type="hidden" name="userId" th:value="${user.id}" />
-                                    <button type="submit" class="btn btn-sm btn-success" >Unblock</button>
-                                </form>
-
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <div class="alert alert-primary my-1" th:if="${message}">
-                        <p class="text-center" th:text="${message}"></p>
-                    </div>
-                    <div th:if="${users.totalPages > 1}">
-                        <ul class="pagination">
-                            <li th:if="${users.hasPrevious}" class="page-item">
-                                <a th:href="@{'/users?page=' + (${users.number - 1}) + '&size=' + ${users.size}}" class="page-link">Previous</a>
-                            </li>
-                            <li th:each="page : ${#numbers.sequence(0, users.totalPages - 1)}" class="page-item">
-                                <a th:href="@{'/users?page=' + ${page} + '&size=' + ${users.size}}" th:classappend="${users.number == page} ? 'active' : ''" class="page-link" th:text="${page + 1}"></a>
-                            </li>
-                            <li th:if="${users.hasNext}" class="page-item">
-                                <a th:href="@{'/users?page=' + (${users.number + 1}) + '&size=' + ${users.size}}" class="page-link">Next</a>
-                            </li>
-                        </ul>
-                    </div>
-
-
+            <div class="container mt-5">
+                <h2 class="mb-4">Add Category</h2>
+                <div class="alert alert-primary my-1" th:if="${message}">
+                    <p class="text-center" th:text="${message}"></p>
                 </div>
-</div>
-<script src="/libs/jquery/dist/jquery.min.js"></script>
-<script src="/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-<script src="/js/sidebarmenu.js"></script>
-<script src="/js/app.min.js"></script>
-<script src="/libs/apexcharts/dist/apexcharts.min.js"></script>
-<script src="/libs/simplebar/dist/simplebar.js"></script>
-<script src="/js/dashboard.js"></script>
+                <form th:action="@{/addCategory}" th:object="${category}" method="post">
+                    <div class="form-group">
+                        <label for="categoryName">Category Name:</label>
+                        <input type="text" th:field="*{name}" class="form-control-sm" id="categoryName" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="categoryDescription">Category Description:</label>
+                        <textarea th:field="*{description}" class="form-control" id="categoryDescription" name="description" rows="3"  required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Category</button>
+                </form>
+            </div>
+
+        </div>
+            </div>
+            <script src="/libs/jquery/dist/jquery.min.js"></script>
+            <script src="/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+            <script src="/js/sidebarmenu.js"></script>
+            <script src="/js/app.min.js"></script>
+            <script src="/libs/apexcharts/dist/apexcharts.min.js"></script>
+            <script src="/libs/simplebar/dist/simplebar.js"></script>
+            <script src="/js/dashboard.js"></script>
 </body>
 
 </html>

@@ -1,7 +1,9 @@
 package com.Abhay.Loveseat.Controller;
 
+import com.Abhay.Loveseat.Dto.CategoryDto;
 import com.Abhay.Loveseat.Model.UserEntity;
 import com.Abhay.Loveseat.Service.AdminService;
+import com.Abhay.Loveseat.Service.CategoryServiceI;
 import com.Abhay.Loveseat.Service.UserServiceI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -56,4 +58,5 @@ public class AdminController {
         model.addAttribute("users",userList);
         return "adminT/listOfUsers";
     }
+
 }
