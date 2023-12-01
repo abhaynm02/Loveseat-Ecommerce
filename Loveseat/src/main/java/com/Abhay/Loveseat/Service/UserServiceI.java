@@ -27,7 +27,7 @@ public class UserServiceI implements UserService{
         userEntity.setName(user.getName());
         userEntity.setEmail(user.getEmail());
         userEntity.setPhone(user.getPhone());
-        userEntity.setRole("ADMIN");
+        userEntity.setRole("USER");
         userEntity.setStatus(true);
         userEntity.setActive(true);
         userEntity.setPhone(user.getPhone());

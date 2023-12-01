@@ -98,4 +98,8 @@ public class ProductServiceI implements ProductService {
         }
         productRepository.save(productEdit);
     }
+    public List<Products> findAllProducts(){
+        return productRepository.findAll();
+    }
+
 }
