@@ -1,10 +1,20 @@
 <component name="InspectionProjectProfileManager">
   <profile version="1.0">
     <option name="myName" value="Project Default" />
+    <inspection_tool class="FieldCanBeLocal" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="EXCLUDE_ANNOS">
+        <value>
+          <list size="1">
+            <item index="0" class="java.lang.String" itemvalue="jakarta.persistence.JoinColumn" />
+          </list>
+        </value>
+      </option>
+      <option name="IGNORE_FIELDS_USED_IN_MULTIPLE_METHODS" value="true" />
+    </inspection_tool>
     <inspection_tool class="HtmlUnknownAttribute" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="myValues">
         <value>
-          <list size="10">
+          <list size="13">
             <item index="0" class="java.lang.String" itemvalue="th:field" />
             <item index="1" class="java.lang.String" itemvalue="th:errors" />
             <item index="2" class="java.lang.String" itemvalue="th:errorClass" />
@@ -15,6 +25,9 @@
             <item index="7" class="java.lang.String" itemvalue="method" />
             <item index="8" class="java.lang.String" itemvalue="th:src" />
             <item index="9" class="java.lang.String" itemvalue="th:object" />
+            <item index="10" class="java.lang.String" itemvalue="productImages3" />
+            <item index="11" class="java.lang.String" itemvalue="th:each" />
+            <item index="12" class="java.lang.String" itemvalue="th:value" />
           </list>
         </value>
       </option>

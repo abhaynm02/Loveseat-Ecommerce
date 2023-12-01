@@ -45,4 +45,7 @@ public class UserServiceI implements UserService{
 
         emailUtil.sentOtpEmail(email,otp);
     }
+    public  UserEntity findByEmail(String email){
+        return userRepository.findByEmail(email);
+    }
 }

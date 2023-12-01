@@ -2,14 +2,20 @@ package com.Abhay.Loveseat.Model;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "Category",uniqueConstraints = @UniqueConstraint(columnNames = "name"))
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "category_id")
     private long id;
     private String name;
     private String description;
+    @OneToMany(mappedBy = "category")
+    private List<Products> products;
+
     private  boolean isAvailable;
 
     public Category() {

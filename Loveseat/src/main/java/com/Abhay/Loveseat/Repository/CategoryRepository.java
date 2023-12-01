@@ -7,10 +7,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface CategoryRepository extends JpaRepository<Category,Long> {
     @Modifying
     @Query("UPDATE Category c SET c.isAvailable = :status WHERE c.id = :categoryId")
     void updateStatus(@Param("categoryId") Long categoryId, @Param("status") boolean status);
+    @Query("SELECT c FROM Category c WHERE c.isAvailable=true")
+    List<Category>findByActive();
 
 }

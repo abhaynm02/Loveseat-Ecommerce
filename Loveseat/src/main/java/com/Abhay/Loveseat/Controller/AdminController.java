@@ -5,6 +5,8 @@ import com.Abhay.Loveseat.Model.UserEntity;
 import com.Abhay.Loveseat.Service.AdminService;
 import com.Abhay.Loveseat.Service.CategoryServiceI;
 import com.Abhay.Loveseat.Service.UserServiceI;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,7 +16,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.security.Principal;
 
 @Controller
 public class AdminController {
@@ -24,8 +29,15 @@ public class AdminController {
     private AdminService adminService;
 
     @GetMapping("/admin")
-    public String adminDashBord(){
-        return "adminT/admin";
+    public String adminDashBord(HttpServletRequest request, Principal principal){
+        HttpSession session=request.getSession();
+        UserEntity user =userServiceI.findByEmail(principal.getName());
+        session.setAttribute("admin",user);
+        if (user!=null){
+            return "adminT/admin";
+        }
+        return "redirect:login";
+
     }
 
     @GetMapping("/users")

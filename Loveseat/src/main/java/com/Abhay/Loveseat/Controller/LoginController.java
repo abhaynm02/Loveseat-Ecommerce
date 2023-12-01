@@ -1,6 +1,7 @@
 package com.Abhay.Loveseat.Controller;
 
 import com.Abhay.Loveseat.Dto.UserDto;
+import com.Abhay.Loveseat.Model.UserEntity;
 import com.Abhay.Loveseat.Otp.OtpUtil;
 import com.Abhay.Loveseat.Service.UserService;
 import com.Abhay.Loveseat.Service.UserServiceI;
@@ -8,6 +9,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,8 +21,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.security.Principal;
 import java.time.Duration;
 import java.time.LocalTime;
+import java.util.Objects;
 
 @Controller
 public class LoginController {
@@ -67,8 +73,21 @@ public class LoginController {
     }
 
     @GetMapping("/login")
-    public String login() {
-        return "login";
+    public String login(Principal principal) {
+
+        Authentication authentication= SecurityContextHolder.getContext().getAuthentication();
+        if (authentication ==null|| authentication instanceof AnonymousAuthenticationToken){
+            return "login";
+        }
+        String email=principal.getName();
+        UserEntity user=userService.findByEmail(email);
+        String role=user.getRole();
+        if (role.equals("ADMIN")) {
+            return "adminT/admin";
+
+        }
+        return "/user";
+
     }
 
     @PostMapping("/verify")
@@ -110,7 +129,8 @@ public class LoginController {
     }
 
     @GetMapping("/logout")
-    public String logout(){
+    public String logout(HttpSession session){
+        session.invalidate();
         return "redirect:/login";
     }
 

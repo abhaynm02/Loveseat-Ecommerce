@@ -49,6 +49,7 @@ public class SecurityConfig {
                         .invalidateHttpSession(true)
                         .clearAuthentication(true)
                         .logoutSuccessUrl("/login"));
+
         return http.build();
 
     }
