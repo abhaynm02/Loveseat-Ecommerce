@@ -1,6 +1,8 @@
 package com.Abhay.Loveseat.Model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
+import org.springframework.transaction.annotation.Transactional;
 
 @Entity
 @Table(name = "product",uniqueConstraints = @UniqueConstraint(columnNames = "name"))

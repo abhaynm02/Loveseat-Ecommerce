@@ -83,13 +83,19 @@ public class ProductServiceI implements ProductService {
             productEdit.setQuantity(products.getQuantity());
             productEdit.setStock(products.getStock());
             productEdit.setDescription(products.getDescription());
-            imageUpload.uploadImage(multipartFile1);
-            productEdit.setFrontImage(StringUtils.cleanPath(multipartFile1.getOriginalFilename()));
-            imageUpload.uploadImage(multipartFile2);
-            productEdit.setSideImage(StringUtils.cleanPath(multipartFile2.getOriginalFilename()));
-            imageUpload.uploadImage(multipartFile3);
-            productEdit.setTopImage(StringUtils.cleanPath(multipartFile3.getOriginalFilename()));
 
+            if (!multipartFile1.isEmpty()){
+                imageUpload.uploadImage(multipartFile1);
+                productEdit.setFrontImage(StringUtils.cleanPath(multipartFile1.getOriginalFilename()));
+            }
+            if (!multipartFile2.isEmpty()){
+                imageUpload.uploadImage(multipartFile2);
+                productEdit.setSideImage(StringUtils.cleanPath(multipartFile2.getOriginalFilename()));
+            }
+            if (!multipartFile3.isEmpty()) {
+                imageUpload.uploadImage(multipartFile3);
+                productEdit.setTopImage(StringUtils.cleanPath(multipartFile3.getOriginalFilename()));
+            }
 
 
 

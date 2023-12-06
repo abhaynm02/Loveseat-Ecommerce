@@ -76,23 +76,43 @@
 		<!-- End Hero Section -->
 
 		
-
+<!-- original code and same errors-->
 		<div class="untree_co-section product-section before-footer-section">
 		    <div class="container">
 		      	<div class="row">
 
+<!--					<div class="container">-->
+<!--						<div class="row">-->
+<!--							<div th:each="product : ${products}" class="col-12 col-md-4 col-lg-3 mb-5">-->
+<!--								<a th:href="'#'" class="product-item">-->
+<!--									<img th:src="@{/Product-images/{imageName}(imageName=${product.frontImage})}" class="img-fluid product-thumbnail">-->
+
+<!--									<h3 th:text="${product.name}" class="product-title"></h3>-->
+<!--									<strong th:text="${'$' + product.price}" class="product-price"></strong>-->
+
+<!--									<span class="icon-cross">-->
+<!--                           <img src="images/cross.svg" class="img-fluid">-->
+<!--                           </span>-->
+<!--								</a>-->
+<!--							</div>-->
+<!--						</div>-->
+<!--					</div>-->
+
+
 					<div class="container">
 						<div class="row">
-							<div th:each="product : ${products}" class="col-12 col-md-4 col-lg-3 mb-5">
-								<a th:href="'#'" class="product-item">
+							<div th:each="product : ${products}" th:if="${product.isAvailable==true and product.category.isAvailable == true}" class="col-12 col-md-4 col-lg-3 mb-5">
+								<a th:href="@{/view-product/{id}(id=${product.id})}" class="product-item">
 									<img th:src="@{/Product-images/{imageName}(imageName=${product.frontImage})}" class="img-fluid product-thumbnail">
 
-									<h3 th:text="${product.name}" class="product-title"></h3>
-									<strong th:text="${'$' + product.price}" class="product-price"></strong>
+									<h3 th:text="${product.name}" class="product-title" style="font-size: 16px; margin-top: 10px;"></h3>
+									<strong th:text="${ '$' + product.sellingPrice}"  class="product-price" style="font-size: 18px;"></strong>
+									<br>
+									<del aria-hidden="true" ><span  th:text="${'$' + product.price}"></span></del>
 
 									<span class="icon-cross">
-                           <img src="images/cross.svg" class="img-fluid">
-                           </span>
+                    <img src="images/cross.svg" class="img-fluid">
+                </span>
 								</a>
 							</div>
 						</div>
@@ -102,7 +122,8 @@
 
 
 
-		      	</div>
+
+				</div>
 		    </div>
 		</div>
 

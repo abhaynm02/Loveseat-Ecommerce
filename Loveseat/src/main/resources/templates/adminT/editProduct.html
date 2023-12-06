@@ -40,10 +40,7 @@
                             <span class="hide-menu">Dashboard</span>
                         </a>
                     </li>
-                    <li class="nav-small-cap">
-                        <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                        <span class="hide-menu">UI COMPONENTS</span>
-                    </li>
+
                     <li class="sidebar-item">
                         <a class="sidebar-link" href="/users" aria-expanded="false">
                 <span>
@@ -61,11 +58,11 @@
                         </a>
                     </li>
                     <li class="sidebar-item">
-                        <a class="sidebar-link" href="#" aria-expanded="false">
+                        <a class="sidebar-link" href="/products" aria-expanded="false">
                 <span>
                   <i class="ti ti-cards"></i>
                 </span>
-                            <span class="hide-menu">Card</span>
+                            <span class="hide-menu">Products</span>
                         </a>
                     </li>
                     <li class="sidebar-item">
@@ -84,26 +81,11 @@
                             <span class="hide-menu">Typography</span>
                         </a>
                     </li>
-                    <li class="nav-small-cap">
-                        <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                        <span class="hide-menu">AUTH</span>
-                    </li>
+
                     <li class="sidebar-item">
                         <form th:action="@{/logout}" method="post">
                             <button type="submit" class="btn btn-outline-primary mx-3 mt-2 d-block"> <i class="ti ti-login"></i>logout </button>
                         </form>
-                    </li>
-                    <li class="sidebar-item">
-                        <a class="sidebar-link" href="#" aria-expanded="false">
-                <span>
-                  <i class="ti ti-user-plus"></i>
-                </span>
-                            <span class="hide-menu">Register</span>
-                        </a>
-                    </li>
-                    <li class="nav-small-cap">
-                        <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                        <span class="hide-menu">EXTRA</span>
                     </li>
                     <li class="sidebar-item">
                         <a class="sidebar-link" href="#" aria-expanded="false">
@@ -199,7 +181,7 @@
                 <!-- Product Description -->
                 <div class="form-group">
                     <label for="productDescription">Product Description:</label>
-                    <textarea th:field="*{description}" class="form-control" id="productDescription" name="description" rows="3"  required></textarea>
+                    <textarea th:field="*{description}" class="form-control" id="productDescription" name="description" rows="3" minlength="0" maxlength="500"  required></textarea>
                 </div>
 
                 <div class="form-group col-md-6">
@@ -241,16 +223,20 @@
                         <label for="image">Front Images:</label>
                         <input type="file" class="form-control-file" id="image" name="image" accept="image/*"
                                multiple>
+                        <img th:src="@{/Product-images/{imageName}(imageName=${product.frontImage})}" alt="Product Image" style="max-width: 150px; max-height: 150px;">
+
                     </div>
                     <div class="form-group col-md-4 mt-3" style="display: inline-block;">
                         <label for="image">Side Images:</label>
                         <input type="file" class="form-control-file" id="image1" name="image1" accept="image/*"
                                multiple>
+                        <img th:src="@{/Product-images/{imageName}(imageName=${product.sideImage})}" alt="Product Image" style="max-width: 150px; max-height: 150px;">
                     </div>
                     <div class="form-group col-md-4 mt-3" style="display: inline-block;">
                         <label for=image2">Top Images:</label>
                         <input type="file" class="form-control-file" id=image2" name="image2" accept="image/*"
                                multiple>
+                        <img th:src="@{/Product-images/{imageName}(imageName=${product.topImage})}" alt="Product Image" style="max-width: 150px; max-height: 150px;">
                     </div>
                 </div>
 

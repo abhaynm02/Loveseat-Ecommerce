@@ -40,10 +40,7 @@
                             <span class="hide-menu">Dashboard</span>
                         </a>
                     </li>
-                    <li class="nav-small-cap">
-                        <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                        <span class="hide-menu">UI COMPONENTS</span>
-                    </li>
+
                     <li class="sidebar-item">
                         <a class="sidebar-link" href="/users" aria-expanded="false">
                 <span>
@@ -61,11 +58,11 @@
                         </a>
                     </li>
                     <li class="sidebar-item">
-                        <a class="sidebar-link" href="#" aria-expanded="false">
+                        <a class="sidebar-link" href="/products" aria-expanded="false">
                 <span>
                   <i class="ti ti-cards"></i>
                 </span>
-                            <span class="hide-menu">Card</span>
+                            <span class="hide-menu">Products</span>
                         </a>
                     </li>
                     <li class="sidebar-item">
@@ -83,11 +80,7 @@
                 </span>
                             <span class="hide-menu">Typography</span>
                         </a>
-                    </li>
-                    <li class="nav-small-cap">
-                        <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                        <span class="hide-menu">AUTH</span>
-                    </li>
+                   
                     <li class="sidebar-item">
                         <form th:action="@{/logout}" method="post">
                             <button type="submit" class="btn btn-outline-primary mx-3 mt-2 d-block"> <i class="ti ti-login"></i>logout </button>
@@ -198,7 +191,7 @@
                 <!-- Product Description -->
                 <div class="form-group">
                     <label for="productDescription">Product Description:</label>
-                    <textarea th:field="*{description}" class="form-control" id="productDescription" name="productDescription" rows="3"  required></textarea>
+                    <textarea th:field="*{description}" class="form-control" id="productDescription" name="productDescription" rows="3" minlength="0" maxlength="500"  required></textarea>
                 </div>
 
                 <div class="form-group col-md-6">

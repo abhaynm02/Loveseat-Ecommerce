@@ -86,7 +86,7 @@ public class LoginController {
             return "adminT/admin";
 
         }
-        return "/user";
+        return "home/index.html";
 
     }
 

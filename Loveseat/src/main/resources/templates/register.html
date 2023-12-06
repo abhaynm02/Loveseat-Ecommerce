@@ -65,10 +65,10 @@
 					<div class="alert alert-primary my-1" th:if="${message}">
 						<p class="text-center" th:text="${message}"></p>
 					</div>
-					<form th:action="@{/user-register}" th:object="${user}" method="post">
+					<form th:action="@{/user-register}" th:object="${user}" method="post" id="registrationForm">
 						<div class="mb-3">
 							<label for="name" class="form-label">Name</label>
-							<input type="text" class="form-control form-control-sm form-register" id="name" name="name"
+							<input type="text" class="form-control form-control-sm form-register " id="name" name="name"
 								   th:field="*{name}" th:errorClass="is-invalid" required>
 							<div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="invalid-feedback"></div>
 						</div>
@@ -97,11 +97,10 @@
 							<div th:if="${#fields.hasErrors('repeatPassword')}" th:errors="*{repeatPassword}" class="invalid-feedback"></div>
 						</div>
 						<div class="text-center">
-							<button type="submit"  class="btn btn-primary" >Register</button>
+							<button type="submit" class="btn btn-primary">Register</button>
 						</div>
 					</form>
 					<hr>
-
 					<div class="text-center">
 						<a class="small" th:href="@{/signin}">Already have an account? Login!</a>
 					</div>
@@ -215,8 +214,58 @@
 
 			</div>
 		</footer>
-		<!-- End Footer Section -->	
+		<!-- End Footer Section -->
 
+<!--		<script>-->
+<!--			document.addEventListener('DOMContentLoaded', function () {-->
+<!--                const form = document.getElementById('registrationForm');-->
+
+<!--                form.addEventListener('submit', function (event) {-->
+<!--                    if (!validateForm()) {-->
+<!--                        event.preventDefault(); // Prevent the form from submitting if validation fails-->
+<!--                    }-->
+<!--                });-->
+
+<!--                function validateForm() {-->
+<!--                    const name = document.getElementById('name').value;-->
+<!--                    const email = document.getElementById('email').value;-->
+<!--                    const phone = document.getElementById('phone').value;-->
+<!--                    const password = document.getElementById('password').value;-->
+<!--                    const confirmPassword = document.getElementById('confirmPassword').value;-->
+
+<!--                    // Simple validation example, you can customize this based on your requirements-->
+<!--                    if (name.trim() === '') {-->
+<!--                        alert('Please enter your name.');-->
+<!--                        return false;-->
+<!--                    }-->
+
+<!--                    if (email.trim() === '') {-->
+<!--                        alert('Please enter your email.');-->
+<!--                        return false;-->
+<!--                    }-->
+
+<!--                    // You can add more validation rules for email format, phone format, password strength, etc.-->
+
+<!--                    if (password.trim() === '') {-->
+<!--                        alert('Please enter a password.');-->
+<!--                        return false;-->
+<!--                    }-->
+
+<!--                    if (confirmPassword.trim() === '') {-->
+<!--                        alert('Please confirm your password.');-->
+<!--                        return false;-->
+<!--                    }-->
+
+<!--                    if (password !== confirmPassword) {-->
+<!--                        alert('Passwords do not match.');-->
+<!--                        return false;-->
+<!--                    }-->
+
+<!--                    // If all validation passes-->
+<!--                    return true;-->
+<!--                }-->
+<!--            });-->
+<!--		</script>-->
 
 		<script src="js/bootstrap.bundle.min.js"></script>
 		<script src="js/tiny-slider.js"></script>

@@ -36,7 +36,7 @@ public class ProductController {
         return "adminT/AddProduct";
     }
     @PostMapping("/add-product")
-    public String addProduct(@ModelAttribute("product")ProductsDto productsDto, @RequestParam("image") MultipartFile multipartFile1,
+    public String addProduct( @ModelAttribute("product")ProductsDto productsDto, @RequestParam("image") MultipartFile multipartFile1,
                              @RequestParam("image1") MultipartFile multipartFile2, @RequestParam("image2") MultipartFile multipartFile3
                              , RedirectAttributes redirectAttributes){
                 System.out.println(productsDto);
