@@ -14,10 +14,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
+
 public class CategoryController {
     @Autowired
     private CategoryServiceI categoryServiceI;
-    @GetMapping("/addCategory")
+    @GetMapping("admin/addCategory")
     public String addCategoryAdmin( Model model){
         model.addAttribute("category",new CategoryDto());
         return "adminT/categoryAdd";
@@ -30,13 +31,13 @@ public class CategoryController {
             redirectAttributes.addFlashAttribute("message","the category name is already exists");
 
             e.printStackTrace();
-            return "redirect:/addCategory";
+            return "redirect:/admin/addCategory";
         }
 
 
-        return "redirect:/categories";
+        return "redirect:/admin/categories";
     }
-    @GetMapping("/categories")
+    @GetMapping("/admin/categories")
     public String categoryList(@RequestParam(defaultValue = "0")int page,@RequestParam(defaultValue = "5")int size,Model model){
         Pageable pageable= PageRequest.of(page,size);
         Page<Category> categoryList=categoryServiceI.AllCategory(pageable);
@@ -47,14 +48,14 @@ public class CategoryController {
     public String listCategory(@RequestParam("userId") long id){
         categoryServiceI.ListOrUnList(id,true);
         System.out.println(id);
-        return "redirect:/categories";
+        return "redirect:/admin/categories";
     }
     @PostMapping("/unListCategory")
     public  String unListCategory(@RequestParam("userId") long id){
         categoryServiceI.ListOrUnList(id,false);
-        return "redirect:/categories";
+        return "redirect:/admin/categories";
     }
-    @GetMapping("/edit-category/{id}")
+    @GetMapping("admin/edit-category/{id}")
     public String showEditForm(@PathVariable Long id,Model model){
         Category category=categoryServiceI.findById(id)
                 .orElseThrow(()->new IllegalArgumentException("invalid category"));
@@ -71,9 +72,9 @@ public class CategoryController {
         }catch (DataIntegrityViolationException exception){
             redirectAttributes.addFlashAttribute("message","the category name is already exists");
             exception.printStackTrace();
-            return "redirect:/categories";
+            return "redirect:/admin/categories";
         }
-        return "redirect:/categories";
+        return "redirect:/admin/categories";
     }
 
 }

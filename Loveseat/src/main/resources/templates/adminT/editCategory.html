@@ -43,7 +43,7 @@
                     </li>
 
                     <li class="sidebar-item">
-                        <a class="sidebar-link" href="/users" aria-expanded="false">
+                        <a class="sidebar-link" href="/admin/users" aria-expanded="false">
                 <span>
                   <i class="ti ti-article"></i>
                 </span>
@@ -51,7 +51,7 @@
                         </a>
                     </li>
                     <li class="sidebar-item">
-                        <a class="sidebar-link" href="/categories" aria-expanded="false">
+                        <a class="sidebar-link" href="/admin/categories" aria-expanded="false">
                 <span>
                   <i class="ti ti-file-description"></i>
                 </span>
@@ -59,7 +59,7 @@
                         </a>
                     </li>
                     <li class="sidebar-item">
-                        <a class="sidebar-link" href="/products" aria-expanded="false">
+                        <a class="sidebar-link" href="/admin/products" aria-expanded="false">
                 <span>
                   <i class="ti ti-cards"></i>
                 </span>
@@ -172,11 +172,14 @@
                 <div class="alert alert-primary my-1" th:if="${message}">
                     <p class="text-center" th:text="${message}"></p>
                 </div>
-                <form th:action="@{/categories/edit/{id}(id=${category.id})}" th:object="${category}" method="post">
+                <form th:action="@{/categories/edit/{id}(id=${category.id})}" th:object="${category}" onsubmit="return formValidate()" method="post">
                     <input type="hidden" th:field="*{id}" name="id"/>
                     <div class="form-group">
                         <label for="categoryName">Category Name:</label>
                         <input type="text" th:field="*{name}" class="form-control-sm" id="categoryName" name="name" required>
+                        <div  id="alertBox" style="display: none; color:red;">
+                            enter the proper name
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="categoryDescription">Category Description:</label>
@@ -188,6 +191,25 @@
 
         </div>
     </div>
+
+    <script>
+        function formValidate() {
+    const name = document.getElementsByName('name')[0].value;
+    var regName = /^[a-zA-Z\s]+$/;
+
+    if (name.trim() === "" || !regName.test(name)) {
+    // Show the alert box
+    document.getElementById('alertBox').style.display = 'block';
+    document.getElementsByName('name')[0].focus();
+    return false;
+    } else {
+    // Hide the alert box
+    document.getElementById('alertBox').style.display = 'none';
+    return true; // Form will submit if validation passes
+    }
+    }
+
+    </script>
     <script src="/libs/jquery/dist/jquery.min.js"></script>
     <script src="/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/js/sidebarmenu.js"></script>

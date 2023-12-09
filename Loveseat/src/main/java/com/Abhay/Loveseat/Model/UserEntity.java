@@ -2,8 +2,6 @@ package com.Abhay.Loveseat.Model;
 
 import jakarta.persistence.*;
 
-import java.time.LocalTime;
-
 @Entity
 @Table(name = "UserEntity", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
 public class UserEntity {
@@ -17,6 +15,8 @@ public class UserEntity {
     private String phone;
     private boolean active;
     private boolean status;
+    @OneToOne(mappedBy = "user",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    private PasswordRestToken passwordRestToken;
 
     public UserEntity() {
     }

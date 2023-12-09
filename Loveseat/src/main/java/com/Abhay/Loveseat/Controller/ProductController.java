@@ -22,12 +22,14 @@ import java.util.Optional;
 
 
 @Controller
+
 public class ProductController {
     @Autowired
     private CategoryServiceI categoryServiceI;
     @Autowired
     private ProductServiceI productServiceI;
-    @GetMapping("/addProduct")
+
+    @GetMapping("/admin/addProduct")
     public String addProduct(Model model){
         List<Category> categories=categoryServiceI.findAll();
         model.addAttribute("categories",categories);
@@ -44,15 +46,15 @@ public class ProductController {
        try {
            productServiceI.save(productsDto,multipartFile1,multipartFile2,multipartFile3);
            redirectAttributes.addFlashAttribute("success","productAdd successfully");
-           return "redirect:/products";
+           return "redirect:/admin/products";
        }catch (DataIntegrityViolationException e){
            redirectAttributes.addFlashAttribute("message","the product name is already exists");
-           return "redirect:/addProduct";
+           return "redirect:/admin/addProduct";
        }
 
     }
 
-    @GetMapping("/products")
+    @GetMapping("/admin/products")
     public String AllProducts(@RequestParam(defaultValue = "0")int page,
                               @RequestParam(defaultValue = "5")int size, Model model){
         Pageable pageable= PageRequest.of(page,size);
@@ -63,15 +65,15 @@ public class ProductController {
     @PostMapping("/listProduct")
     public String listProduct(@RequestParam("productId")long id){
             productServiceI.listOrUnList(id,true);
-        return "redirect:/products";
+        return "redirect:/admin/products";
     }
     @PostMapping("/unListProduct")
     public String unListProduct(@RequestParam ("productId")long id){
         productServiceI.listOrUnList(id,false);
 
-        return "redirect:/products";
+        return "redirect:/admin/products";
     }
-    @GetMapping("/edit-product/{id}")
+    @GetMapping("/admin/edit-product/{id}")
     public String editProduct(@PathVariable long id, Model model){
         Products products=productServiceI.findById(id).orElseThrow(()->new IllegalArgumentException("invalid category"));
         List<Category>categories=categoryServiceI.findAll();
@@ -91,6 +93,6 @@ public class ProductController {
            e.printStackTrace();
         }
 
-        return "redirect:/products";
+        return "redirect:/admin/products";
     }
 }

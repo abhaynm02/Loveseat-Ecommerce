@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -29,15 +31,15 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/register", "/otp-page", "/login", "/user-register", "/verify",
+                        .requestMatchers("/register", "/otp-page", "/login", "/user-register", "/verify","/forgotPassword","/forgot-Password","/resetPassword/**",
                                 "/static/**", "/css/bootstrap.min.css", "/css/tiny-slider.css", "/css/style.css",
                                 "/resentOtp", "/images/**","/css/**","/js/**","/scss/**","/css/styles.min.css"
                                 ,"/libs/jquery/dist/jquery.min.js","/libs/bootstrap/dist/js/bootstrap.bundle.min.js"
                                 ,"/js/sidebarmenu.js","/js/app.min.js","/libs/apexcharts/dist/apexcharts.min.js",
                                 "/libs/simplebar/dist/simplebar.js","/js/dashboard.js"
                         ).permitAll()
-                        .requestMatchers("/home").hasAnyAuthority("USER")
-                        .requestMatchers("/admin").hasAnyAuthority("ADMIN")
+                        .requestMatchers("/home/**").hasAnyAuthority("USER")
+                        .requestMatchers("/admin/**").hasAnyAuthority("ADMIN")
                         .anyRequest().authenticated())
 
                 .formLogin((form) -> form

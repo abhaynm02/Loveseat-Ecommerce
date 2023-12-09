@@ -1,8 +1,10 @@
 package com.Abhay.Loveseat.Controller;
 
 import com.Abhay.Loveseat.Dto.UserDto;
+import com.Abhay.Loveseat.Model.PasswordRestToken;
 import com.Abhay.Loveseat.Model.UserEntity;
 import com.Abhay.Loveseat.Otp.OtpUtil;
+import com.Abhay.Loveseat.Repository.PasswordRestTokenRepo;
 import com.Abhay.Loveseat.Service.UserService;
 import com.Abhay.Loveseat.Service.UserServiceI;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,10 +17,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
@@ -32,6 +31,8 @@ public class LoginController {
     UserServiceI userService;
     @Autowired
     private OtpUtil otpUtil;
+    @Autowired
+    private PasswordRestTokenRepo passwordRestTokenRepo;
 
     @GetMapping("/register")
     public String register(Model model) {
@@ -126,6 +127,45 @@ public class LoginController {
         userService.SendOpt(email, otpR);
         redirectAttributes.addFlashAttribute("message", "otp send to your email");
         return "redirect:/otp-page";
+    }
+    @GetMapping("/forgotPassword")
+    public String forgotPassword(){
+
+        return "forgotPassword";
+    }
+    @PostMapping("/forgot-Password")
+    public String forgotPassword(@RequestParam("email")String email ,RedirectAttributes redirectAttributes){
+        boolean exists=userService.isEmailExists(email);
+        System.out.println(email);
+        if (exists){
+            userService.forgotPassword(email);
+            redirectAttributes.addFlashAttribute("message","please check your email link send  ");
+
+
+        }else {
+            redirectAttributes.addFlashAttribute("message","please check your user name ");
+
+        }
+        return "redirect:/forgotPassword";
+
+    }
+    @GetMapping("/resetPassword/{token}")
+    public String resetPassword(@PathVariable String token, Model model){
+        PasswordRestToken rest=passwordRestTokenRepo.findByToken(token);
+    if (rest!=null&& userService.hasExpipred(rest.getExpiryDateTime())){
+        model.addAttribute("email",rest.getUser().getEmail());
+        return  "resetPassword";
+    }
+    return "redirect:/login?error";
+
+    }
+    @PostMapping("/resetPassword")
+    public String resetPasswordConform(@RequestParam("password") String password,@RequestParam("email")String  email){
+    userService.changePassword(password,email);
+        System.out.println(password +email);
+
+    return "/login";
+
     }
 
     @GetMapping("/logout")

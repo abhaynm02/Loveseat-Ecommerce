@@ -42,7 +42,7 @@
                     </li>
 
                     <li class="sidebar-item">
-                        <a class="sidebar-link" href="/users" aria-expanded="false">
+                        <a class="sidebar-link" href="/admin/users" aria-expanded="false">
                 <span>
                   <i class="ti ti-article"></i>
                 </span>
@@ -50,7 +50,7 @@
                         </a>
                     </li>
                     <li class="sidebar-item">
-                        <a class="sidebar-link" href="/categories" aria-expanded="false">
+                        <a class="sidebar-link" href="/admin/categories" aria-expanded="false">
                 <span>
                 <i class="ti ti-file-description"></i>
                 </span>
@@ -58,7 +58,7 @@
                         </a>
                     </li>
                     <li class="sidebar-item">
-                        <a class="sidebar-link" href="/products" aria-expanded="false">
+                        <a class="sidebar-link" href="/admin/products" aria-expanded="false">
                 <span>
                   <i class="ti ti-cards"></i>
                 </span>
@@ -168,7 +168,7 @@
             <h2 class="mb-4">Category List</h2>
 
             <!-- Add Category Button -->
-            <a th:href="@{/addProduct}" class="btn btn-primary mb-4">Add product</a>
+            <a th:href="@{/admin/addProduct}" class="btn btn-primary mb-4">Add product</a>
             <div class="alert alert-primary my-1" th:if="${message}">
                 <p class="text-center" th:text="${message}"></p>
             </div>
@@ -217,7 +217,7 @@
 
                         <!-- Edit Button -->
                         <div style="display: inline-block;">
-                            <form  th:action="@{/edit-product/{id}(id=${product.id})}" >
+                            <form  th:action="@{/admin/edit-product/{id}(id=${product.id})}" >
                                 <input type="hidden" name="productId" th:value="${product.id}" />
                                 <button type="submit" class="btn btn-info btn-sm">Edit</button>
                             </form>
@@ -230,13 +230,13 @@
         <div th:if="${products.totalPages > 1}">
             <ul class="pagination">
                 <li th:if="${products.hasPrevious}" class="page-item">
-                    <a th:href="@{'/products?page=' + (${products.number - 1}) + '&size=' + ${products.size}}" class="page-link">Previous</a>
+                    <a th:href="@{'/admin/products?page=' + (${products.number - 1}) + '&size=' + ${products.size}}" class="page-link">Previous</a>
                 </li>
                 <li th:each="page : ${#numbers.sequence(0, products.totalPages - 1)}" class="page-item">
-                    <a th:href="@{'/products?page=' + ${page} + '&size=' + ${products.size}}" th:classappend="${products.number == page} ? 'active' : ''" class="page-link" th:text="${page + 1}"></a>
+                    <a th:href="@{'/admin/products?page=' + ${page} + '&size=' + ${products.size}}" th:classappend="${products.number == page} ? 'active' : ''" class="page-link" th:text="${page + 1}"></a>
                 </li>
                 <li th:if="${products.hasNext}" class="page-item">
-                    <a th:href="@{'/products?page=' + (${products.number + 1}) + '&size=' + ${products.size}}" class="page-link">Next</a>
+                    <a th:href="@{'/admin/products?page=' + (${products.number + 1}) + '&size=' + ${products.size}}" class="page-link">Next</a>
                 </li>
             </ul>
         </div>
