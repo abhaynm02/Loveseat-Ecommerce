@@ -50,7 +50,7 @@ public class UserProfileController {
 
           try {
               userServiceI.saveChange(userDto,email);
-              return "redirect:/user-profile";
+              return "redirect:home/user-profile";
           }catch (DataIntegrityViolationException e){
               e.printStackTrace();
           }
@@ -69,7 +69,6 @@ public class UserProfileController {
         if (userServiceI.passwordIsCorrect(oldPassword,email,newPassword)){
             return "redirect:/home/user-profile";
         }
-        System.out.println("heyy i am working properly");
         redirectAttributes.addFlashAttribute("message","the old password is not matching");
         return "redirect:/home/changePassword";
     }

@@ -66,146 +66,135 @@
 </nav>
 <!-- End Header/Navigation -->
 
- <div style="display: flex; flex-direction: row;">
-        <!-- Sidebar scroll-->
-        <div style="width: 200px; "  >
+<div style="display: flex; flex-direction: row;">
+    <!-- Sidebar scroll-->
+    <div style="width: 200px; "  >
 
-            <!-- Sidebar navigation-->
-            <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
-                <ul id="sidebarnav">
-                    <li class="nav-small-cap">
-                        <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                       <h3> <span class="hide-menu">Profile</span></h3>
-                    </li>
-                    <li class="sidebar-item">
-                        <a class="sidebar-link" style="text-decoration: none;" th:href="@{/home/profile}" aria-expanded="false">
+        <!-- Sidebar navigation-->
+        <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
+            <ul id="sidebarnav">
+                <li class="nav-small-cap">
+                    <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                    <h3> <span class="hide-menu">Profile</span></h3>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" style="text-decoration: none;" th:href="@{/home/profile}" aria-expanded="false">
                 <span>
                   <i class="ti ti-layout-dashboard"></i>
                 </span>
-                            <span class="hide-menu">Edit Profile</span>
-                        </a>
-                    </li>
+                        <span class="hide-menu">Edit Profile</span>
+                    </a>
+                </li>
 
-                    <li class="sidebar-item">
-                        <a class="sidebar-link" th:href="@{/home/addAddress}" aria-expanded="false">
+                <li class="sidebar-item">
+                    <a class="sidebar-link" th:href="@{/home/addAddress}" aria-expanded="false">
                 <span>
                   <i class="ti ti-article"></i>
                 </span>
-                            <span class="hide-menu">Address</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-item">
-                        <a class="sidebar-link" th:href="@{/home/manageAddress}" aria-expanded="false">
+                        <span class="hide-menu">Address</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="/admin/categories" aria-expanded="false">
                 <span>
                 <i class="ti ti-file-description"></i>
                 </span>
-                            <span class="hide-menu">manage Address</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-item">
-                        <a class="sidebar-link" href="/admin/products" aria-expanded="false">
+                        <span class="hide-menu">Category</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="/admin/products" aria-expanded="false">
                 <span>
                   <i class="ti ti-cards"></i>
                 </span>
-                            <span class="hide-menu">Products</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-item">
-                        <a class="sidebar-link" href="#" aria-expanded="false">
+                        <span class="hide-menu">Products</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="#" aria-expanded="false">
                 <span>
                   <i class="ti ti-file-description"></i>
                 </span>
-                            <span class="hide-menu">Orders</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-item">
-                        <a class="sidebar-link" href="/home/changePassword" aria-expanded="false">
+                        <span class="hide-menu">Orders</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="/home/changePassword" aria-expanded="false">
                 <span>
                   <i class="ti ti-typography"></i>
                 </span>
-                            <span class="hide-menu">Change Password</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-item">
-                        <a class="sidebar-link" th:href="@{/logout}" aria-expanded="false">
+                        <span class="hide-menu">Change Password</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" th:href="@{/logout}" aria-expanded="false">
                 <span>
                   <i class="ti ti-login"></i>
                 </span>
-                            <span class="hide-menu">logout</span>
-                        </a>
-                    </li>
+                        <span class="hide-menu">logout</span>
+                    </a>
+                </li>
 
-                    <li class="sidebar-item">
-                        <a class="sidebar-link" href="#" aria-expanded="false">
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="#" aria-expanded="false">
                 <span>
                   <i class="ti ti-mood-happy"></i>
                 </span>
-                            <span class="hide-menu">Icons</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-item">
-                        <a class="sidebar-link" href="#" aria-expanded="false">
+                        <span class="hide-menu">Icons</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="#" aria-expanded="false">
                 <span>
                   <i class="ti ti-aperture"></i>
                 </span>
-                            <span class="hide-menu">Sample Page</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-            <!-- End Sidebar navigation -->
-        </div>
-        <!-- End Sidebar scroll-->
+                        <span class="hide-menu">Sample Page</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <!-- End Sidebar navigation -->
+    </div>
+    <!-- End Sidebar scroll-->
 
 
 
-<!-- Start Contact Form -->
+    <!-- Start Contact Form -->
 
 
-  <div class="container mt-5" style="flex-grow: 1;" >
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">User Profile</div>
-                                    <div class="card-body">
-                                        <form th:object="${user}" method="post">
-                                            <div class="form-group row mt-4">
-                                                <label id="email" class="col-md-4 col-form-label text-md-right">Username:</label>
-                                                <div class="col-md-6">
-                                                    <input type="text" th:field="*{email}" class="form-control " readonly>
-                                                </div>
-                                            </div>
+    <div class="container mt-5" style="flex-grow: 1;" >
+        <div class="row justify-content-center">
+            <div class="container mt-5">
+                <div class="row">
+                    <!-- Loop through user addresses and create a card for each -->
+                    <div th:each="address : ${user.addresses}" class="col-md-4 mb-4">
+                        <div class="card" style="width: 25rem;"> <!-- Set a fixed width for each card -->
+                            <div class="card-body">
+                                <!-- Display first name, last name, and phone -->
+                                <h5 class="card-title" th:text="${address.firstName + ' ' + address.lastName}"></h5>
+                                <p class="card-subtitle mb-2 text-muted" th:text="${address.phone}"></p>
 
-                                            <div class="form-group row mt-4">
-                                                <label id="name" class="col-md-4 col-form-label text-md-right">Full Name:</label>
-                                                <div class="col-md-6">
-                                                    <input type="text" th:field="*{name}" class="form-control" readonly>
+                                <!-- Display address details -->
+                                <p class="card-text" th:text="${address.homeAddress + ', ' + address.city + ', ' + address.pin}"></p>
 
-                                                </div>
-                                            </div>
+                                <!-- Display default address status -->
+                                <p th:if="${address.defaultAddress}" class="text-success">Default Address</p>
 
-                                            <div class="form-group row mt-4">
-                                                <label id="email" class="col-md-4 col-form-label text-md-right">Email:</label>
-                                                <div class="col-md-6">
-                                                    <input type="email" th:field="*{email}" class="form-control" readonly>
-                                                </div>
-                                            </div>
+                                <!-- Add an Edit button -->
+                                <a th:href="@{'/editAddress/' + ${address.id}}" class="btn btn-primary">Edit</a>
 
-                                            <div class="form-group row mt-4">
-                                                <label id="phone" class="col-md-4 col-form-label text-md-right">Phone:</label>
-                                                <div class="col-md-6">
-                                                    <input type="email" th:field="*{phone}" class="form-control" readonly>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
+                                <!-- You can add more styling or information here based on your needs -->
                             </div>
                         </div>
                     </div>
-
-                    <!-- Add more fields as needed -->
                 </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Add more fields as needed -->
+</div>
 
 
 <!-- End Contact Form -->

@@ -1,8 +1,13 @@
 package com.Abhay.Loveseat.Model;
 
 import jakarta.persistence.*;
+import lombok.Data;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
+@Data
 @Table(name = "UserEntity", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
 public class UserEntity {
     @Id
@@ -17,6 +22,8 @@ public class UserEntity {
     private boolean status;
     @OneToOne(mappedBy = "user",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private PasswordRestToken passwordRestToken;
+    @OneToMany(mappedBy = "user" ,cascade = CascadeType.ALL)
+    private List<Address> addresses=new ArrayList<Address>();
 
     public UserEntity() {
     }
@@ -95,6 +102,14 @@ public class UserEntity {
 
     public void setStatus(boolean status) {
         this.status = status;
+    }
+
+    public List<Address> getAddresses() {
+        return addresses;
+    }
+
+    public void setAddresses(List<Address> addresses) {
+        this.addresses = addresses;
     }
 
     @Override
