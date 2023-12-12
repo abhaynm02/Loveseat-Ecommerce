@@ -87,15 +87,15 @@
                 </li>
 
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="/admin/users" aria-expanded="false">
+                    <a class="sidebar-link" th:href="@{/home/manageAddress}" aria-expanded="false">
                 <span>
                   <i class="ti ti-article"></i>
                 </span>
-                        <span class="hide-menu">Address</span>
+                        <span class="hide-menu">Manage Address</span>
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="/admin/categories" aria-expanded="false">
+                    <a class="sidebar-link" th:href="@{/home/manageAddress}" aria-expanded="false">
                 <span>
                 <i class="ti ti-file-description"></i>
                 </span>
@@ -119,7 +119,7 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="/home/changePassword" aria-expanded="false">
+                    <a class="sidebar-link" th:href="@{/home/changePassword}" aria-expanded="false">
                 <span>
                   <i class="ti ti-typography"></i>
                 </span>
@@ -218,7 +218,7 @@
 <!--                        city-->
                         <div class="form-group col-md-6">
                             <label for="city">City:</label>
-                            <input type="text" name="city" class="form-control" id="city" th:field="*{city}" th:errorClass="is-invalid" maxlength="6" >
+                            <input type="text" name="city" class="form-control" id="city" th:field="*{city}" th:errorClass="is-invalid"  >
                             <div th:if="${#fields.hasErrors('city')}" th:errors="*{city}" class="invalid-feedback"></div>
                             <div id="cityr" style="display: none; color: red;" class="is-invalid">
                                Please enter your city.

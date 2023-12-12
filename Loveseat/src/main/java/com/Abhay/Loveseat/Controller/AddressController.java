@@ -13,7 +13,9 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class AddressController {
@@ -43,10 +45,25 @@ public class AddressController {
     public String mangeAddress(Model model,HttpServletRequest request){
         HttpSession session=request.getSession();
         String email=(String)session.getAttribute("userId");
-        System.out.println(email);
         UserEntity user=userServiceI.findByEmail(email);
         model.addAttribute("user",user);
         return "home/manageAddress";
+    }
+    @GetMapping("/home/editAddress/{id}")
+    public String editAddress(@PathVariable Long id, Model model){
+        AddressDto address=addressServiceI.findById(id);
+        model.addAttribute("address",address);
+        return "home/editAddress";
+    }
+    @PostMapping("/home/edit-Address/{id}")
+    public String saveEdit(@PathVariable Long id, @ModelAttribute("address")AddressDto addressDto,
+                           RedirectAttributes redirectAttributes){
+        addressServiceI.saveEdits(id,addressDto);
+        redirectAttributes.addFlashAttribute("success","changes add successfully");
+        System.out.println(addressDto);
+        System.out.println(id);
+
+        return "redirect:/home/manageAddress";
     }
 
 }
