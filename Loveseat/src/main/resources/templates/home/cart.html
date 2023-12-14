@@ -13,7 +13,7 @@
 
 	<body>
 
-	<div th:replace="fragments/header::header"></div>
+	 <div th:replace="fragments/header::header"></div>
 
 		<!-- Start Hero Section -->
 			<div class="hero">
@@ -60,7 +60,6 @@
                       <tbody>
                         <tr th:each="cartItem : ${cart.cartItems}">
                           <td class="product-thumbnail">
-<!--							  <a th:href=" ">-->
                             <img th:src="@{/Product-images/{imageName}(imageName=${cartItem.product.frontImage})}" alt="Image" class="img-fluid">
 							  </a>
 						  </td>
@@ -85,13 +84,6 @@
                                    </div>
 							    </div>
 							  </form>
-<!--							  <form th:action="@{/change-cart}" method="post" id="updateCartForm">-->
-<!--								  <input type="hidden" name="productId" th:value="${cartItem.product.id}">-->
-<!--								  <button type="button" class="btn btn-outline-black decrease" onclick="decreaseQuantity()">-</button>-->
-<!--								  <input type="text" name="quantity" id="quantityInput" th:value="${cartItem.quantity}">-->
-<!--								  <button type="button" class="btn btn-outline-black increase" onclick="increaseQuantity()">+</button>-->
-<!--								  <button type="submit">Update Cart</button>-->
-<!--							  </form>-->
                            </td>
                           <td>
 							 <p th:text="'$' +${cartItem.totalPrice}"></p>
@@ -108,32 +100,31 @@
 				       </tbody>
 				      </table>
                   </div>
-<!--                </form>-->
               </div>
         
               <div class="row">
                 <div class="col-md-6">
                   <div class="row mb-5">
-                    <div class="col-md-6 mb-3 mb-md-0">
-                      <button class="btn btn-black btn-sm btn-block">Update Cart</button>
-                    </div>
-                    <div class="col-md-6">
-                      <button class="btn btn-outline-black btn-sm btn-block">Continue Shopping</button>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-md-12">
-                      <label class="text-black h4" for="coupon">Coupon</label>
-                      <p>Enter your coupon code if you have one.</p>
-                    </div>
-                    <div class="col-md-8 mb-3 mb-md-0">
-                      <input type="text" class="form-control py-3" id="coupon" placeholder="Coupon Code">
-                    </div>
-                    <div class="col-md-4">
-                      <button class="btn btn-black">Apply Coupon</button>
-                    </div>
-                  </div>
-                </div>
+<!--                    <div class="col-md-6 mb-3 mb-md-0">-->
+<!--                      <button class="btn btn-black btn-sm btn-block">Update Cart</button>-->
+<!--                    </div>-->
+<!--                    <div class="col-md-6">-->
+<!--                      <button class="btn btn-outline-black btn-sm btn-block">Continue Shopping</button>-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                  <div class="row">-->
+<!--                    <div class="col-md-12">-->
+<!--                      <label class="text-black h4" for="coupon">Coupon</label>-->
+<!--                      <p>Enter your coupon code if you have one.</p>-->
+<!--                    </div>-->
+<!--                    <div class="col-md-8 mb-3 mb-md-0">-->
+<!--                      <input type="text" class="form-control py-3" id="coupon" placeholder="Coupon Code">-->
+<!--                    </div>-->
+<!--                    <div class="col-md-4">-->
+<!--                      <button class="btn btn-black">Apply Coupon</button>-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                </div>-->
                 <div class="col-md-6 pl-5">
                   <div class="row justify-content-end">
                     <div class="col-md-7">
@@ -147,7 +138,7 @@
                           <span class="text-black">Subtotal</span>
                         </div>
                         <div class="col-md-6 text-right">
-                          <strong class="text-black">$230.00</strong>
+                          <strong class="text-black" th:text=" '$ ' +${cart.totalPrice}"></strong>
                         </div>
                       </div>
                       <div class="row mb-5">
@@ -155,16 +146,19 @@
                           <span class="text-black">Total</span>
                         </div>
                         <div class="col-md-6 text-right">
-                          <strong class="text-black">$230.00</strong>
+                          <strong class="text-black" th:text="${cart.totalPrice}"></strong>
                         </div>
                       </div>
-        
-                      <div class="row">
-                        <div class="col-md-12">
-                          <button class="btn btn-black btn-lg py-3 btn-block" onclick="window.location='checkout.html'">Proceed To Checkout</button>
-                        </div>
-                      </div>
-                    </div>
+
+						<div class="row">
+							<div class="col-md-12">
+								<a th:href="@{/home/checkout}">
+									<button class="btn btn-sm py-3">Proceed To Checkout</button>
+								</a>
+							</div>
+						</div>
+
+					</div>
                   </div>
                 </div>
               </div>

@@ -1,0 +1,363 @@
+<!-- /*
+* Bootstrap 5
+* Template Name: Furni
+* Template Author: Untree.co
+* Template URI: https://untree.co/
+* License: https://creativecommons.org/licenses/by/3.0/
+*/ -->
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+
+	</head>
+
+	<body>
+
+	<div th:replace="fragments/header::header"></div>
+
+		<!-- Start Hero Section -->
+			<div class="hero">
+				<div class="container">
+					<div class="row justify-content-between">
+						<div class="col-lg-5">
+							<div class="intro-excerpt">
+								<h1>Checkout</h1>
+							</div>
+						</div>
+						<div class="col-lg-7">
+							
+						</div>
+					</div>
+				</div>
+			</div>
+		<!-- End Hero Section -->
+
+		<div class="untree_co-section">
+		      <div class="row">
+		        <div class="col-md-6 mb-5 mb-md-0">
+		          <h2 class="h3 ml-5 mb-3 text-black text-center">Billing Details</h2>
+		          <div class="p-3 p-lg-5 border bg-white">
+
+<!--					  addresspages-->
+					  <div class="card w-75 mb-3" th:each="address : ${user.addresses}">
+						  <div class="card-body">
+							  <h5 class="card-title" th:text="${address.firstName + ' ' + address.lastName}"></h5>
+							  <p class="card-text" th:text="${address.homeAddress + ', ' + address.city + ', ' + address.pin}"></p>
+<!--							  <p class="card-text" th:text="${}"></p>-->
+							  <p class="card-subtitle mb-2 text-muted" th:text="${address.phone}"></p>
+
+							  <!-- Radio button for selecting the default address -->
+							  <div class="form-check">
+								  <input
+										  type="radio"
+										  class="form-check-input"
+										  th:id="'addressRadio_' + ${address.id}"
+										  th:name="selectedAddressId"
+										  th:value="${address.id}"
+										  th:checked="${address.defaultAddress}"
+								  />
+								  <label class="form-check-label" th:for="'addressRadio_' + ${address.id}">Use this address</label>
+							  </div>
+						  </div>
+					  </div>
+
+		            <div class="form-group">
+		              <label for="c_ship_different_address" class="text-black" data-bs-toggle="collapse" href="#ship_different_address" role="button" aria-expanded="false" aria-controls="ship_different_address"><input type="checkbox" value="1" id="c_ship_different_address"> Ship To A Different Address?</label>
+		              <div class="collapse" id="ship_different_address">
+		                <div class="py-2">
+
+							<form th:action="@{/saveAddress}" th:object="${address}" method="post" class="needs-validation" onsubmit="return validateForm(event)">
+
+								<!-- Display global errors -->
+								<div th:if="${#fields.hasGlobalErrors()}" class="alert alert-danger">
+									<ul>
+										<li th:each="error : ${#fields.globalErrors()}" th:text="${error}"></li>
+									</ul>
+								</div>
+
+								<!-- Name and Lastname in a single row -->
+								<div class="form-row">
+									<div class="form-group col-md-6">
+										<label for="name">Name:</label>
+										<input type="text" name="name" class="form-control" id="name" th:field="*{firstName}"  th:errorClass="is-invalid" >
+										<div id="firstName" style="display: none; color: red;" class="is-invalid">
+											Please enter a valid name.
+										</div>
+										<div th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="invalid-feedback"></div>
+									</div>
+									<div class="form-group col-md-6">
+										<label for="secondName">Lastname:</label>
+										<input type="text" name="lastName" class="form-control" id="secondName" th:field="*{lastName}" th:errorClass="is-invalid">
+										<div th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="invalid-feedback"></div>
+										<div id="secondNamer" style="display: none; color: red;" class="is-invalid">
+											Please enter a valid name.
+										</div>
+									</div>
+								</div>
+
+								<!-- Phone -->
+								<div class="form-group col-md-6">
+									<label for="phone">Phone:</label>
+									<input type="tel" name="phone" class="form-control" id="phone" th:field="*{phone}" th:errorClass="is-invalid" >
+									<div th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="invalid-feedback"></div>
+									<div id="phoner" style="display: none; color: red;" class="is-invalid">
+										Numbers only.
+									</div>
+								</div>
+
+								<!-- Address -->
+								<div class="form-group col-md-8">
+									<label for="address">Address:</label>
+									<textarea class="form-control" name="address" id="address" th:field="*{homeAddress}" rows="5" th:errorClass="is-invalid"></textarea>
+									<div th:if="${#fields.hasErrors('homeAddress')}" th:errors="*{homeAddress}" class="invalid-feedback"></div>
+									<div id="addressr" style="display: none; color: red;" class="is-invalid">
+										please fill this .
+									</div>
+								</div>
+								<!--                        city-->
+								<div class="form-group col-md-6">
+									<label for="city">City:</label>
+									<input type="text" name="city" class="form-control" id="city" th:field="*{city}" th:errorClass="is-invalid"  >
+									<div th:if="${#fields.hasErrors('city')}" th:errors="*{city}" class="invalid-feedback"></div>
+									<div id="cityr" style="display: none; color: red;" class="is-invalid">
+										Please enter your city.
+									</div>
+								</div>
+
+								<!-- Pin -->
+								<div class="form-group col-md-6">
+									<label for="pin">PIN:</label>
+									<input type="text" name="pin" class="form-control" id="pin" th:field="*{pin}" th:errorClass="is-invalid" maxlength="6" >
+									<div th:if="${#fields.hasErrors('pin')}" th:errors="*{pin}" class="invalid-feedback"></div>
+									<div id="pinr" style="display: none; color: red;" class="is-invalid">
+										Numbers only.
+									</div>
+								</div>
+
+								<!-- Default Address -->
+								<div class="form-check">
+									<input type="checkbox" class="form-check-input" id="defaultAddress" th:field="*{defaultAddress}" >
+									<label class="form-check-label" for="defaultAddress">Set as Default Address</label>
+								</div>
+
+								<!-- Submit Button -->
+								<div class="text-center mt-2 mb-2">
+									<button type="submit" class="btn btn-primary">Save Address</button>
+								</div>
+
+							</form>
+
+		                </div>
+
+		              </div>
+		            </div>
+
+<!--		            <div class="form-group">-->
+<!--		              <label for="c_order_notes" class="text-black">Order Notes</label>-->
+<!--		              <textarea name="c_order_notes" id="c_order_notes" cols="30" rows="5" class="form-control" placeholder="Write your notes here..."></textarea>-->
+<!--		            </div>-->
+
+		          </div>
+		        </div>
+		        <div class="col-md-6">
+
+<!--		          <div class="row mb-5">-->
+<!--		            <div class="col-md-12">-->
+<!--		              <h2 class="h3 mb-3 text-black">Coupon Code</h2>-->
+<!--		              <div class="p-3 p-lg-5 border bg-white">-->
+
+<!--		                <label for="c_code" class="text-black mb-3">Enter your coupon code if you have one</label>-->
+<!--		                <div class="input-group w-75 couponcode-wrap">-->
+<!--		                  <input type="text" class="form-control me-2" id="c_code" placeholder="Coupon Code" aria-label="Coupon Code" aria-describedby="button-addon2">-->
+<!--		                  <div class="input-group-append">-->
+<!--		                    <button class="btn btn-black btn-sm" type="button" id="button-addon2">Apply</button>-->
+<!--		                  </div>-->
+<!--		                </div>-->
+
+<!--		              </div>-->
+<!--		            </div>-->
+<!--		          </div>-->
+
+					<div class="row mb-5">
+						<div class="col-md-12">
+							<h2 class="h3 mb-3 text-black">Your Order</h2>
+							<div class="p-3 p-lg-5 border bg-white">
+								<table class="table site-block-order-table mb-5">
+									<thead>
+									<th>Product</th>
+									<th>Total</th>
+									</thead>
+									<tbody>
+									<tr th:each="cartItem : ${cart.cartItems}">
+										<!-- Assuming Product has a getName() method -->
+										<td th:text="${cartItem.product.name + ' * ' +'('+ cartItem.quantity + ')'}"></td>
+										<td><p th:text="'$ ' + ${cartItem.totalPrice}"></p></td>
+									</tr>
+
+									<tr>
+										<td class="text-black font-weight-bold"><strong>Order Total</strong></td>
+										<td class="text-black font-weight-bold" th:text="'$ ' + ${cart.totalPrice}"><strong></strong></td>
+									</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+
+
+					<div class="border p-3 mb-3">
+		                  <h3 class="h6 mb-0"><a class="d-block" data-bs-toggle="collapse" href="#collapsebank" role="button" aria-expanded="false" aria-controls="collapsebank">Direct Bank Transfer</a></h3>
+
+		                  <div class="collapse" id="collapsebank">
+		                    <div class="py-2">
+		                      <p class="mb-0">Make your payment directly into our bank account. Please use your Order ID as the payment reference. Your order won’t be shipped until the funds have cleared in our account.</p>
+		                    </div>
+		                  </div>
+		                </div>
+
+		                <div class="border p-3 mb-3">
+		                  <h3 class="h6 mb-0"><a class="d-block" data-bs-toggle="collapse" href="#collapsecheque" role="button" aria-expanded="false" aria-controls="collapsecheque">Cheque Payment</a></h3>
+
+		                  <div class="collapse" id="collapsecheque">
+		                    <div class="py-2">
+		                      <p class="mb-0">Make your payment directly into our bank account. Please use your Order ID as the payment reference. Your order won’t be shipped until the funds have cleared in our account.</p>
+		                    </div>
+		                  </div>
+		                </div>
+
+		                <div class="border p-3 mb-5">
+		                  <h3 class="h6 mb-0"><a class="d-block" data-bs-toggle="collapse" href="#collapsepaypal" role="button" aria-expanded="false" aria-controls="collapsepaypal">Paypal</a></h3>
+
+		                  <div class="collapse" id="collapsepaypal">
+		                    <div class="py-2">
+		                      <p class="mb-0">Make your payment directly into our bank account. Please use your Order ID as the payment reference. Your order won’t be shipped until the funds have cleared in our account.</p>
+		                    </div>
+		                  </div>
+		                </div>
+
+		                <div class="form-group">
+		                  <button class="btn btn-black btn-lg py-3 btn-block" onclick="window.location='thankyou.html'">Place Order</button>
+		                </div>
+
+		              </div>
+		            </div>
+		          </div>
+
+		        </div>
+		      </div>
+		      <!-- </form> -->
+		    </div>
+		  </div>
+
+		<!-- Start Footer Section -->
+		<footer class="footer-section">
+			<div class="container relative">
+
+				<div class="sofa-img">
+					<img src="/images/sofa.png" alt="Image" class="img-fluid">
+				</div>
+
+				<div class="row">
+					<div class="col-lg-8">
+						<div class="subscription-form">
+							<h3 class="d-flex align-items-center"><span class="me-1"><img src="/images/envelope-outline.svg" alt="Image" class="img-fluid"></span><span>Subscribe to Newsletter</span></h3>
+
+							<form action="#" class="row g-3">
+								<div class="col-auto">
+									<input type="text" class="form-control" placeholder="Enter your name">
+								</div>
+								<div class="col-auto">
+									<input type="email" class="form-control" placeholder="Enter your email">
+								</div>
+								<div class="col-auto">
+									<button class="btn btn-primary">
+										<span class="fa fa-paper-plane"></span>
+									</button>
+								</div>
+							</form>
+
+						</div>
+					</div>
+				</div>
+
+				<div class="row g-5 mb-5">
+					<div class="col-lg-4">
+						<div class="mb-4 footer-logo-wrap"><a href="#" class="footer-logo">Furni<span>.</span></a></div>
+						<p class="mb-4">Donec facilisis quam ut purus rutrum lobortis. Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate velit imperdiet dolor tempor tristique. Pellentesque habitant</p>
+
+						<ul class="list-unstyled custom-social">
+							<li><a href="#"><span class="fa fa-brands fa-facebook-f"></span></a></li>
+							<li><a href="#"><span class="fa fa-brands fa-twitter"></span></a></li>
+							<li><a href="#"><span class="fa fa-brands fa-instagram"></span></a></li>
+							<li><a href="#"><span class="fa fa-brands fa-linkedin"></span></a></li>
+						</ul>
+					</div>
+
+					<div class="col-lg-8">
+						<div class="row links-wrap">
+							<div class="col-6 col-sm-6 col-md-3">
+								<ul class="list-unstyled">
+									<li><a href="#">About us</a></li>
+									<li><a href="#">Services</a></li>
+									<li><a href="#">Blog</a></li>
+									<li><a href="#">Contact us</a></li>
+								</ul>
+							</div>
+
+							<div class="col-6 col-sm-6 col-md-3">
+								<ul class="list-unstyled">
+									<li><a href="#">Support</a></li>
+									<li><a href="#">Knowledge base</a></li>
+									<li><a href="#">Live chat</a></li>
+								</ul>
+							</div>
+
+							<div class="col-6 col-sm-6 col-md-3">
+								<ul class="list-unstyled">
+									<li><a href="#">Jobs</a></li>
+									<li><a href="#">Our team</a></li>
+									<li><a href="#">Leadership</a></li>
+									<li><a href="#">Privacy Policy</a></li>
+								</ul>
+							</div>
+
+							<div class="col-6 col-sm-6 col-md-3">
+								<ul class="list-unstyled">
+									<li><a href="#">Nordic Chair</a></li>
+									<li><a href="#">Kruzo Aero</a></li>
+									<li><a href="#">Ergonomic Chair</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+				<div class="border-top copyright">
+					<div class="row pt-4">
+						<div class="col-lg-6">
+							<p class="mb-2 text-center text-lg-start">Copyright &copy;<script>document.write(new Date().getFullYear());</script>. All Rights Reserved. &mdash; Designed with love by <a href="https://untree.co">Untree.co</a> Distributed By <a hreff="https://themewagon.com">ThemeWagon</a>  <!-- License information: https://untree.co/license/ -->
+            </p>
+						</div>
+
+						<div class="col-lg-6 text-center text-lg-end">
+							<ul class="list-unstyled d-inline-flex ms-auto">
+								<li class="me-4"><a href="#">Terms &amp; Conditions</a></li>
+								<li><a href="#">Privacy Policy</a></li>
+							</ul>
+						</div>
+
+					</div>
+				</div>
+
+			</div>
+		</footer>
+		<!-- End Footer Section -->	
+
+
+		<script src="/js/bootstrap.bundle.min.js"></script>
+		<script src="/js/tiny-slider.js"></script>
+		<script src="/js/custom.js"></script>
+	</body>
+
+</html>

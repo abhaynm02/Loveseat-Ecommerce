@@ -50,7 +50,14 @@
 
             <ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
                 <li><a class="nav-link" th:href="@{/home/user-profile}"><img src="/images/user.svg"></a></li>
-                <li><a class="nav-link" th:href="@{/home/cart}"><img src="/images/cart.svg"></a></li>
+                <li><a class="nav-link" th:href="@{/home/cart}">
+                    <img src="/images/cart.svg">
+
+                    <span class="badge"  th:text="${session.totalItems != null ? session.totalItems : '0'}"></span>
+
+
+                </a>
+                </li>
             </ul>
         </div>
     </div>
