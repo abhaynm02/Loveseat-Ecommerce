@@ -1,13 +1,17 @@
 package com.Abhay.Loveseat.Model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "UserEntity", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
 public class UserEntity {
     @Id
@@ -24,21 +28,32 @@ public class UserEntity {
     private PasswordRestToken passwordRestToken;
     @OneToMany(mappedBy = "user" ,cascade = CascadeType.ALL)
     private List<Address> addresses=new ArrayList<Address>();
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private  Cart cart;
 
-    public UserEntity() {
+
+//    public UserEntity() {
+//    }
+//
+//    public UserEntity(long id, String name, String email,
+//                      String password, String role, String phone,
+//                      boolean active, boolean status) {
+//        this.id = id;
+//        this.name = name;
+//        this.email = email;
+//        this.password = password;
+//        this.role = role;
+//        this.phone = phone;
+//        this.active = active;
+//        this.status = status;
+//    }
+
+    public Cart getCart() {
+        return cart;
     }
 
-    public UserEntity(long id, String name, String email,
-                      String password, String role, String phone,
-                      boolean active, boolean status) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.role = role;
-        this.phone = phone;
-        this.active = active;
-        this.status = status;
+    public void setCart(Cart cart) {
+        this.cart = cart;
     }
 
     public long getId() {

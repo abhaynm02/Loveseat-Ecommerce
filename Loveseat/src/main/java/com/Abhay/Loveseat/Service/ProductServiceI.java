@@ -2,7 +2,6 @@ package com.Abhay.Loveseat.Service;
 
 import com.Abhay.Loveseat.Dto.ProductsDto;
 import com.Abhay.Loveseat.ImageUtil.ImageUpload;
-import com.Abhay.Loveseat.Model.Category;
 import com.Abhay.Loveseat.Model.Products;
 import com.Abhay.Loveseat.Repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
