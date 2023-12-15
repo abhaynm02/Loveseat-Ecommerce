@@ -65,5 +65,12 @@ public class AddressController {
 
         return "redirect:/home/manageAddress";
     }
+    @PostMapping("/home/delete/{id}")
+    private String deleteAddress(@PathVariable Long id ,RedirectAttributes redirectAttributes){
+        addressServiceI.deleteAddress(id);
+        redirectAttributes.addFlashAttribute("success","Remove successfully");
+        return "redirect:/home/manageAddress";
+
+    }
 
 }

@@ -196,13 +196,14 @@
                             <td th:text="${user.phone}"></td>
                             <td th:text="${user.role}"></td>
                             <td>
-                                <form th:if="${user.id != 402 && user.active == true}" th:action="@{/block}" method="post">
+                                <form th:if="${user.id != 402 && user.active == true}" id="blockForm" th:action="@{/block}" method="post" onsubmit="return blockUser()">
                                     <input type="hidden" name="userId" th:value="${user.id}" />
-                                    <button type="submit" class="btn btn-sm btn-danger" >Block</button>
+                                    <button type="submit" class="btn btn-sm btn-danger">Block</button>
                                 </form>
-                                <form th:if="${user.id != 402 && user.active == false}" th:action="@{/unblock}" method="post">
+
+                                <form th:if="${user.id != 402 && user.active == false}" id="unblockForm" th:action="@{/unblock}" method="post" onsubmit="return unblockUser()">
                                     <input type="hidden" name="userId" th:value="${user.id}" />
-                                    <button type="submit" class="btn btn-sm btn-success" >Unblock</button>
+                                    <button type="submit" class="btn btn-sm btn-success">Unblock</button>
                                 </form>
 
                             </td>
@@ -229,6 +230,57 @@
 
                 </div>
 </div>
+
+            <script>
+                function blockUser() {
+            swal({
+            title: "Block User",
+            text: "You want to block the user.",
+            icon: "success",
+            button: "click",
+            }).then((result) => {
+            if (result.isConfirmed) {
+            // Perform actions after the confirmation (e.g., continue with the form submission)
+            $.ajax({
+            url: '/block',
+            type: 'POST',
+            data: $('#blockForm').serialize(),
+            success: function(response) {
+            // Handle the server response here (e.g., display a success message)
+            },
+            error: function(xhr, status, error) {
+            // Handle the error here (e.g., display an error message)
+            }
+            });
+            }
+            });
+            }
+
+            function unblockUser() {
+            swal({
+            title: "Unblock User",
+            text: "You want to unblock the user.",
+            icon: "success",
+            button: "click",
+            }).then((result) => {
+            if (result.isConfirmed) {
+            // Perform actions after the confirmation (e.g., continue with the form submission)
+            $.ajax({
+            url: '/unblock',
+            type: 'POST',
+            data: $('#unblockForm').serialize(),
+            success: function(response) {
+            // Handle the server response here (e.g., display a success message)
+            },
+            error: function(xhr, status, error) {
+            // Handle the error here (e.g., display an error message)
+            }
+            });
+            }
+            });
+            }
+            </script>
+            <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script src="/libs/jquery/dist/jquery.min.js"></script>
 <script src="/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="/js/sidebarmenu.js"></script>

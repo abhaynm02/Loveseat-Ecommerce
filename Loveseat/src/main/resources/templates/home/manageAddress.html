@@ -56,11 +56,22 @@
                             <p class="card-text" th:text="${address.city + ', ' + address.pin}"></p>
                         </div>
                         <p th:if="${address.defaultAddress}" class="text-success font-weight-bold">Default Address</p>
-                        <!-- Edit button -->
-                        <a th:href="@{/home/editAddress/{id}(id=${address.id})}" class="btn btn-primary btn-sm mt-4">Edit</a>
+                        <!-- Buttons with Bootstrap grid classes for alignment -->
+                        <div class="row">
+                            <div class="col-6">
+                                <a th:href="@{/home/editAddress/{id}(id=${address.id})}" class="btn btn-primary btn-sm">Edit</a>
+                            </div>
+                            <div class="col-6">
+                                <form th:action="@{/home/delete/{id}(id=${address.id})}" method="post">
+                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
+
+
         </div>
     </div>
 

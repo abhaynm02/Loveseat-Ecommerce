@@ -73,4 +73,9 @@ public class AddressServiceI implements AddressService {
        }
 
     }
+
+    @Override
+    public void deleteAddress(Long id) {
+        addressRepository.deleteById(id);
+    }
 }

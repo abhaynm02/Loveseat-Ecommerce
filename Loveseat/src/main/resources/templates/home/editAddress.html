@@ -249,47 +249,47 @@
         const phone = document.getElementById('phone').value;
         const address = document.getElementById('address').value;
         const pin = document.getElementById('pin').value;
-        const city=document.getElementById('city').value;
+        const city = document.getElementById('city').value;
 
         var regName = /^[a-zA-Z\s]+$/;
-        var regPhone= /^[0-9]+$"/
+        var regPhone = /^[0-9]+$/; // Removed extra double quote
 
         if (name.trim() === "" || !regName.test(name)) {
-            // Show the alert box
             document.getElementById('firstName').style.display = 'block';
             document.getElementById('name').focus();
             return false;
         }
 
         if (lastName.trim() === "" || !regName.test(lastName)) {
-            // Show the alert box
             document.getElementById('secondNamer').style.display = 'block';
             document.getElementById('secondName').focus();
             return false;
         }
 
-       if(pin.trim() =="" || !regPhone){
+        if (pin.trim() === "" || !regPhone.test(pin)) { // Check against regPhone.test(pin)
             document.getElementById('pinr').style.display = 'block';
             document.getElementById('pin').focus();
+            return false;
+        }
 
-       }
-        if(phone.trim() =="" || !regPhone){
+        if (phone.trim() === "" || !regPhone.test(phone)) { // Check against regPhone.test(phone)
             document.getElementById('phoner').style.display = 'block';
             document.getElementById('phone').focus();
-             return false;
-       }
-        if(city.trim() =="" || !regName){
+            return false;
+        }
+
+        if (city.trim() === "" || !regName.test(city)) {
             document.getElementById('cityr').style.display = 'block';
             document.getElementById('city').focus();
             return false;
-       }
-        if(address.trim() =="" || !regName){
+        }
+
+        if (address.trim() === "" || !regName.test(address)) {
             document.getElementById('addressr').style.display = 'block';
             document.getElementById('address').focus();
-             return false;
-       }
+            return false;
+        }
 
-        // Hide the alert boxes
         document.getElementById('firstName').style.display = 'none';
         document.getElementById('secondNamer').style.display = 'none';
         document.getElementById('pinr').style.display = 'none';
@@ -297,10 +297,9 @@
         document.getElementById('addressr').style.display = 'none';
         document.getElementById('phoner').style.display = 'none';
 
-        return true; // Form will submit if validation passes
+        return true;
     }
 </script>
-
 
 
 <script src="/js/bootstrap.bundle.min.js"></script>

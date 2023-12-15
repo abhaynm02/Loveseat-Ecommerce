@@ -5,6 +5,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class JsonInput {
     private long productId;
     private int quantity;
+    private  int addressId;
+
+    public int getAddressId() {
+        return addressId;
+    }
+
+    public void setAddressId(int addressId) {
+        this.addressId = addressId;
+    }
 
     public long getProductId() {
         return productId;
