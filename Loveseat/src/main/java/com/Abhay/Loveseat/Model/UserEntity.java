@@ -30,23 +30,17 @@ public class UserEntity {
     private List<Address> addresses=new ArrayList<Address>();
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private  Cart cart;
+   @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+   private List<Orders> orders=new ArrayList<>();
 
 
-//    public UserEntity() {
-//    }
-//
-//    public UserEntity(long id, String name, String email,
-//                      String password, String role, String phone,
-//                      boolean active, boolean status) {
-//        this.id = id;
-//        this.name = name;
-//        this.email = email;
-//        this.password = password;
-//        this.role = role;
-//        this.phone = phone;
-//        this.active = active;
-//        this.status = status;
-//    }
+    public List<Orders> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Orders> orders) {
+        this.orders = orders;
+    }
 
     public Cart getCart() {
         return cart;

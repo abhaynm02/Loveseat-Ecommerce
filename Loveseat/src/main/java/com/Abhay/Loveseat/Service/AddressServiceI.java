@@ -57,7 +57,7 @@ public class AddressServiceI implements AddressService {
        Optional<Address> addressOptional=addressRepository.findById(id);
        if(addressDto.isDefaultAddress()){
            addressRepository.updateOtherAddressesToNotDefault(addressDto.getId());
-           System.out.println("hii");
+
        }
        if (addressOptional.isPresent()){
            Address address=addressOptional.get();
@@ -72,6 +72,9 @@ public class AddressServiceI implements AddressService {
 
        }
 
+    }
+    public  Address findAddress(Long id){
+        return addressRepository.findById(id).get();
     }
 
     @Override
