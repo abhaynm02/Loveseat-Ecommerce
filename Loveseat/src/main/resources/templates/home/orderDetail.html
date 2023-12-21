@@ -1,0 +1,263 @@
+<!-- /*
+* Bootstrap 5
+* Template Name: Furni
+* Template Author: Untree.co
+* Template URI: https://untree.co/
+* License: https://creativecommons.org/licenses/by/3.0/
+*/ -->
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+
+    <link href="/css/extra.css" rel="stylesheet">
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+            integrity=
+                    "sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+            crossorigin="anonymous">
+    </script>
+
+    <script src=
+                    "https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+            integrity=
+                    "sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
+            crossorigin="anonymous">
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+</head>
+
+<body>
+<div th:replace="fragments/header::header"></div>
+
+
+<div style="display: flex; flex-direction: row;">
+    <!-- Sidebar scroll-->
+    <div style="width: 200px; "  >
+
+        <div th:replace="fragments/sidebar::sidebar"></div>
+    </div>
+    <!-- End Sidebar scroll-->
+
+
+
+    <!-- Start Contact Form -->
+
+
+    <div class="container mt-5" style="flex-grow: 1;">
+
+
+      <div id="refresh-section">
+        <div th:each="order : ${orders.orderItems}"  class=" mb-4 d-inline-block">
+            <div class="card" style="width: 18rem;"  >
+                <img class="card-img-top" th:src="@{/Product-images/{imageName}(imageName=${order.products.frontImage})}" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${order.products.name}"></h5>
+<!--                    <p class="card-text" th:text="${order.products.description}"></p>-->
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Product Price: <span th:text="${order.products.sellingPrice}"></span></li>
+                    <li class="list-group-item">Total Quantity: <span th:text="${order.quantity}"></span></li>
+                    <li class="list-group-item">Total Price: <span th:text="${order.totalPrice}"></span></li>
+                </ul>
+                <div th:if="${order.isCancelled != true}" class="card-body">
+                    <!-- Content to display when the condition is true -->
+                    <p><span class="button-3" th:text="${order.productsStatus}"></span></p>
+                    <input type="hidden" th:value="${order.id}" th:attr="data-order-id=${order.id}" name="orderId"/>
+                    <button class="button-24" role="button" th:attr="data-order-id=${order.id}" onclick="confirmCancelOrder(this)">Cancel</button>
+                </div>
+                <div th:if="${order.isCancelled == true}" class="card-body">
+                    <!-- Content to display when the condition is true -->
+                    <p><span class="button-1"  th:text="${order.productsStatus}"></span></p>
+                    <p>Amount successfully transfer in your wallet</p>
+
+                </div>
+
+            </div>
+        </div>
+      </div>
+
+    </div>
+
+
+
+    <!-- Add more fields as needed -->
+</div>
+
+
+<!-- End Contact Form -->
+
+
+<!-- Start Footer Section -->
+<footer class="footer-section">
+    <div class="container relative">
+
+        <!--        <div class="sofa-img">-->
+        <!--            <img th:src="@{/images/sofa.png}" alt="Image" class="img-fluid" src="">-->
+        <!--        </div>-->
+
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="subscription-form">
+                    <h3 class="d-flex align-items-center"><span class="me-1"><img th:src="@{/images/envelope-outline.svg}" alt="Image" class="img-fluid" src=""></span><span>Subscribe to Newsletter</span></h3>
+
+                    <form action="#" class="row g-3">
+                        <div class="col-auto">
+                            <input type="text" class="form-control" placeholder="Enter your name">
+                        </div>
+                        <div class="col-auto">
+                            <input type="email" class="form-control" placeholder="Enter your email">
+                        </div>
+                        <div class="col-auto">
+                            <button class="btn btn-primary">
+                                <span class="fa fa-paper-plane"></span>
+                            </button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-5 mb-5">
+            <div class="col-lg-4">
+                <div class="mb-4 footer-logo-wrap"><a href="#" class="footer-logo">Furni<span>.</span></a></div>
+                <p class="mb-4">Donec facilisis quam ut purus rutrum lobortis. Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate velit imperdiet dolor tempor tristique. Pellentesque habitant</p>
+
+                <ul class="list-unstyled custom-social">
+                    <li><a href="#"><span class="fa fa-brands fa-facebook-f"></span></a></li>
+                    <li><a href="#"><span class="fa fa-brands fa-twitter"></span></a></li>
+                    <li><a href="#"><span class="fa fa-brands fa-instagram"></span></a></li>
+                    <li><a href="#"><span class="fa fa-brands fa-linkedin"></span></a></li>
+                </ul>
+            </div>
+
+            <div class="col-lg-8">
+                <div class="row links-wrap">
+                    <div class="col-6 col-sm-6 col-md-3">
+                        <ul class="list-unstyled">
+                            <li><a href="#">About us</a></li>
+                            <li><a href="#">Services</a></li>
+                            <li><a href="#">Blog</a></li>
+                            <li><a href="#">Contact us</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="col-6 col-sm-6 col-md-3">
+                        <ul class="list-unstyled">
+                            <li><a href="#">Support</a></li>
+                            <li><a href="#">Knowledge base</a></li>
+                            <li><a href="#">Live chat</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="col-6 col-sm-6 col-md-3">
+                        <ul class="list-unstyled">
+                            <li><a href="#">Jobs</a></li>
+                            <li><a href="#">Our team</a></li>
+                            <li><a href="#">Leadership</a></li>
+                            <li><a href="#">Privacy Policy</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="col-6 col-sm-6 col-md-3">
+                        <ul class="list-unstyled">
+                            <li><a href="#">Nordic Chair</a></li>
+                            <li><a href="#">Kruzo Aero</a></li>
+                            <li><a href="#">Ergonomic Chair</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="border-top copyright">
+            <div class="row pt-4">
+                <div class="col-lg-6">
+                    <p class="mb-2 text-center text-lg-start">Copyright &copy;<script>document.write(new Date().getFullYear());</script>. All Rights Reserved. &mdash; Designed with love by <a href="https://untree.co">Untree.co</a> Distributed By <a hreff="https://themewagon.com">ThemeWagon</a>  <!-- License information: https://untree.co/license/ -->
+                    </p>
+                </div>
+
+                <div class="col-lg-6 text-center text-lg-end">
+                    <ul class="list-unstyled d-inline-flex ms-auto">
+                        <li class="me-4"><a href="#">Terms &amp; Conditions</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</footer>
+<!-- End Footer Section -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    function confirmCancelOrder(button) {
+      var orderId = button.getAttribute('data-order-id');
+      Swal.fire({
+          title: 'Are you sure?',
+          text: 'You won\'t be able to revert this!',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes, cancel it!'
+      }).then((result) => {
+          if (result.isConfirmed) {
+              // User clicked "OK"
+              cancelOrder(orderId);
+          }
+      });
+  }
+var $j = jQuery.noConflict();
+
+function cancelOrder(orderId) {
+    const data = {
+        orderId: orderId
+        // Add other data if needed
+    };
+
+    console.log("Order ID:", orderId);
+
+    // Add your logic for canceling the order here
+    fetch('/home/cancelOrder', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data),
+        credentials: 'same-origin'
+    })
+        .then(response => {
+            // Handle the response as needed
+            if (response.ok) {
+                // Use $j instead of $
+                $j('#refresh-section').load(location.href + " #refresh-section");
+            } else {
+                // Handle other responses or errors
+                console.error('Error:', response);
+            }
+            console.log(response);
+        })
+        .catch(error => {
+            // Handle errors
+            console.error('Error:', error);
+        });
+}
+
+</script>
+
+<script src="/js/bootstrap.bundle.min.js"></script>
+<script src="/js/tiny-slider.js"></script>
+<script src="/js/custom.js"></script>
+
+
+
+
+</body>
+
+</html>

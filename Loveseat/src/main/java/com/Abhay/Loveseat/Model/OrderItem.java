@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 @Entity
 @Data
@@ -21,7 +22,9 @@ public class OrderItem {
     @JoinColumn(name = "order_id",referencedColumnName ="order_id" )
     private Orders orders;
     @Enumerated(EnumType.STRING)
-    @Column(name = "products_status", columnDefinition = "VARCHAR(255) DEFAULT 'PENDING'")
+    @Column(name = "products_status", nullable = false)
+    @ColumnDefault("PENDING")
+
     private ProductsStatus productsStatus;
 
     private int quantity;

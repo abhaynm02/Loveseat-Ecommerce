@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <link href="/css/extra.css" rel="stylesheet">
+</head>
+
+<body>
+<!--  Body Wrapper -->
+<div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+     data-sidebar-position="fixed" data-header-position="fixed">
+  <div th:replace="fragments/adminHeader::aheader"></div>
+  <!-- Sidebar Start -->
+
+    <!--  Header End -->
+    <!--        Start of category list-->
+    <div>
+      <h3>hee</h3>
+    </div>
+    <div class="container mt-5">
+      <h2 class="mb-4">Order Management</h2>
+
+      <!-- Category Table -->
+      <table class="table table-bordered">
+        <thead>
+        <tr>
+          <th>ID</th>
+          <th>UserName</th>
+          <th>Item</th>
+          <th>Quantity</th>
+          <th>TotalAmount</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Iterate through categories -->
+        <tr th:each="order : ${order}">
+          <td th:text="${order.id}"></td>
+          <td th:text="${order.orders.user.name}"></td>
+          <td th:text="${order.products.name}"></td>
+          <td th:text="${order.quantity}"></td>
+          <td th:text="${order.totalPrice}"></td>
+          <td  >
+            <button th:class="${order.productsStatus == T(com.Abhay.Loveseat.Enums.ProductsStatus).CANCELLED ? 'btn btn-warning' : 'btn btn-success'}" th:text="${order.productsStatus}"></button>
+          </td>
+
+
+          <td>
+            <a  class="button-3" th:href="@{/admin/order-detail/{id}(id=${order.id})}" >View Details</a>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div th:if="${order.totalPages > 1}">
+      <ul class="pagination">
+        <li th:if="${order.hasPrevious}" class="page-item">
+          <a th:href="@{'/admin/viewOrders?page=' + (${order.number - 1}) + '&size=' + ${order.size}}" class="page-link">Previous</a>
+        </li>
+        <li th:each="page : ${#numbers.sequence(0, order.totalPages - 1)}" class="page-item">
+          <a th:href="@{'/admin/viewOrders?page=' + ${page} + '&size=' + ${order.size}}" th:classappend="${order.number == page} ? 'active' : ''" class="page-link" th:text="${page + 1}"></a>
+        </li>
+        <li th:if="${order.hasNext}" class="page-item">
+          <a th:href="@{'/admin/viewOrders?page=' + (${order.number + 1}) + '&size=' + ${order.size}}" class="page-link">Next</a>
+        </li>
+      </ul>
+    </div>
+
+
+
+
+
+  </div>
+</div>
+
+
+
+
+
+<script src="/libs/jquery/dist/jquery.min.js"></script>
+<script src="/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/js/sidebarmenu.js"></script>
+<script src="/js/app.min.js"></script>
+<script src="/libs/apexcharts/dist/apexcharts.min.js"></script>
+<script src="/libs/simplebar/dist/simplebar.js"></script>
+<script src="/js/dashboard.js"></script>
+</body>
+
+</html>

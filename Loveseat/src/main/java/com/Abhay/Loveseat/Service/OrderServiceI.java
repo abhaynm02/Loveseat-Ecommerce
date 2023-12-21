@@ -1,20 +1,18 @@
 package com.Abhay.Loveseat.Service;
 
-import com.Abhay.Loveseat.Dto.AddressDto;
+import com.Abhay.Loveseat.Enums.ProductsStatus;
 import com.Abhay.Loveseat.Model.*;
 import com.Abhay.Loveseat.Repository.CartItemRepository;
 import com.Abhay.Loveseat.Repository.CartRepository;
 import com.Abhay.Loveseat.Repository.OrderItemsRepository;
 import com.Abhay.Loveseat.Repository.OrdersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class OrderServiceI implements OrderService {
@@ -48,6 +46,7 @@ public class OrderServiceI implements OrderService {
             orderItem.setProducts(item.getProduct());
             orderItem.setQuantity(item.getQuantity());
             orderItem.setTotalPrice((float) item.getTotalPrice());
+            orderItem.setProductsStatus(ProductsStatus.PENDING);
 
             // Set the association in both directions
             orderItem.setOrders(orders);
@@ -64,10 +63,45 @@ public class OrderServiceI implements OrderService {
         // Remove cart items after the order is successfully placed
         for (CartItem cartItem : cartItems) {
             cartServiceI.deleteItemCart(cartItem.getProduct(), user);
-            System.out.println(cartItem);
         }
 
         return savedOrder;
     }
 
+    @Override
+    public Page<Orders> findOrders(Pageable pageable, UserEntity user) {
+        long id= user.getId();
+        return ordersRepository.findOrders(id,pageable);
+    }
+
+    @Override
+    public void cancelOrder(long orderId) {
+        Optional<OrderItem> orderItem=orderItemsRepository.findById(orderId);
+        OrderItem order=orderItem.get();
+        order.setProductsStatus(ProductsStatus.CANCELLED);
+        order.setCancelled(true);
+        orderItemsRepository.save(order);
+    }
+
+    @Override
+    public Page<OrderItem> getAllOrders(Pageable pageable) {
+        return orderItemsRepository.findAll(pageable);
+    }
+
+    @Override
+    public Optional<OrderItem> findOrderItemById(long id) {
+        return orderItemsRepository.findById(id);
+    }
+
+    @Override
+    public void updateOrder(long orderId, String status) {
+        Optional<OrderItem> orderItem=orderItemsRepository.findById(orderId);
+        OrderItem orderItem1=orderItem.get();
+        orderItem1.setProductsStatus(ProductsStatus.valueOf(status));
+        orderItemsRepository.save(orderItem1);
+    }
+
+    public Optional<Orders> findById(Long id) {
+        return  ordersRepository.findById(id);
+    }
 }

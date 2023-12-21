@@ -16,6 +16,9 @@ body {
   color: #6a6a6a;
   font-size: 14px;
   background-color: #eff2f1; }
+  .order-card{
+  width:250% !important;
+  }
 
 a {
   text-decoration: none;

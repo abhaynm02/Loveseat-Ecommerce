@@ -9,11 +9,15 @@ import com.Abhay.Loveseat.Service.UserServiceI;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
 import java.util.List;
@@ -35,8 +39,11 @@ public class UserController {
         return "home/index";
     }
     @GetMapping("/shop")
-    public String shop(Model model){
-        List<Products>products=productServiceI.findAllProducts();
+    public String shop( @RequestParam(defaultValue = "0") int page
+                        ,@RequestParam(defaultValue = "12")int size,
+                        Model model){
+        Pageable pageable= PageRequest.of(page,size);
+        Page<Products> products=productServiceI.findAllProducts(pageable);
         model.addAttribute("products",products);
         return "home/shop";
     }

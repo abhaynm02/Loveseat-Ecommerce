@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <link href="/css/extra.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+            integrity=
+                    "sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+            crossorigin="anonymous">
+    </script>
+
+    <script src=
+                    "https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+            integrity=
+                    "sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
+            crossorigin="anonymous">
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body>
+<!--  Body Wrapper -->
+<div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+     data-sidebar-position="fixed" data-header-position="fixed">
+    <div th:replace="fragments/adminHeader::aheader"></div>
+    <!-- Sidebar Start -->
+
+    <!--  Header End -->
+    <!--        Start of category list-->
+    <div>
+        <h3>hee</h3>
+    </div>
+
+    <div class="container order-details">
+        <h1 class="text-center">Order Details</h1>
+
+        <!-- User Information -->
+        <div class="user-info">
+            <h2>User Information</h2>
+            <h4><strong>User Name:</strong > <span th:text="${orderItem.orders.user.name}"></span></h4>
+            <h4><strong>Email:</strong><span th:text="${orderItem.orders.user.email}"></span></h4>
+            <!-- Add more user details as needed -->
+        </div>
+
+        <!-- Address Information -->
+        <div class="address-info">
+            <h2>Address</h2>
+            <h5 class="card-title" th:text="${orderItem.orders.address.firstName + ' ' +orderItem. orders.address.lastName}"></h5>
+            <p class="card-subtitle mb-2 text-muted" th:text="${orderItem.orders.address.phone}"></p>
+            <p class="card-text" th:text="${orderItem.orders.address.homeAddress +','+ orderItem.orders.address.city + ', ' + orderItem.orders.address.pin}"></p>
+            <!-- Add more address details as needed -->
+        </div>
+
+        <!-- Product Details -->
+        <div class="product-details">
+            <h2>Product Details</h2>
+            <div id="refresh-section">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Product Name</th>
+                    <th>Quantity</th>
+                    <th>Price per Unit</th>
+                    <th>Total Price</th>
+                    <th>Status</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td th:text="${orderItem.products.name}">Laptop</td>
+                    <td th:text="${orderItem.quantity}">2</td>
+                    <td th:text="${orderItem.products.sellingPrice}">$800.00</td>
+                    <td th:text="${orderItem.totalPrice}">$1600.00</td>
+                    <td th:text="${orderItem.productsStatus}"></td>
+                </tr>
+                <!-- Add more rows for additional products -->
+                </tbody>
+            </table>
+
+            </div>
+        </div>
+
+        <!-- Payment Details -->
+        <div class="payment-info">
+            <h2>Payment Details</h2>
+            <p><strong>Payment Type:</strong> </p>
+            <!-- Add more payment details as needed -->
+        </div>
+
+        <!-- Order Status -->
+        <div class="status-change">
+            <h2>Order Status</h2>
+            <!-- Add a dropdown or buttons for status change -->
+            <label>
+                <input type="hidden" id="orderId" th:value="${orderItem.id}">
+            </label>
+
+            <label>
+                <select id="status" name="status" class="form-control">
+                    <option value="" disabled selected>Select Status</option>
+                    <option th:each="status : ${statuses}" th:if="${orderItem.productsStatus != null and status.ordinal > orderItem.productsStatus.ordinal}" th:value="${status}" th:text="${status}"></option>
+                </select>
+            </label>
+
+
+
+
+            <button class="btn btn-primary mt-2" onclick="getSelectedValues()">Change Status</button>
+        </div>
+    </div>
+
+
+
+
+</div>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<script>
+    var $j = jQuery.noConflict();
+    function getSelectedValues() {
+        // Get the selected order ID
+        var orderId = document.getElementById("orderId").value;
+
+        // Get the selected status
+        var statusDropdown = document.getElementById("status");
+        var selectedStatus = statusDropdown.options[statusDropdown.selectedIndex].value;
+
+        // Corrected syntax for defining the data object
+        const data = {
+            orderId: orderId,
+            status: selectedStatus
+        };
+
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'You won\'t be able to revert this!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, cancel it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                fetch('/update-productStatus', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data),
+                    credentials: 'same-origin'  // or 'include' depending on your CORS configuration
+                })
+                .then(response => {
+                    // Handle the response as needed
+                    if (response.ok) {
+                            $j('#refresh-section').load(location.href + " #refresh-section");
+                    } else {
+                        // Handle other responses or errors
+                        console.error('Error:', response);
+                    }
+                    console.log(response);
+                })
+                .catch(error => {
+                    // Handle errors
+                    console.error('Error:', error);
+                });
+            }
+        });
+    }
+</script>
+
+
+
+<script src="/libs/jquery/dist/jquery.min.js"></script>
+<script src="/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/js/sidebarmenu.js"></script>
+<script src="/js/app.min.js"></script>
+<script src="/libs/apexcharts/dist/apexcharts.min.js"></script>
+<script src="/libs/simplebar/dist/simplebar.js"></script>
+<script src="/js/dashboard.js"></script>
+</body>
+
+</html>

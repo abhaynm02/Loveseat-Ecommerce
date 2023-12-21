@@ -102,8 +102,8 @@ public class ProductServiceI implements ProductService {
         }
         productRepository.save(productEdit);
     }
-    public List<Products> findAllProducts(){
-        return productRepository.findAll();
+    public Page<Products> findAllProducts(Pageable pageable){
+        return productRepository.findAll(pageable);
     }
 
 }

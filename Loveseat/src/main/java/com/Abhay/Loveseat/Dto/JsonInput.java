@@ -6,6 +6,24 @@ public class JsonInput {
     private long productId;
     private int quantity;
     private  int addressId;
+    private long orderId;
+    private String status;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public long getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(long orderId) {
+        this.orderId = orderId;
+    }
 
     public int getAddressId() {
         return addressId;
