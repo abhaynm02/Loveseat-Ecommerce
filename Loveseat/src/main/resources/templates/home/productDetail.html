@@ -126,25 +126,12 @@
                                 <table cellspacing="0">
                                     <tbody>
                                     <tr>
-                                        <td class="label">Size</td>
+                                        <td class="label">Status</td>
                                         <td class="attributes">
-                                            <ul class="text">
-                                                <li><span>L</span></li>
-                                                <li><span>M</span></li>
-                                                <li><span>S</span></li>
-                                            </ul>
+                                            <span th:if="${product.stock<=0}" style="color:red;"> Out Of Stock</span>
+                                            <span th:if="${product.stock>=1}" style="color:green;"> In Stock</span>
                                         </td>
                                     </tr>
-<!--                                    <tr>-->
-<!--                                        <td class="label">Color</td>-->
-<!--                                        <td class="attributes">-->
-<!--                                            <ul class="colors">-->
-<!--                                                <li><span class="color-1"></span></li>-->
-<!--                                                <li><span class="color-2"></span></li>-->
-<!--                                                <li><span class="color-3"></span></li>-->
-<!--                                            </ul>-->
-<!--                                        </td>-->
-<!--                                    </tr>-->
                                     </tbody>
                                 </table>
                             </div>
@@ -157,6 +144,7 @@
                                         <button type="button" class="minus">-</button>
                                     </div>
                                     <input type="hidden" th:value="${product.id}" name="productId">
+                                    <input type="hidden" th:value="${product.stock}" name="productStock">
                                     <div   class="btn-add-to-cart">
                                         <a  class="button" onclick = 'submitcart()' tabindex="0">Add to cart</a>
                                     </div>
@@ -661,6 +649,9 @@
 <script src="/libss/elevatezoom/js/jquery.elevatezoom.js"></script>
 <!-- Site Scripts -->
 <script src="/assets/js/app.js"></script>
+<script src="https://common.olemiss.edu/_js/sweet-alert/sweet-alert.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://common.olemiss.edu/_js/sweet-alert/sweet-alert.css">
+
 <script>
 
 
@@ -671,11 +662,17 @@
     function submitcart() {
     console.log('Submit cart function called');
      const quantity = document.querySelector('.qty').value;
+     const productStock=document.querySelector('[name="productStock"]').value;
      if(quantity<0){
     openModal();
      return;
      }
+     if(productStock<quantity){
+    sweetAlert("Oops...", "your selected quantity is not available!", "error")
+     return;
+     }
      const productId = document.querySelector('[name="productId"]').value;
+
      const data = {
          productId: productId,
          quantity: quantity

@@ -62,11 +62,13 @@
                     <li class="list-group-item">Total Quantity: <span th:text="${order.quantity}"></span></li>
                     <li class="list-group-item">Total Price: <span th:text="${order.totalPrice}"></span></li>
                 </ul>
-                <div th:if="${order.isCancelled != true}" class="card-body">
+                <div  class="card-body">
                     <!-- Content to display when the condition is true -->
-                    <p><span class="button-3" th:text="${order.productsStatus}"></span></p>
+                    <p><span th:if="${order.isCancelled != true}" class="button-3" th:text="${order.productsStatus}"></span></p>
                     <input type="hidden" th:value="${order.id}" th:attr="data-order-id=${order.id}" name="orderId"/>
-                    <button class="button-24" role="button" th:attr="data-order-id=${order.id}" onclick="confirmCancelOrder(this)">Cancel</button>
+                    <button th:if="${order.productsStatus != T(com.Abhay.Loveseat.Enums.ProductsStatus).CANCELLED and order.productsStatus != T(com.Abhay.Loveseat.Enums.ProductsStatus).DELIVERED }" class="button-24" role="button" th:attr="data-order-id=${order.id}" onclick="confirmCancelOrder(this)">Cancel</button>
+                    <button th:if="${order.productsStatus == T(com.Abhay.Loveseat.Enums.ProductsStatus).DELIVERED}" class="button-24" role="button" th:attr="data-order-id=${order.id}" onclick="confirmCancelOrder(this)">Return</button>
+
                 </div>
                 <div th:if="${order.isCancelled == true}" class="card-body">
                     <!-- Content to display when the condition is true -->

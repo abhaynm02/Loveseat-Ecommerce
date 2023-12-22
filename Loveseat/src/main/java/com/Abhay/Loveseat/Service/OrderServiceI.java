@@ -19,6 +19,8 @@ public class OrderServiceI implements OrderService {
     @Autowired
     private AddressServiceI addressServiceI;
     @Autowired
+    private ProductServiceI productServiceI;
+    @Autowired
     private OrdersRepository ordersRepository;
     @Autowired
     private OrderItemsRepository orderItemsRepository;
@@ -47,6 +49,10 @@ public class OrderServiceI implements OrderService {
             orderItem.setQuantity(item.getQuantity());
             orderItem.setTotalPrice((float) item.getTotalPrice());
             orderItem.setProductsStatus(ProductsStatus.PENDING);
+             //stock management
+          productServiceI.manageStock(item.getProduct(),item.getQuantity());
+
+
 
             // Set the association in both directions
             orderItem.setOrders(orders);

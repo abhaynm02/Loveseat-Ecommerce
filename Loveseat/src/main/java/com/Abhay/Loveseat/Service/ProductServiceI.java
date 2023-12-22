@@ -102,6 +102,15 @@ public class ProductServiceI implements ProductService {
         }
         productRepository.save(productEdit);
     }
+
+    @Override
+    public void manageStock(Products product, int quantity) {
+        Optional<Products> products=productRepository.findById(product.getId());
+        Products products1=products.get();
+        products1.setStock(products1.getStock()-quantity);
+        productRepository.save(products1);
+    }
+
     public Page<Products> findAllProducts(Pageable pageable){
         return productRepository.findAll(pageable);
     }

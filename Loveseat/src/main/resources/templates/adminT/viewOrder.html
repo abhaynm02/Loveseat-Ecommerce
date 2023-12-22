@@ -89,7 +89,7 @@
         </div>
 
         <!-- Order Status -->
-        <div class="status-change">
+        <div id="status-div" class="status-change">
             <h2>Order Status</h2>
             <!-- Add a dropdown or buttons for status change -->
             <label>
@@ -154,6 +154,7 @@
                     // Handle the response as needed
                     if (response.ok) {
                             $j('#refresh-section').load(location.href + " #refresh-section");
+                             $j('#status-div').load(location.href + " #status-div");
                     } else {
                         // Handle other responses or errors
                         console.error('Error:', response);

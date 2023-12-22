@@ -2,6 +2,7 @@ package com.Abhay.Loveseat.Controller;
 
 import com.Abhay.Loveseat.Dto.AddressDto;
 import com.Abhay.Loveseat.Model.Cart;
+import com.Abhay.Loveseat.Model.CartItem;
 import com.Abhay.Loveseat.Model.UserEntity;
 import com.Abhay.Loveseat.Service.AddressServiceI;
 import com.Abhay.Loveseat.Service.UserServiceI;
@@ -15,6 +16,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 
@@ -25,7 +27,7 @@ public class CheckoutController {
     @Autowired
     private AddressServiceI addressServiceI;
     @GetMapping("/home/checkout")
-    public String checkOutPage(Model model, Principal principal, HttpSession session){
+    public String checkOutPage(Model model, Principal principal, HttpSession session, RedirectAttributes redirectAttributes){
         UserEntity user= userServiceI.findByEmail(principal.getName());
         AddressDto addressDto=new AddressDto();
         Cart cart=user.getCart();
@@ -35,7 +37,13 @@ public class CheckoutController {
         model.addAttribute("cart",cart);
         session.setAttribute("totalItems",cart.getTotalItems());
 //        preventing the user assessing checkout page  with a  empty cart
-        if (cart.getTotalItems()>1){
+        for (CartItem item : cart.getCartItems()) {
+            if (item.getQuantity() > item.getProduct().getStock()) {
+                redirectAttributes.addFlashAttribute("outOfStock", "Please remove out-of-stock item");
+                return "redirect:/home/cart";
+            }
+        }
+        if (cart.getTotalItems()>=1){
             return "home/checkout";
         }
         return "redirect:/home/cart";

@@ -8,6 +8,8 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
+	<!-- Include SweetAlert library -->
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 	</head>
 
@@ -23,9 +25,6 @@
 							<div class="intro-excerpt">
 								<h1>Cart</h1>
 							</div>
-						</div>
-						<div class="col-lg-7">
-							
 						</div>
 					</div>
 				</div>
@@ -64,7 +63,8 @@
 							  </a>
 						  </td>
                           <td class="product-name">
-                            <h2 th:text="${cartItem.product.name}" class="h5 text-black"></h2>
+                            <h2 th:text="${cartItem.product.name}" class="h5 text-black"> </h2>
+							  <span  style="color:red;" th:if="${cartItem.product.stock   < cartItem.quantity}">Out of stock</span>
                           </td>
                           <td>
 							  <p th:text=" '$' +${cartItem.product.sellingPrice}"></p>
@@ -269,30 +269,28 @@
 
 			</div>
 		</footer>
-		<!-- End Footer Section -->	
-<script>
-	function name(){
-	 const value=document.getElementByName('quantity').value;
-	console.log(value)
-	}
-</script>
-		<script>
-			function decreaseQuantity() {
-                var quantityInput = document.getElementById('quantityInput');
-                var currentQuantity = parseInt(quantityInput.value, 10);
-                if (!isNaN(currentQuantity) && currentQuantity > 1) {
-                    quantityInput.value = currentQuantity - 1;
-                }
-            }
+		<!-- End Footer Section -->
+				<!-- Include SweetAlert library -->
+				<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-            function increaseQuantity() {
-                var quantityInput = document.getElementById('quantityInput');
-                var currentQuantity = parseInt(quantityInput.value, 10);
-                if (!isNaN(currentQuantity)) {
-                    quantityInput.value = currentQuantity + 1;
-                }
-            }
-		</script>
+				<!-- Check if the 'message' attribute is present and trigger SweetAlert popup -->
+				<script th:if="${outOfStock}" th:inline="javascript">
+					/*<![CDATA[*/
+                    document.addEventListener('DOMContentLoaded', function () {
+                        // Check if the 'message' attribute is true
+                        if ([[${outOfStock}]]) {
+                            // Trigger SweetAlert popup
+                            Swal.fire({
+                                title: 'Out Of Stock',
+                                text: '[[${outOfStock}]]', // Replace with your actual message
+                                icon: 'info', // You can customize the icon
+                                confirmButtonText: 'OK'
+                            });
+                        }
+                    });
+                    /*]]>*/
+				</script>
+
 
 		<script src="/js/bootstrap.bundle.min.js"></script>
 		<script src="/js/tiny-slider.js"></script>

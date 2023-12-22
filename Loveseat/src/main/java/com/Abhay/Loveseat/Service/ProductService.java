@@ -17,4 +17,6 @@ public interface ProductService {
     Optional<Products> findById(long id);
     void updateProduct(long id,Products products , MultipartFile multipartFile1,MultipartFile multipartFile2,
                        MultipartFile multipartFile3);
+
+    void manageStock(Products product, int quantity);
 }
