@@ -73,13 +73,13 @@ public class OrderServiceI implements OrderService {
 
         return savedOrder;
     }
-
+//finding order for specified user
     @Override
     public Page<Orders> findOrders(Pageable pageable, UserEntity user) {
         long id= user.getId();
         return ordersRepository.findOrders(id,pageable);
     }
-
+//   canceling order from userSide
     @Override
     public void cancelOrder(long orderId) {
         Optional<OrderItem> orderItem=orderItemsRepository.findById(orderId);
@@ -87,18 +87,20 @@ public class OrderServiceI implements OrderService {
         order.setProductsStatus(ProductsStatus.CANCELLED);
         order.setCancelled(true);
         orderItemsRepository.save(order);
+        productServiceI.updateStockAfterCancellation(order.getProducts(),order.getQuantity());
     }
-
+//finding all orders
     @Override
     public Page<OrderItem> getAllOrders(Pageable pageable) {
         return orderItemsRepository.findAll(pageable);
     }
-
+//finding orderItem  by id for a specific item
     @Override
     public Optional<OrderItem> findOrderItemById(long id) {
         return orderItemsRepository.findById(id);
     }
 
+//updating order status
     @Override
     public void updateOrder(long orderId, String status) {
         Optional<OrderItem> orderItem=orderItemsRepository.findById(orderId);

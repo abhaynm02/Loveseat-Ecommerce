@@ -102,13 +102,32 @@ public class ProductServiceI implements ProductService {
         }
         productRepository.save(productEdit);
     }
-
+//      reduce the stock
     @Override
     public void manageStock(Products product, int quantity) {
         Optional<Products> products=productRepository.findById(product.getId());
         Products products1=products.get();
         products1.setStock(products1.getStock()-quantity);
         productRepository.save(products1);
+    }
+
+//    increasing stock after cancellation
+    @Override
+    public void updateStockAfterCancellation(Products products, int quantity) {
+        Optional<Products> products1=productRepository.findById(products.getId());
+        Products productsAfterCancellation=products1.get();
+        productsAfterCancellation.setStock(products.getStock()+quantity);
+        productRepository.save(productsAfterCancellation);
+    }
+
+    @Override
+    public Page<Products> searchProducts(Pageable pageable,String searchKey) {
+        return productRepository.searchProducts(pageable,searchKey);
+    }
+
+    @Override
+    public Page<Products> filterByCategory(Pageable pageable, Long categoryId) {
+        return productRepository.filterByCategory(pageable,categoryId);
     }
 
     public Page<Products> findAllProducts(Pageable pageable){

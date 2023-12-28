@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface ProductService {
@@ -19,4 +20,10 @@ public interface ProductService {
                        MultipartFile multipartFile3);
 
     void manageStock(Products product, int quantity);
+
+    void updateStockAfterCancellation(Products products, int quantity);
+
+    Page<Products> searchProducts(Pageable pageable,String searchKey);
+
+    Page<Products> filterByCategory(Pageable pageable, Long categoryId);
 }

@@ -32,6 +32,8 @@
     <link href="https://fonts.googleapis.com/css?family=EB+Garamond:100,100italic,200,200italic,300,300italic,400,400italic,500,500italic,600,600italic,700,700italic,800,800italic,900,900italic&amp;display=swap" rel="stylesheet">
 
     <!-- Bootstrap CSS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
 
 </head>
 
@@ -667,10 +669,11 @@
     openModal();
      return;
      }
-     if(productStock<quantity){
-    sweetAlert("Oops...", "your selected quantity is not available!", "error")
-     return;
-     }
+    if (productStock < quantity) {
+    Swal.fire("Oops...", "Your selected quantity is not available!", "error");
+    return;
+}
+
      const productId = document.querySelector('[name="productId"]').value;
 
      const data = {

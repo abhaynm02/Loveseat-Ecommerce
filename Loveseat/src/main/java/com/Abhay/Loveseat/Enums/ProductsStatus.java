@@ -5,5 +5,8 @@ public enum ProductsStatus {
     PROCESSING,
     SHIPPED,
     DELIVERED,
+    RETURN_REQUESTED,
+    RETURN_APPROVED,
+    RETURNED,
     CANCELLED
 }

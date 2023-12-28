@@ -32,6 +32,7 @@ public class OrderController {
     public String orderSuccess(){
         return "home/thankyou";
     }
+    //placing order
     @PostMapping("/order")
     public String placeOrder(@RequestBody JsonInput jsonInput , Principal principal){
          String email=principal.getName();
@@ -94,6 +95,15 @@ public class OrderController {
         long orderId= jsonInput.getOrderId();
         String status= jsonInput.getStatus();
         orderServiceI.updateOrder(orderId,status);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/home/returnOrder")
+    public ResponseEntity<String> returnRequest(@RequestBody JsonInput jsonInput){
+        long orderId=jsonInput.getOrderId();
+        orderServiceI.updateOrder(orderId, String.valueOf(ProductsStatus.RETURN_REQUESTED));
+        System.out.println(orderId);
+        System.out.println("your return request is accepted");
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

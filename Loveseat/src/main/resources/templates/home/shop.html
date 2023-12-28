@@ -8,7 +8,7 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-
+	<link href="/css/extra.css" rel="stylesheet">
 	</head>
 
 	<body>
@@ -26,16 +26,34 @@
 							</div>
 						</div>
 						<div class="col-lg-7">
-							
+
 						</div>
 					</div>
 				</div>
+				<form th:action="@{/products/search}" method="get">
+				<div class="form-group ml-3">
+					<input type="text" class="form-control-sm button-17" id="search" th:value="${search}" name="searchName" placeholder="Search by name " required>
+					<button type="submit"  class="button-17 ml-2">Search</button>
+				</div>
+				</form>
+				<form th:action="@{/shop/category-products}" method="get">
+					<div class="form-group col-md-8">
+						<select class="form-control button-17" id="category" name="category" onchange="this.form.submit()" required style="width: 190px; margin-top:10px;">
+							<option value="" disabled selected>Select a category</option>
+							<option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
+						</select>
+					</div>
+				</form>
+
 			</div>
 		<!-- End Hero Section -->
 
 		
 <!-- original code and same errors-->
 		<div class="untree_co-section product-section before-footer-section">
+			<div class="alert alert-info my-1" th:if="${products.isEmpty}">
+				<p class="text-center" > No products is available</p>
+			</div>
 		    <div class="container">
 		      	<div class="row">
 					<div class="container">
@@ -50,7 +68,7 @@
 									<del aria-hidden="true" ><span  th:text="${'$' + product.price}"></span></del>
 
 									<span class="icon-cross">
-                                              <img src="images/cross.svg" class="img-fluid">
+                                              <img src="/images/cross.svg" class="img-fluid">
                                   </span>
 								</a>
 							</div>
@@ -87,13 +105,13 @@
 			<div class="container relative">
 
 				<div class="sofa-img">
-					<img src="images/sofa.png" alt="Image" class="img-fluid">
+					<img src="/images/sofa.png" alt="Image" class="img-fluid">
 				</div>
 
 				<div class="row">
 					<div class="col-lg-8">
 						<div class="subscription-form">
-							<h3 class="d-flex align-items-center"><span class="me-1"><img src="images/envelope-outline.svg" alt="Image" class="img-fluid"></span><span>Subscribe to Newsletter</span></h3>
+							<h3 class="d-flex align-items-center"><span class="me-1"><img src="/images/envelope-outline.svg" alt="Image" class="img-fluid"></span><span>Subscribe to Newsletter</span></h3>
 
 							<form action="#" class="row g-3">
 								<div class="col-auto">

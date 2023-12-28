@@ -66,13 +66,15 @@
                     <!-- Content to display when the condition is true -->
                     <p><span th:if="${order.isCancelled != true}" class="button-3" th:text="${order.productsStatus}"></span></p>
                     <input type="hidden" th:value="${order.id}" th:attr="data-order-id=${order.id}" name="orderId"/>
-                    <button th:if="${order.productsStatus != T(com.Abhay.Loveseat.Enums.ProductsStatus).CANCELLED and order.productsStatus != T(com.Abhay.Loveseat.Enums.ProductsStatus).DELIVERED }" class="button-24" role="button" th:attr="data-order-id=${order.id}" onclick="confirmCancelOrder(this)">Cancel</button>
-                    <button th:if="${order.productsStatus == T(com.Abhay.Loveseat.Enums.ProductsStatus).DELIVERED}" class="button-24" role="button" th:attr="data-order-id=${order.id}" onclick="confirmCancelOrder(this)">Return</button>
+                    <button th:if="${order.productsStatus != T(com.Abhay.Loveseat.Enums.ProductsStatus).CANCELLED
+                    and order.productsStatus.ordinal() < T(com.Abhay.Loveseat.Enums.ProductsStatus).DELIVERED.ordinal()}"
+                            class="button-24" role="button" th:attr="data-order-id=${order.id}" onclick="confirmCancelOrder(this)">Cancel</button>
+                    <button th:if="${order.productsStatus == T(com.Abhay.Loveseat.Enums.ProductsStatus).DELIVERED}" class="button-24" role="button" th:attr="data-order-id=${order.id}" onclick="returnOrder(this)">Return</button>
 
                 </div>
-                <div th:if="${order.isCancelled == true}" class="card-body">
+                <div th:if="${order.isCancelled == true }" class="card-body">
                     <!-- Content to display when the condition is true -->
-                    <p><span class="button-1"  th:text="${order.productsStatus}"></span></p>
+                    <p th:if="${order.productsStatus != T(com.Abhay.Loveseat.Enums.ProductsStatus).RETURNED }"><span class="button-1"  th:text="${order.productsStatus}"></span></p>
                     <p>Amount successfully transfer in your wallet</p>
 
                 </div>
@@ -198,24 +200,25 @@
 <!-- End Footer Section -->
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script>
-    function confirmCancelOrder(button) {
-      var orderId = button.getAttribute('data-order-id');
-      Swal.fire({
-          title: 'Are you sure?',
-          text: 'You won\'t be able to revert this!',
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
-          confirmButtonText: 'Yes, cancel it!'
-      }).then((result) => {
-          if (result.isConfirmed) {
-              // User clicked "OK"
-              cancelOrder(orderId);
-          }
-      });
-  }
-var $j = jQuery.noConflict();
+    var $j = jQuery.noConflict();
+
+function confirmCancelOrder(button) {
+    var orderId = button.getAttribute('data-order-id');
+    Swal.fire({
+        title: 'Are you sure?',
+        text: 'You won\'t be able to revert this!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, cancel it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // User clicked "OK"
+            cancelOrder(orderId);
+        }
+    });
+}
 
 function cancelOrder(orderId) {
     const data = {
@@ -234,21 +237,73 @@ function cancelOrder(orderId) {
         body: JSON.stringify(data),
         credentials: 'same-origin'
     })
-        .then(response => {
-            // Handle the response as needed
-            if (response.ok) {
-                // Use $j instead of $
-                $j('#refresh-section').load(location.href + " #refresh-section");
-            } else {
-                // Handle other responses or errors
-                console.error('Error:', response);
-            }
-            console.log(response);
-        })
-        .catch(error => {
-            // Handle errors
-            console.error('Error:', error);
-        });
+    .then(response => {
+        // Handle the response as needed
+        if (response.ok) {
+            // Use $j instead of $
+            $j('#refresh-section').load(location.href + " #refresh-section");
+        } else {
+            // Handle other responses or errors
+            console.error('Error:', response);
+        }
+        console.log(response);
+    })
+    .catch(error => {
+        // Handle errors
+        console.error('Error:', error);
+    });
+}
+
+function returnOrder(button) {
+    var orderId = button.getAttribute('data-order-id');
+    Swal.fire({
+        title: 'Are you sure?',
+        text: 'You won\'t be able to revert this!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, return it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // User clicked "OK"
+            returnRequest(orderId);
+        }
+    });
+}
+
+function returnRequest(orderId) {
+    const data = {
+        orderId: orderId
+        // Add other data if needed
+    };
+
+    console.log("Order ID:", orderId);
+
+    // Add your logic for returning the order here
+    fetch('/home/returnOrder', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data),
+        credentials: 'same-origin'
+    })
+    .then(response => {
+        // Handle the response as needed
+        if (response.ok) {
+            // Use $j instead of $
+            $j('#refresh-section').load(location.href + " #refresh-section");
+        } else {
+            // Handle other responses or errors
+            console.error('Error:', response);
+        }
+        console.log(response);
+    })
+    .catch(error => {
+        // Handle errors
+        console.error('Error:', error);
+    });
 }
 
 </script>
