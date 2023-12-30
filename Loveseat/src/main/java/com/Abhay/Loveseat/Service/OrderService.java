@@ -13,7 +13,7 @@ public interface OrderService {
 
     Page<Orders> findOrders(Pageable pageable, UserEntity user);
 
-    void cancelOrder(long orderId);
+    void cancelOrder(long orderId,UserEntity user);
 
     Page<OrderItem> getAllOrders(Pageable pageable);
 

@@ -1,0 +1,235 @@
+<!-- /*
+* Bootstrap 5
+* Template Name: Furni
+* Template Author: Untree.co
+* Template URI: https://untree.co/
+* License: https://creativecommons.org/licenses/by/3.0/
+*/ -->
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <link href="/css/extra.css" rel="stylesheet">
+
+</head>
+
+<body>
+<div th:replace="fragments/header::header"></div>
+
+
+<div style="display: flex; flex-direction: row;">
+    <!-- Sidebar scroll-->
+    <div style="width: 200px; "  >
+
+        <div th:replace="fragments/sidebar::sidebar"></div>
+    </div>
+    <!-- End Sidebar scroll-->
+
+
+
+    <!-- Start Contact Form -->
+
+
+    <div class="container mt-5" style="flex-grow: 1;">
+
+        <div class="wallet-container" th:if="${message}">
+            <div class="wallet-header">
+                <h2>Your Wallet</h2>
+            </div>
+
+            <div class="wallet-balance" style="display: inline-block;">
+                <h3 style="display: inline;">Balance:</h3>
+                <p style="display: inline; margin-left: 5px;">$<span >0.0</span></p>
+            </div>
+
+
+            <div class="transaction-history">
+                <h4>Transaction History</h4>
+
+            </div>
+        </div>
+
+
+
+
+      <div th:if="${message==null}">
+
+                <div class="wallet-container">
+                    <div class="wallet-header">
+                        <h2>Your Wallet</h2>
+                    </div>
+
+                    <div class="wallet-balance" style="display: inline-block;">
+                        <h3 style="display: inline;">Balance:</h3>
+                        <p style="display: inline; margin-left: 5px;">$<span th:text="${wallet != null ? wallet.totalAmount : 'N/A'}"></span></p>
+                    </div>
+
+
+                    <div class="transaction-history">
+                        <h4>Transaction History</h4>
+
+
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th scope="col">Transaction ID</th>
+                                <th scope="col">Description</th>
+                                <th scope="col">Amount</th>
+                                <th scope="col">Date</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="walletHistory: ${walletHistories}">
+                                <td th:text="${walletHistory.id}">1</td>
+                                <td th:text="${walletHistory.transactionType}">Transaction 1</td>
+                                <td th:text="${walletHistory.amount}">$50.00</td>
+                                <td th:text="${walletHistory. dateTime}">2023-01-01</td>
+                            </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+
+
+                <div th:if="${walletHistories.totalPages > 1}">
+                    <ul class="pagination">
+                        <li th:if="${walletHistories.hasPrevious}" class="page-item">
+                            <a th:href="@{'/home/wallet=' + (${walletHistories.number - 1}) + '&size=' + ${walletHistories.size}}" class="page-link">Previous</a>
+                        </li>
+                        <li th:each="page : ${#numbers.sequence(0, walletHistory.totalPages - 1)}" class="page-item">
+                            <a th:href="@{'/home/wallet?page=' + ${page} + '&size=' + ${walletHistories.size}}" th:classappend="${walletHistories.number == page} ? 'active' : ''" class="page-link" th:text="${page + 1}"></a>
+                        </li>
+                        <li th:if="${walletHistories.hasNext}" class="page-item">
+                            <a th:href="@{'/home/wallet?page=' + (${walletHistories.number + 1}) + '&size=' + ${walletHistories.size}}" class="page-link">Next</a>
+                        </li>
+                    </ul>
+                </div>
+      </div>
+    </div>
+
+
+
+    <!-- Add more fields as needed -->
+</div>
+
+
+<!-- End Contact Form -->
+
+
+
+<!-- Start Footer Section -->
+<footer class="footer-section">
+    <div class="container relative">
+
+        <!--        <div class="sofa-img">-->
+        <!--            <img th:src="@{/images/sofa.png}" alt="Image" class="img-fluid" src="">-->
+        <!--        </div>-->
+
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="subscription-form">
+                    <h3 class="d-flex align-items-center"><span class="me-1"><img th:src="@{/images/envelope-outline.svg}" alt="Image" class="img-fluid" src=""></span><span>Subscribe to Newsletter</span></h3>
+
+                    <form action="#" class="row g-3">
+                        <div class="col-auto">
+                            <input type="text" class="form-control" placeholder="Enter your name">
+                        </div>
+                        <div class="col-auto">
+                            <input type="email" class="form-control" placeholder="Enter your email">
+                        </div>
+                        <div class="col-auto">
+                            <button class="btn btn-primary">
+                                <span class="fa fa-paper-plane"></span>
+                            </button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-5 mb-5">
+            <div class="col-lg-4">
+                <div class="mb-4 footer-logo-wrap"><a href="#" class="footer-logo">Furni<span>.</span></a></div>
+                <p class="mb-4">Donec facilisis quam ut purus rutrum lobortis. Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate velit imperdiet dolor tempor tristique. Pellentesque habitant</p>
+
+                <ul class="list-unstyled custom-social">
+                    <li><a href="#"><span class="fa fa-brands fa-facebook-f"></span></a></li>
+                    <li><a href="#"><span class="fa fa-brands fa-twitter"></span></a></li>
+                    <li><a href="#"><span class="fa fa-brands fa-instagram"></span></a></li>
+                    <li><a href="#"><span class="fa fa-brands fa-linkedin"></span></a></li>
+                </ul>
+            </div>
+
+            <div class="col-lg-8">
+                <div class="row links-wrap">
+                    <div class="col-6 col-sm-6 col-md-3">
+                        <ul class="list-unstyled">
+                            <li><a href="#">About us</a></li>
+                            <li><a href="#">Services</a></li>
+                            <li><a href="#">Blog</a></li>
+                            <li><a href="#">Contact us</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="col-6 col-sm-6 col-md-3">
+                        <ul class="list-unstyled">
+                            <li><a href="#">Support</a></li>
+                            <li><a href="#">Knowledge base</a></li>
+                            <li><a href="#">Live chat</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="col-6 col-sm-6 col-md-3">
+                        <ul class="list-unstyled">
+                            <li><a href="#">Jobs</a></li>
+                            <li><a href="#">Our team</a></li>
+                            <li><a href="#">Leadership</a></li>
+                            <li><a href="#">Privacy Policy</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="col-6 col-sm-6 col-md-3">
+                        <ul class="list-unstyled">
+                            <li><a href="#">Nordic Chair</a></li>
+                            <li><a href="#">Kruzo Aero</a></li>
+                            <li><a href="#">Ergonomic Chair</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="border-top copyright">
+            <div class="row pt-4">
+                <div class="col-lg-6">
+                    <p class="mb-2 text-center text-lg-start">Copyright &copy;<script>document.write(new Date().getFullYear());</script>. All Rights Reserved. &mdash; Designed with love by <a href="https://untree.co">Untree.co</a> Distributed By <a hreff="https://themewagon.com">ThemeWagon</a>  <!-- License information: https://untree.co/license/ -->
+                    </p>
+                </div>
+
+                <div class="col-lg-6 text-center text-lg-end">
+                    <ul class="list-unstyled d-inline-flex ms-auto">
+                        <li class="me-4"><a href="#">Terms &amp; Conditions</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</footer>
+<!-- End Footer Section -->
+
+
+<script src="/js/bootstrap.bundle.min.js"></script>
+<script src="/js/tiny-slider.js"></script>
+<script src="/js/custom.js"></script>
+
+
+</body>
+
+</html>

@@ -9,6 +9,7 @@ import com.Abhay.Loveseat.Service.OrderServiceI;
 import com.Abhay.Loveseat.Service.UserServiceI;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -66,10 +67,11 @@ public class OrderController {
         return "/home/orderDetail";
     }
     @PostMapping("/home/cancelOrder")
-    public ResponseEntity<String> cancelOrder( @RequestBody JsonInput jsonInput){
+    public ResponseEntity<String> cancelOrder( @RequestBody JsonInput jsonInput,Principal principal){
         long orderId= jsonInput.getOrderId();
+        UserEntity user=userServiceI.findByEmail(principal.getName());
         System.out.println(orderId);
-        orderServiceI.cancelOrder(orderId);
+        orderServiceI.cancelOrder(orderId,user);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -94,10 +96,11 @@ public class OrderController {
     public ResponseEntity<String> updateStatus(@RequestBody JsonInput jsonInput){
         long orderId= jsonInput.getOrderId();
         String status= jsonInput.getStatus();
+
         orderServiceI.updateOrder(orderId,status);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
+//    user side request for returning product
     @PostMapping("/home/returnOrder")
     public ResponseEntity<String> returnRequest(@RequestBody JsonInput jsonInput){
         long orderId=jsonInput.getOrderId();

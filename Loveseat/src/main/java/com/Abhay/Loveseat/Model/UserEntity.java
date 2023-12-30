@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Data
@@ -32,7 +33,20 @@ public class UserEntity {
     private  Cart cart;
    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
    private List<Orders> orders=new ArrayList<>();
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Wallet wallet;
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 
+    public Wallet getWallet() {
+        return wallet;
+    }
+
+    public void setWallet(Wallet wallet) {
+        this.wallet = wallet;
+    }
 
     public List<Orders> getOrders() {
         return orders;

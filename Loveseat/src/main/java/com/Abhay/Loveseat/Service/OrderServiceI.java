@@ -30,6 +30,8 @@ public class OrderServiceI implements OrderService {
     private CartItemRepository cartItemRepository;
     @Autowired
     private CartServiceI cartServiceI;
+    @Autowired
+    private WalletServiceI walletServiceI;
     @Override
     public Orders placeOrder(long addressId, UserEntity user) {
         Address deliveryAddress = addressServiceI.findAddress(addressId);
@@ -81,12 +83,14 @@ public class OrderServiceI implements OrderService {
     }
 //   canceling order from userSide
     @Override
-    public void cancelOrder(long orderId) {
+    public void cancelOrder(long orderId,UserEntity user) {
         Optional<OrderItem> orderItem=orderItemsRepository.findById(orderId);
         OrderItem order=orderItem.get();
         order.setProductsStatus(ProductsStatus.CANCELLED);
         order.setCancelled(true);
         orderItemsRepository.save(order);
+//        implement a payment checking method for refund amount
+        walletServiceI.createOrUpdateWallet(user,order.getTotalPrice());
         productServiceI.updateStockAfterCancellation(order.getProducts(),order.getQuantity());
     }
 //finding all orders
@@ -105,7 +109,12 @@ public class OrderServiceI implements OrderService {
     public void updateOrder(long orderId, String status) {
         Optional<OrderItem> orderItem=orderItemsRepository.findById(orderId);
         OrderItem orderItem1=orderItem.get();
+        UserEntity user=orderItem1.getOrders().getUser();
         orderItem1.setProductsStatus(ProductsStatus.valueOf(status));
+        if (status.equals("RETURNED")){
+            walletServiceI.createOrUpdateWallet(user,orderItem1.getTotalPrice());
+            productServiceI.updateStockAfterCancellation(orderItem1.getProducts(),orderItem1.getQuantity());
+        }
         orderItemsRepository.save(orderItem1);
     }
 

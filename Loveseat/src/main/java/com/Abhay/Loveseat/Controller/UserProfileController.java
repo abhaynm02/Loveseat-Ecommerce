@@ -2,12 +2,19 @@ package com.Abhay.Loveseat.Controller;
 
 import com.Abhay.Loveseat.Dto.UserDto;
 import com.Abhay.Loveseat.Model.UserEntity;
+import com.Abhay.Loveseat.Model.Wallet;
+import com.Abhay.Loveseat.Model.WalletHistory;
 import com.Abhay.Loveseat.Service.UserServiceI;
+import com.Abhay.Loveseat.Service.WalletServiceI;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,11 +22,15 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
+import java.util.List;
+import java.util.Set;
 
 @Controller
 public class UserProfileController {
     @Autowired
     private UserServiceI userServiceI;
+    @Autowired
+    private WalletServiceI walletServiceI;
     @GetMapping("/home/user-profile")
     public String profile(Principal principal, Model model, HttpServletRequest request){
         String email=principal.getName();
@@ -71,6 +82,27 @@ public class UserProfileController {
         }
         redirectAttributes.addFlashAttribute("message","the old password is not matching");
         return "redirect:/home/changePassword";
+    }
+
+    @GetMapping("/home/wallet")
+    public String walletDisplay(Model model,Principal principal,
+                                @RequestParam(defaultValue = "0") int page,
+                                @RequestParam(defaultValue = "6")int size
+                               ){
+        UserEntity user=userServiceI.findByEmail(principal.getName());
+        Wallet wallet=user.getWallet();
+        if (wallet==null){
+            model.addAttribute("message","wallet is empty");
+        }else {
+            Pageable pageable= PageRequest.of(page,size, Sort.by("id").descending());
+            Page<WalletHistory> walletHistories=walletServiceI.transactionHistory(pageable,wallet.getId());
+            model.addAttribute("wallet",wallet);
+            model.addAttribute("walletHistories",walletHistories);
+        }
+
+
+        return "home/wallet";
+
     }
 }
 
