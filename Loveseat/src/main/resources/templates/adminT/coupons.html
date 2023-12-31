@@ -1,0 +1,464 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+
+    <script src=
+                    "https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+            integrity=
+                    "sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
+            crossorigin="anonymous">
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<!--    modal CDN-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+
+<body>
+<!--  Body Wrapper -->
+<div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+     data-sidebar-position="fixed" data-header-position="fixed">
+    <div th:replace="fragments/adminHeader::aheader"></div>
+    <!-- Sidebar Start -->
+
+    <!--  Header End -->
+
+    <div>
+        <h3>hee</h3>
+    </div>
+    <div class="container mt-5">
+        <h2 class="mb-4">Coupons list</h2>
+
+        <!-- Add coupon Button -->
+        <a th:href="@{/admin/addCoupons}" class="btn btn-primary mb-4">Add Coupons</a>
+        <div class="alert alert-primary my-1" th:if="${message}">
+            <p class="text-center" th:text="${message}"></p>
+        </div>
+        <div class="alert alert-success my-1" th:if="${success}">
+            <p class="text-center" th:text="${success}"></p>
+        </div>
+        <div id="refresh-section">
+        <!-- Category Table -->
+          <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">id</th>
+                <th scope="col">coupon-Cod</th>
+                <th scope="col">expiry-Date</th>
+                <th scope="col">Discount-amount</th>
+                <th scope="col">Minimum-Amount</th>
+                <th scope="col">Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="coupon :${coupons}">
+                <th scope="row" th:text="${coupon.id}"></th>
+                <td th:text="${coupon.couponCod}">k</td>
+                <td th:text="${coupon.expatriationDate}"></td>
+                <td th:text="${coupon.discountAmount}"></td>
+                <td th:text="${coupon.minimumAmount}"></td>
+                <td>
+                    <button class="btn btn-sm btn-danger" th:if="${coupon.disable}"  role="button"  th:attr="data-order-id=${coupon.id}" onclick="unListCoupon(this)">UnList</button>
+                    <button class="btn btn-sm btn-success" th:if="${coupon.disable!=true}" role="button" th:attr="data-order-id=${coupon.id}" onclick="listCoupon(this)">List</button>
+                    <button class="btn btn-sm btn-secondary" onclick=" editModal(this)" th:attr="data-coupon-id=${coupon.id}">Edit</button>
+                </td>
+            </tr>
+
+            </tbody>
+           </table>
+
+        <div th:if="${coupons.totalPages > 1}">
+            <ul class="pagination">
+                <li th:if="${coupons.hasPrevious}" class="page-item">
+                    <a th:href="@{'/admin/listAllCoupons?page=' + (${coupons.number - 1}) + '&size=' + ${coupons.size}}" class="page-link">Previous</a>
+                </li>
+                <li th:each="page : ${#numbers.sequence(0, coupons.totalPages - 1)}" class="page-item">
+                    <a th:href="@{'/admin/listAllCoupons?page=' + ${page} + '&size=' + ${coupons.size}}" th:classappend="${coupons.number == page} ? 'active' : ''" class="page-link" th:text="${page + 1}"></a>
+                </li>
+                <li th:if="${coupons.hasNext}" class="page-item">
+                    <a th:href="@{'/admin/listAllCoupons?page=' + (${coupons.number + 1}) + '&size=' + ${coupons.size}}" class="page-link">Next</a>
+                </li>
+            </ul>
+        </div>
+        </div>
+    </div>
+
+<!--edit modal-->
+    <!-- Add this modal at the end of your HTML body -->
+    <div class="modal fade" id="couponModal" tabindex="-1" role="dialog" aria-labelledby="couponModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="couponModalLabel">Coupon Details</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body " >
+<!--                    <form action="" method="post" class="needs-validation" onsubmit="return validateForm(event)">-->
+
+                        <div class="form-group col-md-6">
+                            <label for="couponcod">Coupon Code</label>
+                            <input name="couponcod" class="form-control" id="couponcod">
+                            <input type="hidden" name="couponcodId" class="form-control" id="couponcodId">
+                            <div id="couponcode" style="display: none; color: red;" class="is-invalid">
+                                Please enter a text!!!!
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label for="amount">Discount Amount</label>
+                            <input name="amount" class="form-control" id="amount">
+                            <div id="amounte" style="display: none; color: red;" class="is-invalid">
+                                Please enter an amount!!!!
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label for="amount1">Minimum Purchase Amount</label>
+                            <input name="amount1" class="form-control" id="amount1">
+                            <div id="amounte1" style="display: none; color: red;" class="is-invalid">
+                                Please enter an amount!!!!
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label for="edate">Expiry Date</label>
+                            <input type="date" name="edate" class="form-control" id="edate">
+                            <div id="datee" style="display: none; color: red;" class="is-invalid">
+                                Please check date!!!!
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="description">Description</label>
+                            <textarea name="description" rows="3" class="form-control" id="description"></textarea>
+                            <div id="descriptione" style="display: none; color: red;" class="is-invalid" required>
+                                Please enter a description!!!!
+                            </div>
+                        </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary" onclick="return validateForm(event)">Save Coupon</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+<script>
+    var $j = jQuery.noConflict();
+   function editModal(button){
+     var couponId =button.getAttribute("data-coupon-id");
+    document.getElementById("couponcod").value=couponId;
+   var couponId = button.getAttribute("data-coupon-id");
+
+   // Fetch coupon details from the backend using Fetch API
+   fetch(`/admin/edit-coupon/${couponId}`)
+       .then(response => {
+           if (!response.ok) {
+               throw new Error(`HTTP error! Status: ${response.status}`);
+           }
+           return response.json();
+       })
+       .then(couponDetails => {
+           // Update the modal content with fetched data
+            document.getElementById("couponcodId").value = couponDetails.id;
+           document.getElementById("couponcod").value = couponDetails.couponCod;
+           document.getElementById("amount").value = couponDetails.discountAmount;
+            document.getElementById("amount1").value = couponDetails.minimumAmount;
+             document.getElementById("edate").value = couponDetails.expatriationDate;
+              document.getElementById("description").value = couponDetails.description;
+
+           // Show the modal
+           $('#couponModal').modal('show');
+       })
+       .catch(error => {
+           console.error('Fetch error:', error);
+       });
+
+
+
+    $('#couponModal').modal('show');
+
+<!--     closing modal-->
+    $(document).on('click', '[data-dismiss="modal"]', function () {
+   $('#couponModal').modal('hide');
+});
+
+
+   }
+
+<!--validation coupon edit-->
+
+function validateForm(event){
+   if(!validate()){
+       event.preventDefault();
+       return;
+   }
+    const couponId =document.getElementById('couponcodId').value;
+   const name =document.getElementById('couponcod').value;
+   const amount=document.getElementById('amount').value;
+   const amount1=document.getElementById('amount1').value;
+   const edate=document.getElementById('edate').value;
+   const description =document.getElementById('description').value;
+   const data = {
+      id :couponId,
+      couponCod: name,
+      discountAmount :amount,
+      minimumAmount :amount1,
+      expatriationDate:edate,
+      description:description
+
+
+
+   };
+
+   console.log(data);
+
+   fetch('/admin/saveEdit', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data),
+    credentials: 'same-origin'
+})
+.then(response => {
+    // Handle the response as needed
+    if (response.ok) {
+        // Close the modal and refresh only if the response is successful
+          $('#couponModal').modal('hide');
+        $('#refresh-section').load(location.href + " #refresh-section");
+        Swal.fire({
+    icon: 'success',
+    title: 'Success!',
+    text: 'Changes were saved successfully.',
+    timer: 2000, // Adjust the time in milliseconds (e.g., 3000 for 3 seconds)
+    showConfirmButton: false, // Hide the "OK" button
+});
+
+    } else {
+        // Handle other responses or errors
+        console.error('Error:', response);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error!',
+            text: 'The name already used please change the name.',
+        });
+    }
+    console.log(response);
+})
+.catch(error => {
+    // Handle errors
+    console.error('Error:', error);
+});
+
+
+
+
+}
+
+
+function validate(){
+   const name =document.getElementById('couponcod').value;
+   const amount=document.getElementById('amount').value;
+   const amount1=document.getElementById('amount1').value;
+   const edate=document.getElementById('edate').value;
+   const description =document.getElementById('description').value;
+
+
+
+
+   var amountv = /^[0-9]+$/;
+   if(name.trim()==""){
+       document.getElementById('couponcode').style.display= 'block';
+       document.getElementById('couponcod').focus();
+       return false;
+   }else{
+       document.getElementById('couponcode').style.display='none';
+   }
+   if(amount.trim()=="" || !amountv.test(amount)){
+       document.getElementById('amounte').style.display='block';
+       document.getElementById('amount').focus();
+       return false
+   }else{
+       document.getElementById('amounte').style.display='none';
+   }
+
+   if(amount1.trim()=="" || !amountv.test(amount1)){
+       document.getElementById('amounte1').style.display='block';
+       document.getElementById('amount1').focus();
+       return false
+   }else{
+       document.getElementById('amounte1').style.display='none';
+   }
+
+
+   if (!edate) {
+       document.getElementById('datee').style.display = 'block';
+       document.getElementById('edate').focus();
+       return false;
+   }else {
+       document.getElementById('datee').style.display = 'none';
+   }
+
+   const enteredDate = new Date(edate);
+   const currentDate = new Date();
+   // Check if the entered date is in the future
+   if (enteredDate < currentDate) {
+       document.getElementById('datee').style.display = 'block';
+       document.getElementById('edate').focus();
+       return false;
+   } else {
+       document.getElementById('datee').style.display = 'none';
+   }
+   if (description.trim()=="") {
+       document.getElementById('descriptione').style.display = 'block';
+       document.getElementById('description').focus();
+       return false;
+   } else {
+       document.getElementById('descriptione').style.display = 'none';
+   }
+
+   return true;
+}
+
+
+
+
+
+<!--    unList coupon-->
+  function unListCoupon(button) {
+  var couponId = button.getAttribute('data-order-id');
+  Swal.fire({
+      title: 'Are you sure?',
+<!--       text: 'You won\'t unList this!',-->
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, unList it!'
+  }).then((result) => {
+      if (result.isConfirmed) {
+          // User clicked "OK"
+          unList(couponId);
+      }
+  });
+}
+
+function unList(couponId) {
+   const data = {
+       couponId: couponId
+       // Add other data if needed
+   };
+
+   console.log("Order ID:", couponId);
+
+   // Add your logic for canceling the order here
+   fetch('/admin/unListCoupon', {
+       method: 'POST',
+       headers: {
+           'Content-Type': 'application/json'
+       },
+       body: JSON.stringify(data),
+       credentials: 'same-origin'
+   })
+   .then(response => {
+       // Handle the response as needed
+       if (response.ok) {
+           // Use $j instead of $
+           $j('#refresh-section').load(location.href + " #refresh-section");
+       } else {
+           // Handle other responses or errors
+           console.error('Error:', response);
+       }
+       console.log(response);
+   })
+   .catch(error => {
+       // Handle errors
+       console.error('Error:', error);
+   });
+}
+
+<!--list coupon function-->
+
+    function listCoupon(button) {
+  var couponId = button.getAttribute('data-order-id');
+  Swal.fire({
+      title: 'Are you sure?',
+<!--       text: 'You won\'t  this!',-->
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, list it!'
+  }).then((result) => {
+      if (result.isConfirmed) {
+          // User clicked "OK"
+          list(couponId);
+      }
+  });
+}
+
+  function list(couponId) {
+   const data = {
+       couponId: couponId
+       // Add other data if needed
+   };
+
+   console.log("Order ID:", couponId);
+
+   // Add your logic for canceling the order here
+   fetch('/admin/listCoupon', {
+       method: 'POST',
+       headers: {
+           'Content-Type': 'application/json'
+       },
+       body: JSON.stringify(data),
+       credentials: 'same-origin'
+   })
+   .then(response => {
+       // Handle the response as needed
+       if (response.ok) {
+           // Use $j instead of $
+           $j('#refresh-section').load(location.href + " #refresh-section");
+       } else {
+           // Handle other responses or errors
+           console.error('Error:', response);
+       }
+       console.log(response);
+   })
+   .catch(error => {
+       // Handle errors
+       console.error('Error:', error);
+   });
+}
+
+
+
+
+
+
+
+</script>
+
+<script src="/libs/jquery/dist/jquery.min.js"></script>
+<script src="/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/js/sidebarmenu.js"></script>
+<script src="/js/app.min.js"></script>
+<script src="/libs/apexcharts/dist/apexcharts.min.js"></script>
+<script src="/libs/simplebar/dist/simplebar.js"></script>
+<script src="/js/dashboard.js"></script>
+</body>
+
+</html>

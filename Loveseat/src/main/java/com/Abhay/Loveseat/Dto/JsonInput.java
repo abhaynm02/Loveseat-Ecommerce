@@ -8,6 +8,15 @@ public class JsonInput {
     private  int addressId;
     private long orderId;
     private String status;
+    private long couponId;
+
+    public long getCouponId() {
+        return couponId;
+    }
+
+    public void setCouponId(long couponId) {
+        this.couponId = couponId;
+    }
 
     public String getStatus() {
         return status;

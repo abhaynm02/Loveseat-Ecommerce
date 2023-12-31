@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+</head>
+
+<body>
+<!--  Body Wrapper -->
+<div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+     data-sidebar-position="fixed" data-header-position="fixed">
+    <div th:replace="fragments/adminHeader::aheader"></div>
+    <!-- Sidebar Start -->
+
+    <!--  Header End -->
+    <!--        Start of userList-->
+    <div>
+        <h3>hee</h3>
+
+
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-body">
+                        <h2 class="card-title text-center mb-3">Add Coupon</h2>
+                        <div class="alert alert-primary my-1" th:if="${message}">
+                            <p class="text-center" th:text="${message}"></p>
+                        </div>
+                        <form th:action="@{/addCoupon}" th:object="${coupon}" method="post" class="needs-validation" onsubmit="return validateForm(event)">
+
+                            <div th:if="${#fields.hasGlobalErrors()}" class="alert alert-danger">
+                                <ul>
+                                    <li th:each="error : ${#fields.globalErrors()}" th:text="${error}"></li>
+                                </ul>
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                <label for="couponcod">Coupon Code</label>
+                                <input name="couponcod" class="form-control" id="couponcod" th:field="*{couponCod}"   th:errorClass="is-invalid">
+                                <div id="couponcode" style="display: none; color: red;" class="is-invalid">
+                                    Please enter a text!!!!
+                                </div>
+                                <div th:if="${#fields.hasErrors('couponCod')}" th:errors="*{couponCod}" class="invalid-feedback"></div>
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                <label for="amount">Discount Amount</label>
+                                <input name="amount" class="form-control" th:field="*{discountAmount}" th:errorClass="is-invalid" id="amount">
+                                <div id="amounte" style="display: none; color: red;" class="is-invalid">
+                                    Please enter an amount!!!!
+                                </div>
+                                <div th:if="${#fields.hasErrors('discountAmount')}" th:errors="*{discountAmount}" class="invalid-feedback"></div>
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                <label for="amount1">Minimum Purchase Amount</label>
+                                <input name="amount1" class="form-control" id="amount1" th:field="*{minimumAmount}" >
+                                <div id="amounte1" style="display: none; color: red;" class="is-invalid">
+                                    Please enter an amount!!!!
+                                </div>
+<!--                                <div th:if="${#fields.hasErrors('minimumAmount')}" th:errors="*{minimumAmount}" class="invalid-feedback"></div>-->
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                <label for="edate">Expiry Date</label>
+                                <input type="date" name="edate" class="form-control" id="edate" th:field="*{expatriationDate}" th:errorClass="is-invalid">
+                                <div id="datee" style="display: none; color: red;" class="is-invalid">
+                                    Please check date!!!!
+                                </div>
+                                <div th:if="${#fields.hasErrors('expatriationDate')}" th:errors="*{expatriationDate}" class="invalid-feedback"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="description">Description</label>
+                                <textarea name="description" rows="3" class="form-control" th:field="*{description}" id="description" th:errorClass="is-invalid"></textarea>
+                                <div id="descriptione" style="display: none; color: red;" class="is-invalid" required>
+                                    Please enter a description!!!!
+                                </div>
+                                <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="invalid-feedback"></div>
+                            </div>
+
+                            <div class="text-center mt-2 mb-2">
+                                <button type="submit" class="btn btn-primary">Add Coupon</button>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+<script>
+    function validateForm(event){
+        if(!validate()){
+            event.preventDefault();
+        }
+    }
+
+
+    function validate(){
+        const name =document.getElementById('couponcod').value;
+        const amount=document.getElementById('amount').value;
+        const amount1=document.getElementById('amount1').value;
+        const edate=document.getElementById('edate').value;
+        const description =document.getElementById('description').value;
+
+
+
+
+        var amountv = /^[0-9]+$/;
+        if(name.trim()==""){
+            document.getElementById('couponcode').style.display= 'block';
+            document.getElementById('couponcod').focus();
+            return false;
+        }else{
+            document.getElementById('couponcode').style.display='none';
+        }
+        if(amount.trim()=="" || !amountv.test(amount)){
+            document.getElementById('amounte').style.display='block';
+            document.getElementById('amount').focus();
+            return false
+        }else{
+            document.getElementById('amounte').style.display='none';
+        }
+
+        if(amount1.trim()=="" || !amountv.test(amount1)){
+            document.getElementById('amounte1').style.display='block';
+            document.getElementById('amount1').focus();
+            return false
+        }else{
+            document.getElementById('amounte1').style.display='none';
+        }
+
+
+        if (!edate) {
+            document.getElementById('datee').style.display = 'block';
+            document.getElementById('edate').focus();
+            return false;
+        }else {
+            document.getElementById('datee').style.display = 'none';
+        }
+
+        const enteredDate = new Date(edate);
+        const currentDate = new Date();
+        // Check if the entered date is in the future
+        if (enteredDate < currentDate) {
+            document.getElementById('datee').style.display = 'block';
+            document.getElementById('edate').focus();
+            return false;
+        } else {
+            document.getElementById('datee').style.display = 'none';
+        }
+        if (description.trim()=="") {
+            document.getElementById('descriptione').style.display = 'block';
+            document.getElementById('description').focus();
+            return false;
+        } else {
+            document.getElementById('descriptione').style.display = 'none';
+        }
+
+        return true;
+    }
+
+</script>
+
+
+
+
+<script src="/libs/jquery/dist/jquery.min.js"></script>
+<script src="/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/js/sidebarmenu.js"></script>
+<script src="/js/app.min.js"></script>
+<script src="/libs/apexcharts/dist/apexcharts.min.js"></script>
+<script src="/libs/simplebar/dist/simplebar.js"></script>
+<script src="/js/dashboard.js"></script>
+
+</body>
+
+</html>

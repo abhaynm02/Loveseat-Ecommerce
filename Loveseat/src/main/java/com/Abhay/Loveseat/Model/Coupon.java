@@ -1,31 +1,39 @@
 package com.Abhay.Loveseat.Model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Table(name = "Coupon",uniqueConstraints = @UniqueConstraint( columnNames = "couponCod"))
 public class Coupon {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private String couponCod;
-    private Date expartionDate;
+    private LocalDate expatriationDate;
     private double discountAmount;
+    private  double minimumAmount;
     private String description;
     private boolean disable;
 
     public long getId() {
         return id;
+    }
+
+    public double getMinimumAmount() {
+        return minimumAmount;
+    }
+
+    public void setMinimumAmount(double minimumAmount) {
+        this.minimumAmount = minimumAmount;
     }
 
     public double getDiscountAmount() {
@@ -48,12 +56,12 @@ public class Coupon {
         this.couponCod = couponCod;
     }
 
-    public Date getExpartionDate() {
-        return expartionDate;
+    public LocalDate getExpatriationDate() {
+        return expatriationDate;
     }
 
-    public void setExpartionDate(Date expartionDate) {
-        this.expartionDate = expartionDate;
+    public void setExpatriationDate(LocalDate expatriationDate) {
+        this.expatriationDate = expatriationDate;
     }
 
     public String getDescription() {
