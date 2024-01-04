@@ -89,23 +89,28 @@
                             </tbody>
                         </table>
                     </div>
+                    <div th:if="${walletHistories.totalPages > 1}">
+                        <ul class="pagination">
+                            <li th:if="${walletHistories.number > 0}" class="page-item">
+                                <!-- Corrected th:href -->
+                                <a th:href="@{'/home/wallet?page=' + (${walletHistories.number - 1}) + '&size=' + ${walletHistories.size}}" class="page-link">Previous</a>
+                            </li>
+                            <li th:each="page : ${#numbers.sequence(0, walletHistories.totalPages - 1)}" class="page-item">
+                                <a th:href="@{'/home/wallet?page=' + ${page} + '&size=' + ${walletHistories.size}}" th:classappend="${walletHistories.number == page} ? 'active' : ''" class="page-link" th:text="${page + 1}"></a>
+                            </li>
+                            <li th:if="${walletHistories.hasNext}" class="page-item">
+                                <a th:href="@{'/home/wallet?page=' + (${walletHistories.number + 1}) + '&size=' + ${walletHistories.size}}" class="page-link">Next</a>
+                            </li>
+                        </ul>
+                    </div>
+
+
                 </div>
 
 
 
-                <div th:if="${walletHistories.totalPages > 1}">
-                    <ul class="pagination">
-                        <li th:if="${walletHistories.hasPrevious}" class="page-item">
-                            <a th:href="@{'/home/wallet=' + (${walletHistories.number - 1}) + '&size=' + ${walletHistories.size}}" class="page-link">Previous</a>
-                        </li>
-                        <li th:each="page : ${#numbers.sequence(0, walletHistory.totalPages - 1)}" class="page-item">
-                            <a th:href="@{'/home/wallet?page=' + ${page} + '&size=' + ${walletHistories.size}}" th:classappend="${walletHistories.number == page} ? 'active' : ''" class="page-link" th:text="${page + 1}"></a>
-                        </li>
-                        <li th:if="${walletHistories.hasNext}" class="page-item">
-                            <a th:href="@{'/home/wallet?page=' + (${walletHistories.number + 1}) + '&size=' + ${walletHistories.size}}" class="page-link">Next</a>
-                        </li>
-                    </ul>
-                </div>
+
+
       </div>
     </div>
 

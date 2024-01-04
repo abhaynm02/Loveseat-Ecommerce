@@ -8,7 +8,16 @@ public class JsonInput {
     private  long addressId;
     private long orderId;
     private String status;
+    private String paymentMethod;
     private long couponId;
+
+    public String getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(String paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
 
     public long getCouponId() {
         return couponId;

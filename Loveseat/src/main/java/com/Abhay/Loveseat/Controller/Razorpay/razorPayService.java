@@ -1,6 +1,7 @@
 package com.Abhay.Loveseat.Controller.Razorpay;
 
 import com.Abhay.Loveseat.Dto.OrderRequest;
+import com.Abhay.Loveseat.Dto.OrderResponse;
 import com.Abhay.Loveseat.Service.CartServiceI;
 import com.Abhay.Loveseat.Service.CouponServiceI;
 import com.Abhay.Loveseat.Service.UserServiceI;
@@ -28,7 +29,7 @@ public class razorPayService {
     private  String keySecret;
 
 
-    public String createOrder(OrderRequest orderRequest) throws RazorpayException {
+    public OrderResponse createOrder(OrderRequest orderRequest) throws RazorpayException {
 
         RazorpayClient razorpayClient= new RazorpayClient(keyId,keySecret);
         JSONObject orderRequestObject= new JSONObject();
@@ -39,10 +40,12 @@ public class razorPayService {
         }
         orderRequestObject.put("amount",totalAmount*100);
         orderRequestObject.put("currency","INR");
-        Order order=razorpayClient.orders.create(orderRequestObject);
+        Order order;
+        order = razorpayClient.orders.create(orderRequestObject);
+        OrderResponse orderResponse =new OrderResponse();
+        orderResponse.setAmount(order.get("amount"));
+        orderResponse.setOrderId(order.get("id"));
 
-       return  order.get("id");
-
-
+        return  orderResponse;
     }
 }

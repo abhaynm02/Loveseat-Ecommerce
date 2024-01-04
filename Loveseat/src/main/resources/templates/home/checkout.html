@@ -421,7 +421,7 @@
 
 			</div>
 		</footer>
-
+	<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 	<script>
 
 
@@ -574,16 +574,140 @@
     }
 }
 
+function createOrder(couponId) {
+    const data = {
+        couponId: couponId
+        // Add other data if needed
+    };
+
+    return fetch('/online-payment', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+        },
+        body: JSON.stringify(data),
+        credentials: 'same-origin'
+    })
+        .then(response => response.json())  // Parse the JSON response
+        .then(data => {
+            console.log(data);
+
+            // Handle the response data as needed
+
+            if (data.orderId) {
+                console.log("Order created successfully!", data);
+
+                // Set the options dynamically based on the response data
+                var options = {
+                    "key": "rzp_test_Z7ZhpTrLPkxyoP", // Enter the Key ID generated from the Dashboard
+                    "amount": data.amount, // Use the amount from the response
+                    "currency": "INR",
+                    "name": "Acme Corp",
+                    "description": "Test Transaction",
+                    "order_id": data.orderId, // Use orderId instead of id from the response
+                    "handler": function (response){
+                    const data={
+						razorpay_payment_id :response.razorpay_payment_id,
+						razorpay_order_id :response.razorpay_order_id,
+						razorpay_signature :response.razorpay_signature
+                     };
+                         conformOrder(data);
+                    },
+                    "prefill": {
+                        "name": "Gaurav Kumar",
+                        "email": "gaurav.kumar@example.com",
+                        "contact": "9000090000"
+                    },
+                    "notes": {
+                        "address": "Razorpay Corporate Office"
+                    },
+                    "theme": {
+                        "color": "#3399cc"
+                    }
+                };
+
+                var rzp1 = new Razorpay(options);
+
+                rzp1.on('payment.failed', function (response){
+                    alert(response.error.code);
+                    alert(response.error.description);
+                    alert(response.error.source);
+                    alert(response.error.step);
+                    alert(response.error.reason);
+                    alert(response.error.metadata.order_id);
+                    alert(response.error.metadata.payment_id);
+                });
+
+                // Trigger the payment when the button is clicked
+
+                    rzp1.open();
+
+
+            } else {
+                // Handle other responses or errors
+                console.error('Error:', data);
+            }
+
+            // Return the response data to the calling function
+            return data;
+        })
+        .catch(error => {
+            // Handle errors
+            console.error('Error:', error);
+
+            // Return an error object or value to the calling function
+            return { error: 'An error occurred' };
+        });
+}
+
+    function conformOrder(successData) {
+    fetch('/verify-payment', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(successData),
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        // Check if the response body is not empty before trying to parse JSON
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('application/json')) {
+            return response.json();
+        } else {
+            // Handle cases where the response is not JSON (optional)
+            return null; // Or handle it in a way that makes sense for your application
+        }
+    })
+    .then(data => {
+
+            saveOrder();
+
+        console.log('Success response from backend:', data);
+    })
+    .catch(error => {
+        console.error('Error sending or handling response from the backend:', error);
+    });
+}
+
+
+
+
 
 
         function saveOrder(){
          var selectedAddressId = document.querySelector('input[name="selectedAddressId"]:checked').value;
          var payment = document.querySelector('input[name="payment"]:checked').value;
       console.log(selectCouponId);
+
       console.log(payment)
         const data = {
             addressId: selectedAddressId,
-            couponId:selectCouponId
+            couponId:selectCouponId,
+            paymentMethod:payment
             // Add other data if needed
         };
 

@@ -87,7 +87,7 @@ public class UserProfileController {
     @GetMapping("/home/wallet")
     public String walletDisplay(Model model,Principal principal,
                                 @RequestParam(defaultValue = "0") int page,
-                                @RequestParam(defaultValue = "6")int size
+                                @RequestParam(defaultValue = "5")int size
                                ){
         UserEntity user=userServiceI.findByEmail(principal.getName());
         Wallet wallet=user.getWallet();
