@@ -1,6 +1,7 @@
 package com.Abhay.Loveseat.Service;
 
 import com.Abhay.Loveseat.Dto.JsonInput;
+import com.Abhay.Loveseat.Enums.PaymentMethods;
 import com.Abhay.Loveseat.Enums.ProductsStatus;
 import com.Abhay.Loveseat.Model.*;
 import com.Abhay.Loveseat.Repository.CartItemRepository;
@@ -47,6 +48,7 @@ public class OrderServiceI implements OrderService {
         orders.setAddress(deliveryAddress);
         orders.setUser(user);
         orders.setOrderDate(LocalDateTime.now());
+        orders.setPaymentMethods(PaymentMethods.valueOf(jsonInput.getPaymentMethod()));
 
         List<OrderItem> orderItems = new ArrayList<>();
 
@@ -67,7 +69,16 @@ public class OrderServiceI implements OrderService {
 //            coupon management
             couponDiscount=couponServiceI.calculateCouponDiscount(couponId,cart.getTotalPrice());
              couponServiceI.couponStockManagement(couponId);
+            //if payment is wallet we want to reduce the amount in wallet
+            if (jsonInput.getPaymentMethod().equals("WALLET")){
+                walletServiceI.walletPaymentInOrder(couponDiscount,user);
+            }
+        }else {
+            if (jsonInput.getPaymentMethod().equals("WALLET")){
+                walletServiceI.walletPaymentInOrder(cart.getTotalPrice(),user);
+            }
         }
+
 
         orders.setOrderItems(orderItems);
         orders.setTotalAmount((float) cart.getTotalPrice());
@@ -94,11 +105,16 @@ public class OrderServiceI implements OrderService {
     public void cancelOrder(long orderId,UserEntity user) {
         Optional<OrderItem> orderItem=orderItemsRepository.findById(orderId);
         OrderItem order=orderItem.get();
+        Orders orders=order.getOrders();
         order.setProductsStatus(ProductsStatus.CANCELLED);
         order.setCancelled(true);
         orderItemsRepository.save(order);
-//        implement a payment checking method for refund amount
-//        walletServiceI.createOrUpdateWallet(user,order.getTotalPrice());
+//        amount refund if the payment method is wallet or online
+        if (orders.getPaymentMethods()==PaymentMethods.valueOf("WALLET")||
+                orders.getPaymentMethods()==PaymentMethods.valueOf("ONLINE_PAYMENT")){
+            walletServiceI.createOrUpdateWallet(user,order.getTotalPrice());
+        }
+
         productServiceI.updateStockAfterCancellation(order.getProducts(),order.getQuantity());
     }
 //finding all orders

@@ -264,7 +264,7 @@
 					<div class="form-check">
 						<input class="form-check-input" type="radio" name="payment" id="wallet" value="WALLET" >
 						<label class="form-check-label" for="COD">
-							Wallet
+							Wallet [<span>balance <strong id="walletAmount" th:text="${wallet.totalAmount}"></strong></span>]
 						</label>
 					</div>
 
@@ -426,6 +426,10 @@
 
 
 		var selectCouponId;
+		 var cartTotalElement = document.getElementById("cartTotal");
+         var cartTotal = parseFloat(cartTotalElement.innerText.replace('$', ''));
+         var walletTotalElement =document.getElementById("walletAmount");
+        var walletAmount =parseFloat(walletTotalElement.innerText.replace('$',''));
         function coupons(){
 
         $('#couponModal').modal('show');
@@ -447,8 +451,7 @@
     var couponId = button.getAttribute("data-coupon-id");
     var minimumAmount = button.getAttribute("data-minimum-amount");
     var discountAmount=button.getAttribute("data-discount-amount");
-    var cartTotalElement = document.getElementById("cartTotal");
-    var cartTotal = parseFloat(cartTotalElement.innerText.replace('$', ''));
+
     console.log('Coupon ID:', couponId);
     console.log('Minimum Amount:', minimumAmount);
     console.log('Cart Total:', cartTotal);
@@ -466,6 +469,7 @@
     var offerPrice=cartTotal-discountAmount;
     OfferPrice.innerText='$ '+offerPrice+'.0';
     selectCouponId=couponId;
+    cartTotal=offerPrice;
      $('#couponModal').modal('hide');
 
 
@@ -561,17 +565,26 @@
 
         if (payment == "ONLINE_PAYMENT") {
            createOrder(selectCouponId);
-            alert("Hey, I am working for online payment.");
         } else if (payment == "COD") {
 
          saveOrder();
-            alert("Hey, I am working for Cash on Delivery.");
         } else if (payment == "WALLET") {
-            alert("Hey, I am working for Wallet payment.");
-        }
+              if(cartTotal>walletAmount){
+                Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'intensification balance in wallet please choose another payment option',
+      });
+      return;
+       }else{
+       saveOrder();
+
+       }
+
     } else {
         swal("Please select both address and payment method", "warning");
     }
+}
 }
 
 function createOrder(couponId) {

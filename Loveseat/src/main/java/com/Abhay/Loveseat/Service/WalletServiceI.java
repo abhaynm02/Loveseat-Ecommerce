@@ -53,9 +53,7 @@ public class WalletServiceI implements WalletService{
             walletHistory.setDateTime(LocalDateTime.now());
             walletHistory.setWallet(wallet);
             walletHistory.setTransactionType(WalletTransactionType.CREDIT);
-            walletHistoryRepository.save(walletHistory);
             walletHistorySet.add(walletHistory);
-            walletHistory.setWallet(wallet);
             walletHistoryRepository.save(walletHistory);
         }
         wallet.setWalletHistories(walletHistorySet);
@@ -68,5 +66,23 @@ public class WalletServiceI implements WalletService{
     @Override
     public Page<WalletHistory> transactionHistory(Pageable pageable, long id) {
         return walletHistoryRepository.transactionHistory(id,pageable);
+    }
+
+    @Override
+    public void walletPaymentInOrder(double couponDiscount, UserEntity user) {
+        Wallet wallet=user.getWallet();
+        Set<WalletHistory>walletHistorySet=wallet.getWalletHistories();
+        WalletHistory walletHistory=new WalletHistory();
+        walletHistory.setAmount(couponDiscount);
+        walletHistory.setDateTime(LocalDateTime.now());
+        walletHistory.setWallet(wallet);
+        walletHistory.setTransactionType(WalletTransactionType.DEBIT);
+        walletHistorySet.add(walletHistory);
+        walletHistoryRepository.save(walletHistory);
+
+        wallet.setTotalAmount(wallet.getTotalAmount()-couponDiscount);
+        wallet.setWalletHistories(walletHistorySet);
+        walletRepository.save(wallet);
+
     }
 }

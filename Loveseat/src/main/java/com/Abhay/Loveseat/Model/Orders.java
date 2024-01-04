@@ -1,5 +1,6 @@
 package com.Abhay.Loveseat.Model;
 
+import com.Abhay.Loveseat.Enums.PaymentMethods;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,6 +23,7 @@ public class Orders {
     private float totalAmount;
     private  int totalItem;
     private  float offerPrice;
+    private PaymentMethods paymentMethods;
     private LocalDateTime orderDate;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id",referencedColumnName = "id")
@@ -31,6 +33,14 @@ public class Orders {
     private  Address address;
     @OneToMany(mappedBy = "orders",cascade = CascadeType.ALL)
     private List<OrderItem>orderItems=new ArrayList<>();
+
+    public PaymentMethods getPaymentMethods() {
+        return paymentMethods;
+    }
+
+    public void setPaymentMethods(PaymentMethods paymentMethods) {
+        this.paymentMethods = paymentMethods;
+    }
 
     public float getOfferPrice() {
         return offerPrice;

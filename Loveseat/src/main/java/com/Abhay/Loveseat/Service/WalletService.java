@@ -11,4 +11,6 @@ import java.util.List;
 public interface WalletService {
     void createOrUpdateWallet(UserEntity user, double amount);
   Page<WalletHistory> transactionHistory(Pageable pageable, long id);
+
+    void walletPaymentInOrder(double couponDiscount, UserEntity user);
 }

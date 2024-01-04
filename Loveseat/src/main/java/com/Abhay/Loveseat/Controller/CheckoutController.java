@@ -1,10 +1,7 @@
 package com.Abhay.Loveseat.Controller;
 
 import com.Abhay.Loveseat.Dto.AddressDto;
-import com.Abhay.Loveseat.Model.Cart;
-import com.Abhay.Loveseat.Model.CartItem;
-import com.Abhay.Loveseat.Model.Coupon;
-import com.Abhay.Loveseat.Model.UserEntity;
+import com.Abhay.Loveseat.Model.*;
 import com.Abhay.Loveseat.Service.AddressServiceI;
 import com.Abhay.Loveseat.Service.CouponServiceI;
 import com.Abhay.Loveseat.Service.UserServiceI;
@@ -36,12 +33,14 @@ public class CheckoutController {
         UserEntity user= userServiceI.findByEmail(principal.getName());
         AddressDto addressDto=new AddressDto();
         Cart cart=user.getCart();
+        Wallet wallet=user.getWallet();
         List<Coupon>coupons=couponServiceI.findAvailable();
 //        adding the cart and address into the checkout page
         model.addAttribute("user",user);
         model.addAttribute("address",addressDto);
         model.addAttribute("cart",cart);
         model.addAttribute("coupons",coupons);
+        model.addAttribute("wallet",wallet);
         session.setAttribute("totalItems",cart.getTotalItems());
 //        preventing the user assessing checkout page  with a  empty cart
         for (CartItem item : cart.getCartItems()) {

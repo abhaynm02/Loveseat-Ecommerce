@@ -38,8 +38,6 @@ public class OrderController {
     public ResponseEntity<?> placeOrder(@RequestBody JsonInput jsonInput , Principal principal){
          String email=principal.getName();
         UserEntity user=userServiceI.findByEmail(email);
-       String  payment=jsonInput.getPaymentMethod();
-        System.out.println(payment);
 
        orderServiceI.placeOrder(jsonInput,user);
 

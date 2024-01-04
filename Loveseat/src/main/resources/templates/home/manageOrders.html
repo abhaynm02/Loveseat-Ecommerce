@@ -41,6 +41,7 @@
                     <h5 class="card-title">Total_Item: <span th:text="${order.totalItem}"></span></h5>
                     <h5 class="card-title">Total_Price :$ <span th:text="${order.totalAmount}"></span></h5>
                     <h5  th:if="${order.offerPrice >0}" class="card-title">Offer_Price :$ <span th:text="${order.offerPrice}" style="color: red;"></span></h5>
+                   <h5 class="card-title">Payment_Method :<span th:text="${order.paymentMethods}"></span></h5>
                     <h6> <u>Delivery Address </u> </h6>
 
                     <h5 class="card-title" th:text="${order.address.firstName + ' ' + order.address.lastName}"></h5>
