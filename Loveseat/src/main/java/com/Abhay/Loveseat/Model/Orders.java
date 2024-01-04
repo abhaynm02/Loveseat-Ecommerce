@@ -21,6 +21,7 @@ public class Orders {
     private long id;
     private float totalAmount;
     private  int totalItem;
+    private  float offerPrice;
     private LocalDateTime orderDate;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id",referencedColumnName = "id")
@@ -30,6 +31,14 @@ public class Orders {
     private  Address address;
     @OneToMany(mappedBy = "orders",cascade = CascadeType.ALL)
     private List<OrderItem>orderItems=new ArrayList<>();
+
+    public float getOfferPrice() {
+        return offerPrice;
+    }
+
+    public void setOfferPrice(float offerPrice) {
+        this.offerPrice = offerPrice;
+    }
 
     public long getId() {
         return id;

@@ -22,7 +22,16 @@ public class Coupon {
     private double discountAmount;
     private  double minimumAmount;
     private String description;
+    private int stock;
     private boolean disable;
+
+    public int getStock() {
+        return stock;
+    }
+
+    public void setStock(int stock) {
+        this.stock = stock;
+    }
 
     public long getId() {
         return id;

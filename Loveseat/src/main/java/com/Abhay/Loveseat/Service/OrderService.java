@@ -1,5 +1,6 @@
 package com.Abhay.Loveseat.Service;
 
+import com.Abhay.Loveseat.Dto.JsonInput;
 import com.Abhay.Loveseat.Model.OrderItem;
 import com.Abhay.Loveseat.Model.Orders;
 import com.Abhay.Loveseat.Model.UserEntity;
@@ -9,7 +10,7 @@ import org.springframework.data.domain.Pageable;
 import java.util.Optional;
 
 public interface OrderService {
-    Orders placeOrder(long addressId, UserEntity user);
+    Orders placeOrder(JsonInput jsonInput, UserEntity user);
 
     Page<Orders> findOrders(Pageable pageable, UserEntity user);
 

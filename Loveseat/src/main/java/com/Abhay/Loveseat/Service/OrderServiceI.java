@@ -1,5 +1,6 @@
 package com.Abhay.Loveseat.Service;
 
+import com.Abhay.Loveseat.Dto.JsonInput;
 import com.Abhay.Loveseat.Enums.ProductsStatus;
 import com.Abhay.Loveseat.Model.*;
 import com.Abhay.Loveseat.Repository.CartItemRepository;
@@ -32,8 +33,12 @@ public class OrderServiceI implements OrderService {
     private CartServiceI cartServiceI;
     @Autowired
     private WalletServiceI walletServiceI;
+    @Autowired
+    private  CouponServiceI couponServiceI;
     @Override
-    public Orders placeOrder(long addressId, UserEntity user) {
+    public Orders placeOrder(JsonInput jsonInput, UserEntity user) {
+        long addressId=(long)jsonInput.getAddressId();
+        long couponId=(long)jsonInput.getCouponId();
         Address deliveryAddress = addressServiceI.findAddress(addressId);
         Cart cart = user.getCart();
         Set<CartItem> cartItems = new HashSet<>(cart.getCartItems()); // Create a copy to avoid concurrent modification
@@ -53,18 +58,21 @@ public class OrderServiceI implements OrderService {
             orderItem.setProductsStatus(ProductsStatus.PENDING);
              //stock management
           productServiceI.manageStock(item.getProduct(),item.getQuantity());
-
-
-
             // Set the association in both directions
             orderItem.setOrders(orders);
             orderItems.add(orderItem);
+        }
+      double couponDiscount=0;
+        if (couponId != 0){
+//            coupon management
+            couponDiscount=couponServiceI.calculateCouponDiscount(couponId,cart.getTotalPrice());
+             couponServiceI.couponStockManagement(couponId);
         }
 
         orders.setOrderItems(orderItems);
         orders.setTotalAmount((float) cart.getTotalPrice());
         orders.setTotalItem((int) cart.getTotalItems());
-
+        orders.setOfferPrice((float) couponDiscount);
         // Save the entire order, including associated order items
         Orders savedOrder = ordersRepository.save(orders);
 
@@ -90,7 +98,7 @@ public class OrderServiceI implements OrderService {
         order.setCancelled(true);
         orderItemsRepository.save(order);
 //        implement a payment checking method for refund amount
-        walletServiceI.createOrUpdateWallet(user,order.getTotalPrice());
+//        walletServiceI.createOrUpdateWallet(user,order.getTotalPrice());
         productServiceI.updateStockAfterCancellation(order.getProducts(),order.getQuantity());
     }
 //finding all orders

@@ -3,8 +3,10 @@ package com.Abhay.Loveseat.Controller;
 import com.Abhay.Loveseat.Dto.AddressDto;
 import com.Abhay.Loveseat.Model.Cart;
 import com.Abhay.Loveseat.Model.CartItem;
+import com.Abhay.Loveseat.Model.Coupon;
 import com.Abhay.Loveseat.Model.UserEntity;
 import com.Abhay.Loveseat.Service.AddressServiceI;
+import com.Abhay.Loveseat.Service.CouponServiceI;
 import com.Abhay.Loveseat.Service.UserServiceI;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
+import java.util.List;
 
 @Controller
 public class CheckoutController {
@@ -26,15 +29,19 @@ public class CheckoutController {
     private UserServiceI userServiceI;
     @Autowired
     private AddressServiceI addressServiceI;
+    @Autowired
+    private CouponServiceI couponServiceI;
     @GetMapping("/home/checkout")
     public String checkOutPage(Model model, Principal principal, HttpSession session, RedirectAttributes redirectAttributes){
         UserEntity user= userServiceI.findByEmail(principal.getName());
         AddressDto addressDto=new AddressDto();
         Cart cart=user.getCart();
+        List<Coupon>coupons=couponServiceI.findAvailable();
 //        adding the cart and address into the checkout page
         model.addAttribute("user",user);
         model.addAttribute("address",addressDto);
         model.addAttribute("cart",cart);
+        model.addAttribute("coupons",coupons);
         session.setAttribute("totalItems",cart.getTotalItems());
 //        preventing the user assessing checkout page  with a  empty cart
         for (CartItem item : cart.getCartItems()) {

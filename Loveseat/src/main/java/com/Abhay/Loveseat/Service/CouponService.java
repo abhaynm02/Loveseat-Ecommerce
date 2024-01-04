@@ -5,6 +5,7 @@ import com.Abhay.Loveseat.Model.Coupon;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface CouponService {
@@ -18,4 +19,9 @@ public interface CouponService {
     Optional<Coupon> findById(long couponId);
 
     void saveEditCoupon(CouponDto couponDto);
+
+    List<Coupon> findAvailable();
+
+   double calculateCouponDiscount(long couponId, double totalAmount);
+   void couponStockManagement(long couponId);
 }

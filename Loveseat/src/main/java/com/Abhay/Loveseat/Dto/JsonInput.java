@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class JsonInput {
     private long productId;
     private int quantity;
-    private  int addressId;
+    private  long addressId;
     private long orderId;
     private String status;
     private long couponId;
@@ -34,13 +34,14 @@ public class JsonInput {
         this.orderId = orderId;
     }
 
-    public int getAddressId() {
+    public long getAddressId() {
         return addressId;
     }
 
-    public void setAddressId(int addressId) {
+    public void setAddressId(long addressId) {
         this.addressId = addressId;
     }
+
 
     public long getProductId() {
         return productId;

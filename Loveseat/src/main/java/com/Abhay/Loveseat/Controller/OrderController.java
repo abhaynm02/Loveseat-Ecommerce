@@ -35,15 +35,14 @@ public class OrderController {
     }
     //placing order
     @PostMapping("/order")
-    public String placeOrder(@RequestBody JsonInput jsonInput , Principal principal){
+    public ResponseEntity<?> placeOrder(@RequestBody JsonInput jsonInput , Principal principal){
          String email=principal.getName();
         UserEntity user=userServiceI.findByEmail(email);
-        long addressId=(long)jsonInput.getAddressId();
-        orderServiceI.placeOrder(addressId,user);
+
+       orderServiceI.placeOrder(jsonInput,user);
 
 
-        System.out.println(addressId);
-        return "redirect:/home/order-Success";
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 //     order history management with sorting
     @GetMapping("/home/orders")

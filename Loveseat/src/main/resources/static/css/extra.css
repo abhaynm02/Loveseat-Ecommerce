@@ -224,3 +224,93 @@
              .transaction-history {
                  margin-top: 20px;
              }
+
+
+             .button-62 {
+                 background: linear-gradient(to bottom right, #EF4765, #FF9A5A);
+                 border: 0;
+                 border-radius: 10px;
+                 color: #FFFFFF;
+                 cursor: pointer;
+                 display: inline-block;
+                 font-family: -apple-system,system-ui,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+                 font-size: 14px;
+                 font-weight: 500;
+                 line-height: 2.5;
+                 outline: transparent;
+                 padding: 0 1rem;
+                 text-align: center;
+                 text-decoration: none;
+                 transition: box-shadow .2s ease-in-out;
+                 user-select: none;
+                 -webkit-user-select: none;
+                 touch-action: manipulation;
+                 white-space: nowrap;
+               }
+
+               .button-62:not([disabled]):focus {
+                 box-shadow: 0 0 .25rem rgba(0, 0, 0, 0.5), -.125rem -.125rem 1rem rgba(239, 71, 101, 0.5), .125rem .125rem 1rem rgba(255, 154, 90, 0.5);
+               }
+
+               .button-62:not([disabled]):hover {
+                 box-shadow: 0 0 .25rem rgba(0, 0, 0, 0.5), -.125rem -.125rem 1rem rgba(239, 71, 101, 0.5), .125rem .125rem 1rem rgba(255, 154, 90, 0.5);
+               }
+
+
+
+  .ribbon {
+       width: 150px;
+      height: 150px;
+      overflow: hidden;
+      position: absolute;
+        top: -10px;
+      right: -10px;
+
+  }
+  .ribbon__content {
+      left: -25px;
+      top: 30px;
+      -webkit-transform: rotate(45deg);
+      -ms-transform: rotate(45deg);
+      transform: rotate(45deg);
+      position: absolute;
+      display: block;
+      width: 225px;
+      padding: 10px 0;
+      background-color: #00aaa0;
+      box-shadow: 0 0px 10px ;
+      color: #fff;
+      text-shadow: 0 1px 1px rgba(0,0,0,.2);
+      text-transform: uppercase;
+      text-align: center;
+      border: 2px dotted #fff;
+      outline : 5px solid  #f5cd79;
+
+
+  }
+  .ribbon::before {
+      top: 0;
+      left: 0;
+      border-top-color: transparent;
+      border-right-color: transparent;
+      position: absolute;
+      z-index: -1;
+      content: '';
+      display: block;
+      border: 5px solid #f19066;
+      box-sizing: content-box;
+
+  }
+  .ribbon::after {
+      bottom: 0;
+      right: 0;
+      border-top-color: transparent;
+      border-right-color: transparent;
+      position: absolute;
+      z-index: -1;
+      content: '';
+      display: block;
+      border: 5px solid #f19066;
+
+  }
+

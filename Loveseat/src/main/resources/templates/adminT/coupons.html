@@ -52,6 +52,7 @@
                 <th scope="col">expiry-Date</th>
                 <th scope="col">Discount-amount</th>
                 <th scope="col">Minimum-Amount</th>
+                <th scope="col">Stock</th>
                 <th scope="col">Action</th>
             </tr>
             </thead>
@@ -62,6 +63,7 @@
                 <td th:text="${coupon.expatriationDate}"></td>
                 <td th:text="${coupon.discountAmount}"></td>
                 <td th:text="${coupon.minimumAmount}"></td>
+                <td th:text="${coupon.stock}"></td>
                 <td>
                     <button class="btn btn-sm btn-danger" th:if="${coupon.disable}"  role="button"  th:attr="data-order-id=${coupon.id}" onclick="unListCoupon(this)">UnList</button>
                     <button class="btn btn-sm btn-success" th:if="${coupon.disable!=true}" role="button" th:attr="data-order-id=${coupon.id}" onclick="listCoupon(this)">List</button>
@@ -126,7 +128,13 @@
                                 Please enter an amount!!!!
                             </div>
                         </div>
-
+                    <div class="form-group col-md-6">
+                        <label for="stock">sock</label>
+                        <input name="stock" class="form-control" id="stock" >
+                        <div id="stocke" style="display: none; color: red;" class="is-invalid">
+                            Please enter the stock!!!!
+                        </div>
+                    </div>
                         <div class="form-group col-md-6">
                             <label for="edate">Expiry Date</label>
                             <input type="date" name="edate" class="form-control" id="edate">
@@ -178,6 +186,7 @@
             document.getElementById("amount1").value = couponDetails.minimumAmount;
              document.getElementById("edate").value = couponDetails.expatriationDate;
               document.getElementById("description").value = couponDetails.description;
+              document.getElementById("stock").value=couponDetails.stock;
 
            // Show the modal
            $('#couponModal').modal('show');
@@ -211,13 +220,15 @@ function validateForm(event){
    const amount1=document.getElementById('amount1').value;
    const edate=document.getElementById('edate').value;
    const description =document.getElementById('description').value;
+   const stock =document.getElementById('stock').value;
    const data = {
       id :couponId,
       couponCod: name,
       discountAmount :amount,
       minimumAmount :amount1,
       expatriationDate:edate,
-      description:description
+      description:description,
+      stock:stock
 
 
 
@@ -275,7 +286,7 @@ function validate(){
    const amount1=document.getElementById('amount1').value;
    const edate=document.getElementById('edate').value;
    const description =document.getElementById('description').value;
-
+   const stock = document.getElementById('stock').value;
 
 
 
@@ -302,7 +313,13 @@ function validate(){
    }else{
        document.getElementById('amounte1').style.display='none';
    }
-
+         if (stock.trim() == "" || !amountv.test(stock)) {
+        document.getElementById('stocke').style.display = 'block';
+        document.getElementById('stock').focus();
+        return false;
+    } else {
+        document.getElementById('stocke').style.display = 'none';
+    }
 
    if (!edate) {
        document.getElementById('datee').style.display = 'block';

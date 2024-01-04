@@ -14,11 +14,20 @@ public class CouponDto {
     private LocalDate expatriationDate;
 
     private  double minimumAmount;
+    private double stock;
     @NotBlank(message = "please enter description")
     private String description;
     @NotNull(message = "please enter a amount")
     private double discountAmount;
     private boolean disable;
+
+    public double getStock() {
+        return stock;
+    }
+
+    public void setStock(double stock) {
+        this.stock = stock;
+    }
 
     public long getId() {
         return id;

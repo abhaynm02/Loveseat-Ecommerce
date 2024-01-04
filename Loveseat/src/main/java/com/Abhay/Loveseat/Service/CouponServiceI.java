@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -23,6 +24,7 @@ public class CouponServiceI implements CouponService {
         coupon.setDescription(couponDto.getDescription());
         coupon.setDisable(true);
         coupon.setDiscountAmount(couponDto.getDiscountAmount());
+        coupon.setStock((int)couponDto.getStock());
         couponRepository.save(coupon);
     }
 
@@ -61,6 +63,28 @@ public class CouponServiceI implements CouponService {
         coupon.setDiscountAmount(couponDto.getDiscountAmount());
         coupon.setDescription(couponDto.getDescription());
         coupon.setCouponCod(couponDto.getCouponCod().toUpperCase());
+        coupon.setStock( (int) couponDto.getStock());
+        couponRepository.save(coupon);
+    }
+
+    @Override
+    public List<Coupon> findAvailable() {
+        return couponRepository.findAllActiveCoupons();
+    }
+
+    @Override
+    public double calculateCouponDiscount(long couponId,double totalAmount) {
+        Coupon coupon=findById(couponId).get();
+        double discountAmount=coupon.getDiscountAmount();
+        discountAmount=totalAmount-discountAmount;
+        return discountAmount;
+    }
+
+    @Override
+    public void couponStockManagement(long couponId) {
+        final double USED_COUPON=1;
+        Coupon coupon=findById(couponId).get();
+        coupon.setStock((int) ((int)coupon.getStock()-USED_COUPON));
         couponRepository.save(coupon);
     }
 }
