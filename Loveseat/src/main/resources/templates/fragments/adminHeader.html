@@ -37,6 +37,14 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
+                    <a class="sidebar-link" href="/admin/sales-report" aria-expanded="false">
+                <span>
+                  <i class="ti ti-typography"></i>
+                </span>
+                        <span class="hide-menu">SalesReport</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
                     <a class="sidebar-link" href="/admin/users" aria-expanded="false">
                 <span>
                   <i class="ti ti-article"></i>
@@ -76,27 +84,14 @@
                         <span class="hide-menu">Coupons</span>
                     </a>
                 </li>
+
                 <li class="sidebar-item">
                     <form th:action="@{/logout}" method="post">
                         <button type="submit" class="btn btn-outline-primary mx-3 mt-2 d-block"> <i class="ti ti-login"></i>logout </button>
                     </form>
                 </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link" href="#" aria-expanded="false">
-                <span>
-                  <i class="ti ti-mood-happy"></i>
-                </span>
-                        <span class="hide-menu">Icons</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link" href="#" aria-expanded="false">
-                <span>
-                  <i class="ti ti-aperture"></i>
-                </span>
-                        <span class="hide-menu">Sample Page</span>
-                    </a>
-                </li>
+
+
             </ul>
         </nav>
         <!-- End Sidebar navigation -->

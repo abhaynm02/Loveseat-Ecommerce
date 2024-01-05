@@ -1,6 +1,7 @@
 package com.Abhay.Loveseat.Model;
 
 import com.Abhay.Loveseat.Enums.ProductsStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,6 +21,7 @@ public class OrderItem {
     private Products products;
     @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JoinColumn(name = "order_id",referencedColumnName ="order_id" )
+    @JsonIgnore
     private Orders orders;
     @Enumerated(EnumType.STRING)
     @Column(name = "products_status", nullable = false)

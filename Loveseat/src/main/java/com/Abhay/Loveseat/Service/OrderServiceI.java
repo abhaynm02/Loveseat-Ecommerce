@@ -1,6 +1,7 @@
 package com.Abhay.Loveseat.Service;
 
 import com.Abhay.Loveseat.Dto.JsonInput;
+import com.Abhay.Loveseat.Dto.SalesResponseDto;
 import com.Abhay.Loveseat.Enums.PaymentMethods;
 import com.Abhay.Loveseat.Enums.ProductsStatus;
 import com.Abhay.Loveseat.Model.*;
@@ -141,6 +142,29 @@ public class OrderServiceI implements OrderService {
         }
         orderItemsRepository.save(orderItem1);
     }
+
+    @Override
+    public List<SalesResponseDto> findOrderBetweenDate(LocalDateTime startDate, LocalDateTime endDate) {
+        List<OrderItem> orderItems = orderItemsRepository.findByOrderDateBetween(startDate, endDate);
+        List<SalesResponseDto> orderItemList = new ArrayList<>();
+
+        for (OrderItem orderItem : orderItems) {
+            SalesResponseDto responseDto = new SalesResponseDto();
+
+            responseDto.setOrderId(orderItem.getId());
+            responseDto.setUserId(orderItem.getOrders().getUser().getEmail());
+            responseDto.setProductName(orderItem.getProducts().getName());
+            responseDto.setProductQuantity(orderItem.getQuantity());
+            responseDto.setTotalPrice(orderItem.getTotalPrice());
+            responseDto.setOrderDate(orderItem.getOrders().getOrderDate());
+            responseDto.setPaymentMethods(orderItem.getOrders().getPaymentMethods());
+
+            orderItemList.add(responseDto);
+        }
+
+        return orderItemList;
+    }
+
 
     public Optional<Orders> findById(Long id) {
         return  ordersRepository.findById(id);

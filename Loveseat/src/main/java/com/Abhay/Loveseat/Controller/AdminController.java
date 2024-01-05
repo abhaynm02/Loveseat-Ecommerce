@@ -67,5 +67,10 @@ public class AdminController {
         model.addAttribute("users",userList);
         return "adminT/listOfUsers";
     }
+    @GetMapping("admin/sales-report")
+    public String listAllSales() {
+
+        return "adminT/salesReport";
+    }
 
 }
