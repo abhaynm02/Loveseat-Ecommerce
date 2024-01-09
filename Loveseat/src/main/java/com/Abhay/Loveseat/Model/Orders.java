@@ -24,6 +24,7 @@ public class Orders {
     private float totalAmount;
     private  int totalItem;
     private  float offerPrice;
+
     private PaymentMethods paymentMethods;
     private LocalDateTime orderDate;
     @ManyToOne(fetch = FetchType.EAGER)
@@ -35,7 +36,6 @@ public class Orders {
     @OneToMany(mappedBy = "orders",cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<OrderItem>orderItems=new ArrayList<>();
-
     public PaymentMethods getPaymentMethods() {
         return paymentMethods;
     }

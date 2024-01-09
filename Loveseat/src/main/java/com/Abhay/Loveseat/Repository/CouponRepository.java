@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface CouponRepository extends JpaRepository<Coupon,Long> {
     @Modifying
-    @Query("SELECT c FROM Coupon c WHERE c.disable = true AND CURRENT_DATE <= c.expatriationDate")
+    @Query("SELECT c FROM Coupon c WHERE c.disable = true AND CURRENT_DATE <= c.expatriationDate AND c.stock > 0")
     List<Coupon>findAllActiveCoupons();
 
 }

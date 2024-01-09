@@ -1,6 +1,7 @@
 package com.Abhay.Loveseat.Service;
 
 import com.Abhay.Loveseat.Dto.JsonInput;
+import com.Abhay.Loveseat.Dto.OrderChartResponse;
 import com.Abhay.Loveseat.Dto.SalesResponseDto;
 import com.Abhay.Loveseat.Model.OrderItem;
 import com.Abhay.Loveseat.Model.Orders;
@@ -26,4 +27,5 @@ public interface OrderService {
 
     void updateOrder(long orderId, String status);
     List<SalesResponseDto>findOrderBetweenDate(LocalDateTime startDate, LocalDateTime endDate);
+
 }

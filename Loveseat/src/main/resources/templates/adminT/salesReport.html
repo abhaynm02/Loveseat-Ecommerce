@@ -6,6 +6,7 @@
     <!-- Sweet alert links -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
     <style>
         body {
@@ -91,82 +92,114 @@
             </tr>
             </thead>
             <tbody>
-            <!-- Data will be dynamically populated here -->
+
             </tbody>
         </table>
 
+
+
+
         <script>
-            // Inside your <script> tag in the HTML file
 
- // Inside your <script> tag in the HTML file
 
-function generateReport() {
-    const startDate = document.getElementById('start-date').value;
-    const endDate = document.getElementById('end-date').value;
+                    function downloadReport() {
+               fetch('/generate/sales-report', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',  // Optional, but often included for clarity
+          },
+        })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not OK');
+          }
 
-    if (!startDate || !endDate) {
-        Swal.fire({
-            icon: 'warning',
-            title: 'Oops...',
-            text: 'Please select both start and end dates!',
+          // Handle the PDF response
+          return response.blob();  // Assuming you want to handle the raw PDF data
+        })
+        .then(blob => {
+          // Do something with the PDF blob, e.g., download it or display it
+          const url = window.URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = 'sales-report.pdf';
+          link.click();
+        })
+        .catch(error => {
+          console.error('Error fetching PDF report:', error);
         });
-        return;
-    }
 
-    if (new Date(endDate) <= new Date(startDate)) {
-        Swal.fire({
-            icon: 'warning',
-            title: 'Invalid Dates',
-            text: 'End date should be greater than the start date!',
-        });
-        return;
-    }
 
-    const requestData = {
-        startDate: new Date(startDate).toISOString(),
-        endDate: new Date(endDate).toISOString(),
-    };
+           }
 
-    fetch('/admin/sales-report-generate', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(requestData),
-    })
-   .then(response => response.json())
-.then(data => {
-    if (data.error) {
-        throw new Error(data.error);  // Throw an error if the server sends an error message
-    }
 
-    const tableBody = document.querySelector('#report-table tbody');
-    tableBody.innerHTML = '';
+                function generateReport() {
+                    const startDate = document.getElementById('start-date').value;
+                    const endDate = document.getElementById('end-date').value;
 
-    data.forEach(item => {
+                    if (!startDate || !endDate) {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Oops...',
+                            text: 'Please select both start and end dates!',
+                        });
+                        return;
+                    }
 
-        const row = tableBody.insertRow();
+                    if (new Date(endDate) <= new Date(startDate)) {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Invalid Dates',
+                            text: 'End date should be greater than the start date!',
+                        });
+                        return;
+                    }
 
-         row.insertCell().textContent = item.orderId;
-         row.insertCell().textContent = item.userId;
-        row.insertCell().textContent = item.productName;
-        row.insertCell().textContent = item.productQuantity;
-        row.insertCell().textContent = item.totalPrice;
-        row.insertCell().textContent = item.orderDate;
-        row.insertCell().textContent = item.paymentMethods;
-    });
-})
-.catch(error => {
-    console.error('Error fetching data:', error);
-    // Display an error message to the user using SweetAlert or any other method
-    Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: `Failed to fetch data. ${error.message || 'Please try again later.'}`,
-    });
-});
+                    const requestData = {
+                        startDate: new Date(startDate).toISOString(),
+                        endDate: new Date(endDate).toISOString(),
+                    };
 
-}
+                    fetch('/admin/sales-report-generate', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(requestData),
+                    })
+                   .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        throw new Error(data.error);  // Throw an error if the server sends an error message
+                    }
+
+                    const tableBody = document.querySelector('#report-table tbody');
+                    tableBody.innerHTML = '';
+
+                    data.forEach(item => {
+
+                        const row = tableBody.insertRow();
+
+                         row.insertCell().textContent = item.orderId;
+                         row.insertCell().textContent = item.userId;
+                        row.insertCell().textContent = item.productName;
+                        row.insertCell().textContent = item.productQuantity;
+                        row.insertCell().textContent = item.totalPrice;
+                        row.insertCell().textContent = item.orderDate;
+                        row.insertCell().textContent = item.paymentMethods;
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                    // Display an error message to the user using SweetAlert or any other method
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: `Failed to fetch data. ${error.message || 'Please try again later.'}`,
+                    });
+                });
+
+                }
 
 
         </script>

@@ -1,6 +1,8 @@
 package com.Abhay.Loveseat.Service;
 
 import com.Abhay.Loveseat.Dto.JsonInput;
+import com.Abhay.Loveseat.Dto.OrderChartResponse;
+import com.Abhay.Loveseat.Dto.PaymentSummaryDto;
 import com.Abhay.Loveseat.Dto.SalesResponseDto;
 import com.Abhay.Loveseat.Enums.PaymentMethods;
 import com.Abhay.Loveseat.Enums.ProductsStatus;
@@ -14,8 +16,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderServiceI implements OrderService {
@@ -166,7 +172,59 @@ public class OrderServiceI implements OrderService {
     }
 
 
+    public long orderCount(){
+        return ordersRepository.countOrdersByMonth(LocalDateTime.now());
+    }
+
+    public Map<String, Map<String, Object>> getMonthlySalesReport(int year) {
+        List<OrderItem> orderItems = orderItemsRepository.findAll();
+        Map<String, Map<String, Object>> monthlySalesReport = new LinkedHashMap<>();
+
+        String[] months = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+        for (String month : months) {
+            String monthYear = month + " " + year;
+            Map<String, Object> monthData = new HashMap<>();
+            monthData.put("orderCount", 0);
+            monthData.put("totalAmount", 0.0f);
+            monthlySalesReport.put(monthYear, monthData);
+        }
+
+        for (OrderItem orderItem : orderItems) {
+            LocalDate orderDate = orderItem.getOrders().getOrderDate().toLocalDate();
+            if (orderDate.getYear() != year) {
+                continue;
+            }
+
+            String monthYear = orderDate.format(DateTimeFormatter.ofPattern("MMMM yyyy"));
+
+            if (monthlySalesReport.containsKey(monthYear)) {
+                Map<String, Object> monthData = monthlySalesReport.get(monthYear);
+                int orderCount = (int) monthData.get("orderCount");
+                float totalAmount = (float) monthData.get("totalAmount");
+
+                monthData.put("orderCount", orderCount + 1);
+                monthData.put("totalAmount", totalAmount + orderItem.getTotalPrice());
+            }
+        }
+
+        return monthlySalesReport;
+    }
+
+
+    public List<PaymentSummaryDto> getPaymentSummary() {
+        List<Object[]> results=ordersRepository.getPaymentSummary();
+
+        return results.stream().map(result ->new PaymentSummaryDto(
+                (PaymentMethods) result[0],
+                (Long) result[1],
+                (Double) result[2]
+        ))
+                .collect(Collectors.toList());
+    }
+
     public Optional<Orders> findById(Long id) {
         return  ordersRepository.findById(id);
     }
+
 }
+
