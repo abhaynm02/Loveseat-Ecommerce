@@ -236,9 +236,12 @@
 										<td class="text-black font-weight-bold"><strong>Order Total</strong></td>
 										<td class="text-black font-weight-bold" id="cartTotal" th:text="'$ ' + ${cart.totalPrice}"><strong></strong></td>
 									</tr>
+									<tr >
+										<td  id="discountDiv" style="display: none;" class="text-black font-weight-bold"><strong>Discount Amount</strong></td>
+										<td class="text-black font-weight-bold" ><strong id="DiscountAmount"  style=" color: red;" ></strong></td>
 
-									   <tr >
-
+									</tr>
+									   <tr>
 											<td class="text-black font-weight-bold"><strong>Offer Price</strong></td>
 											<td class="text-black font-weight-bold" ><strong id="OfferPrice"  style=" color: red;" ></strong></td>
 									   </tr>
@@ -248,7 +251,8 @@
 							</div>
 						</div>
 					</div>
-					<button class="btn btn-sm " type="button" role="button" onclick="coupons()" >Apply coupon</button>
+					<button id="applyCoupon" style="display :block;" class="btn btn-sm " type="button" role="button" onclick="coupons()" >Apply coupon</button>
+					<button id="cancelCoupon" style="display : none;" class="btn btn-sm " type="button" role="button" onclick="cancelCoupon()" >Cancel Coupon</button>
 					<div class="form-check">
 						<input class="form-check-input" type="radio" name="payment" id="COD" value="COD" >
 						<label class="form-check-label" for="COD">
@@ -428,8 +432,10 @@
 		var selectCouponId;
 		 var cartTotalElement = document.getElementById("cartTotal");
          var cartTotal = parseFloat(cartTotalElement.innerText.replace('$', ''));
+         OfferPrice.innerText='$ '+ cartTotal;
          var walletTotalElement =document.getElementById("walletAmount");
         var walletAmount =parseFloat(walletTotalElement.innerText.replace('$',''));
+
         function coupons(){
 
         $('#couponModal').modal('show');
@@ -442,7 +448,15 @@
 
         }
 
-
+ function cancelCoupon(){
+      document.getElementById('applyCoupon').style.display = 'block';
+     document.getElementById('cancelCoupon').style.display ='none';
+     selectCouponId=null;
+     var cartTotal1 = parseFloat(cartTotalElement.innerText.replace('$', ''));
+     OfferPrice.innerText='$ '+ cartTotal1;
+      DiscountAmount.innerText='';
+      document.getElementById('discountDiv').style.display = 'none';
+ }
 
 
 
@@ -468,8 +482,12 @@
 
     var offerPrice=cartTotal-discountAmount;
     OfferPrice.innerText='$ '+offerPrice+'.0';
+    DiscountAmount.innerText='$'+discountAmount;
     selectCouponId=couponId;
     cartTotal=offerPrice;
+     document.getElementById('discountDiv').style.display = 'block';
+     document.getElementById('applyCoupon').style.display = 'none';
+     document.getElementById('cancelCoupon').style.display ='block';
      $('#couponModal').modal('hide');
 
 

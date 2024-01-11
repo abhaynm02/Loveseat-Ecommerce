@@ -10,6 +10,11 @@ import com.Abhay.Loveseat.Service.ProductServiceI;
 import com.Abhay.Loveseat.Service.UserServiceI;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -42,11 +47,15 @@ public class CartController {
     }
 
     @PostMapping("/add-to-cart")
-    public RedirectView addProductToCart(@RequestBody JsonInput jsonInput,
-                                         Principal principal,
-                                         HttpServletRequest request){
+    public ResponseEntity<?> addProductToCart(@RequestBody JsonInput jsonInput,
+                                           Principal principal,
+                                           HttpServletRequest request){
         long productId= jsonInput.getProductId();
         int quantity= (int) jsonInput.getQuantity();
+        Authentication authentication= SecurityContextHolder.getContext().getAuthentication();
+        if (authentication ==null|| authentication instanceof AnonymousAuthenticationToken){
+           return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
         Products products=productServiceI.findById(productId).orElseThrow();
         System.out.println(productId);
         System.out.println(quantity);
@@ -55,9 +64,7 @@ public class CartController {
         Cart cart=cartService.addItemToCart(products,quantity,user);
         System.out.println("the function is working properly");
 
-        RedirectView redirectView = new RedirectView();
-        redirectView.setUrl(request.getHeader("Referer"));
-        return redirectView;
+       return new ResponseEntity<>(HttpStatus.OK);
     }
     @PostMapping("/change-cart")
     public  String updateCart(@RequestParam("productId") Long productId,

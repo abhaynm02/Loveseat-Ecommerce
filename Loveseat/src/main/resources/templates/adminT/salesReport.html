@@ -38,7 +38,7 @@
             background-color: #f2f2f2;
         }
 
-        #generate-button, #download-button {
+        #generate-button, #download-button,#excelDownload-button {
             background-color: #4CAF50;
             color: white;
             padding: 10px 15px;
@@ -77,6 +77,7 @@
 
             <button id="generate-button" type="button" onclick="generateReport()">Generate Report</button>
             <button id="download-button" type="button" onclick="downloadReport()">Download Report</button>
+            <button id="excelDownload-button" type="button" >Download EXCEl Sheet</button>
         </form>
 
         <table id="report-table">
@@ -96,6 +97,37 @@
             </tbody>
         </table>
 
+        <script>
+            document.getElementById('excelDownload-button').addEventListener('click', function () {
+                // Make a fetch request to your backend endpoint
+                fetch('/generate/excel-report', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    // You can add any other necessary headers here
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.blob(); // Assuming your backend returns a blob (binary data)
+                })
+                .then(blob => {
+                    // Create a link element, set its href to the blob data, trigger a click to download
+                    const link = document.createElement('a');
+                    link.href = window.URL.createObjectURL(blob);
+                    link.download = 'sales_report.xlsx'; // Adjust the filename as needed
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    // Handle errors or show an alert to the user
+                });
+            });
+        </script>
 
 
 

@@ -4,6 +4,7 @@ import com.Abhay.Loveseat.Dto.OrderChartResponse;
 import com.Abhay.Loveseat.Dto.PaymentSummaryDto;
 import com.Abhay.Loveseat.Dto.SalesReportRequest;
 import com.Abhay.Loveseat.Dto.SalesResponseDto;
+import com.Abhay.Loveseat.EXCELGenerator.EXCELGenerator;
 import com.Abhay.Loveseat.PdfGenerater.PDFGenerator;
 import com.Abhay.Loveseat.Service.OrderServiceI;
 import com.lowagie.text.DocumentException;
@@ -54,6 +55,19 @@ public class DashBoardController {
         generator.generate(response);
 
     }
+
+    @GetMapping("/generate/excel-report")
+    public void generateExcelReport(HttpServletResponse response) throws IOException{
+       DateFormat dateFormat = new SimpleDateFormat("YYYYY-MM-DD:HH:MM:SS");
+       String fileType = "attachment; filename = sales_report"+dateFormat.format(new Date()) +".xlsx";
+       response.setHeader("Content-Disposition",fileType);
+       response.setContentType(MediaType.APPLICATION_OCTET_STREAM.getType());
+       List<SalesResponseDto>salesReport=orderServiceI.findOrderBetweenDate(startDate,endDate);
+        EXCELGenerator excelGenerator = new EXCELGenerator();
+        excelGenerator.setSalesReport(salesReport);
+        excelGenerator.generateExel(response);
+    }
+
 
     @PostMapping("admin/chart")
     public ResponseEntity<?>generateChart(){

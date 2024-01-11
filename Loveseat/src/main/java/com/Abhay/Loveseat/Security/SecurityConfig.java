@@ -38,7 +38,15 @@ public class SecurityConfig {
                                 ,"/js/sidebarmenu.js","/js/app.min.js","/libs/apexcharts/dist/apexcharts.min.js",
                                 "/libs/simplebar/dist/simplebar.js","/js/dashboard.js"
                         ).permitAll()
-                        .requestMatchers("/home/**").hasAnyAuthority("USER")
+                        .requestMatchers("/home","/shop/**","/view-product/{id}","/Product-images/{imageName}"
+                        ,"/libss/bootstrap/css/bootstrap.min.css","/libss/feather-font/css/iconfont.css"
+                        ,"/libss/icomoon-font/css/icomoon.css","/libss/font-awesome/css/font-awesome.css","/libss/wpbingofont/css/wpbingofont.css"
+                        ,"/libss/elegant-icons/css/elegant.css","/libss/slick/css/slick.css","/libss/slick/css/slick-theme.css" ,"/libss/mmenu/css/mmenu.min.css",
+                                "/libss/slider/css/jslider.css","/assets/css/app.css","/assets/css/responsive.css","/libss/elevatezoom/js/jquery.elevatezoom.js",
+                                "/libss/popper/js/popper.min.js","/libss/jquery/js/jquery.min.js","/libss/bootstrap/js/bootstrap.min.js","/libss/slick/js/slick.min.js",
+                                "/libss/countdown/js/jquery.countdown.min.js","/libss/mmenu/js/jquery.mmenu.all.min.js","/libss/slider/js/tmpl.js",
+                                "/libss/slider/js/jquery.dependClass-0.1.js","/libss/slider/js/draggable-0.1.js","/libss/slider/js/jquery.slider.js","/assets/js/app.js").permitAll()
+//                        .requestMatchers("/home/**").hasAnyAuthority("USER")
                         .requestMatchers("/admin/**").hasAnyAuthority("ADMIN")
                         .anyRequest().authenticated())
 
