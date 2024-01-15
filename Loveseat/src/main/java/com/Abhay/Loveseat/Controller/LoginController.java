@@ -34,7 +34,7 @@ public class LoginController {
     private OtpUtil otpUtil;
     @Autowired
     private PasswordRestTokenRepo passwordRestTokenRepo;
-    @GetMapping("/")
+    @GetMapping("")
     public String home(){
         return "home/index.html";
     }

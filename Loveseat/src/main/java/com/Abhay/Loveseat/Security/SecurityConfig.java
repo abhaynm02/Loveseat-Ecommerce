@@ -48,7 +48,7 @@ public class SecurityConfig {
                                 "/libss/slider/js/jquery.dependClass-0.1.js","/libss/slider/js/draggable-0.1.js","/libss/slider/js/jquery.slider.js","/assets/js/app.js").permitAll()
 //                        .requestMatchers("/home/**").hasAnyAuthority("USER")
                         .requestMatchers("/admin/**").hasAnyAuthority("ADMIN")
-                        .anyRequest().authenticated())
+                        .anyRequest().permitAll())
 
                 .formLogin((form) -> form
                         .loginPage("/login")
