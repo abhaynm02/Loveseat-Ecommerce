@@ -36,7 +36,7 @@ public class LoginController {
     private PasswordRestTokenRepo passwordRestTokenRepo;
     @GetMapping("")
     public String home(){
-        return "login";
+        return "home/index";
     }
 
     @GetMapping("/register")
