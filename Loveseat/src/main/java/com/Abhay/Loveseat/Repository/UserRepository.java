@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 public interface UserRepository extends JpaRepository<UserEntity,Long> {
       UserEntity findByEmail(String email);
@@ -15,4 +16,8 @@ public interface UserRepository extends JpaRepository<UserEntity,Long> {
       void updateStatus(Long userId,boolean status);
       @Query("SELECT u FROM UserEntity u WHERE u.name LIKE ?1%")
       Page<UserEntity> searchByName(String startingLetter, Pageable pageable);
+      @Query("SELECT u FROM UserEntity u WHERE u.ReferLink = :referCode")
+      UserEntity findByReferCode(@Param("referCode") String referCode);
+
+
 }

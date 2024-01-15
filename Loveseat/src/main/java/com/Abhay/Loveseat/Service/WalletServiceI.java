@@ -1,10 +1,10 @@
 package com.Abhay.Loveseat.Service;
 
 import com.Abhay.Loveseat.Enums.WalletTransactionType;
-import com.Abhay.Loveseat.Model.OrderItem;
 import com.Abhay.Loveseat.Model.UserEntity;
 import com.Abhay.Loveseat.Model.Wallet;
 import com.Abhay.Loveseat.Model.WalletHistory;
+import com.Abhay.Loveseat.Repository.UserRepository;
 import com.Abhay.Loveseat.Repository.WalletHistoryRepository;
 import com.Abhay.Loveseat.Repository.WalletRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,13 +15,15 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
-import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 @Service
 public class WalletServiceI implements WalletService{
+//    @Autowired
+//     private  UserServiceI userServiceI;
     @Autowired
-     private  UserServiceI userServiceI;
+    private UserRepository userRepository;
     @Autowired
     private WalletRepository walletRepository;
     @Autowired
@@ -85,4 +87,29 @@ public class WalletServiceI implements WalletService{
         walletRepository.save(wallet);
 
     }
+
+    public String ReferLink(UserEntity user){
+        String link= user.getReferLink();
+        if (link==null){
+            link= generateReferralCode();
+            user.setReferLink(link);
+//            userServiceI.setReferralLin(user);
+            userRepository.save(user);
+        }
+
+        return "http://localhost:8080/register?link="+link;
+    }
+
+    private String generateReferralCode() {
+        Random random = new Random();
+        int length = 6; // length of the random code
+        String alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+        StringBuilder randomCode = new StringBuilder();
+        for (int i = 0; i < length; i++) {
+            int index = random.nextInt(alphabet.length());
+            randomCode.append(alphabet.charAt(index));
+        }
+        return randomCode.toString();
+    }
+
 }

@@ -44,7 +44,12 @@ public class UserController {
         }
         UserEntity user=userServiceI.findByEmail(principal.getName());
         Cart cart=user.getCart();
-        session.setAttribute("totalItems",cart.getTotalItems());
+        if (cart != null){
+            session.setAttribute("totalItems",cart.getTotalItems());
+        }else {
+            session.setAttribute("totalItems",0);
+        }
+
 
         return "home/index";
     }

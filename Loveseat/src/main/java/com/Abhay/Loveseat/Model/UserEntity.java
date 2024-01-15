@@ -25,6 +25,7 @@ public class UserEntity {
     private String phone;
     private boolean active;
     private boolean status;
+    private  String ReferLink;
     @OneToOne(mappedBy = "user",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private PasswordRestToken passwordRestToken;
     @OneToMany(mappedBy = "user" ,cascade = CascadeType.ALL)
@@ -38,6 +39,14 @@ public class UserEntity {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    public String getReferLink() {
+        return ReferLink;
+    }
+
+    public void setReferLink(String referLink) {
+        ReferLink = referLink;
     }
 
     public Wallet getWallet() {

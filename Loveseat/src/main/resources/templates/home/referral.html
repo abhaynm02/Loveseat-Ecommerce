@@ -8,14 +8,61 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <style>
 
-    <link href="/css/extra.css" rel="stylesheet">
+        .referral-section {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
 
+        .referral-header {
+            margin-bottom: 20px;
+        }
+
+        h2, h3 {
+            color: #333;
+        }
+
+        #referralLink {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            color: #333;
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            outline: none;
+            margin-bottom: 20px;
+        }
+
+        #copyButton {
+            padding: 10px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #4caf50;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        #copyButton:hover {
+            background-color: #45a049;
+        }
+
+        #copyFeedback {
+            color: green;
+            display: none;
+        }
+    </style>
 </head>
 
 <body>
 <div th:replace="fragments/header::header"></div>
-
 
 <div style="display: flex; flex-direction: row;">
     <!-- Sidebar scroll-->
@@ -30,95 +77,33 @@
     <!-- Start Contact Form -->
 
 
-    <div class="container mt-5" style="flex-grow: 1;">
+    <div class="container mt-5" style="flex-grow: 1;" >
+        <div class="container mt-5">
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="card-body">
 
+                        <div class="referral-section">
+                            <div class="referral-header">
+                                <h2>Your Referral Link</h2>
+                            </div>
 
-        <div class="wallet-container" th:if="${message}">
-            <div class="wallet-header">
-                <h2>Your Wallet</h2>
-            </div>
+                            <input type="text" id="referralLink" th:value="${referLink}" readonly>
+                            <br>
+                            <button id="copyButton" onclick="copyReferralLink()">Copy Link</button>
 
-            <div class="wallet-balance" style="display: inline-block;">
-                <h3 style="display: inline;">Balance:</h3>
-                <p style="display: inline; margin-left: 5px;">$<span >0.0</span></p>
-            </div>
+                            <p id="copyFeedback">Referral link copied to clipboard!</p>
+                        </div>
 
-
-            <div class="transaction-history">
-                <h4>Transaction History</h4>
-
+                    </div>
+                </div>
             </div>
         </div>
 
-
-
-
-      <div th:if="${message==null}">
-
-                <div class="wallet-container">
-                    <div class="wallet-header">
-                        <h2>Your Wallet</h2>
-                    </div>
-
-                    <div class="wallet-balance" style="display: inline-block;">
-                        <h3 style="display: inline;">Balance:</h3>
-                        <p style="display: inline; margin-left: 5px;">$<span th:text="${wallet != null ? wallet.totalAmount : 'N/A'}"></span></p>
-                    </div>
-
-
-                    <div class="transaction-history">
-                        <h4>Transaction History</h4>
-
-
-                        <table class="table table-striped">
-                            <thead>
-                            <tr>
-                                <th scope="col">Transaction ID</th>
-                                <th scope="col">Description</th>
-                                <th scope="col">Amount</th>
-                                <th scope="col">Date</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr th:each="walletHistory: ${walletHistories}">
-                                <td th:text="${walletHistory.id}">1</td>
-                                <td th:text="${walletHistory.transactionType}">Transaction 1</td>
-                                <td th:text="${walletHistory.amount}">$50.00</td>
-                                <td th:text="${walletHistory. dateTime}">2023-01-01</td>
-                            </tr>
-
-                            </tbody>
-                        </table>
-                    </div>
-                    <div th:if="${walletHistories.totalPages > 1}">
-                        <ul class="pagination">
-                            <li th:if="${walletHistories.number > 0}" class="page-item">
-                                <!-- Corrected th:href -->
-                                <a th:href="@{'/home/wallet?page=' + (${walletHistories.number - 1}) + '&size=' + ${walletHistories.size}}" class="page-link">Previous</a>
-                            </li>
-                            <li th:each="page : ${#numbers.sequence(0, walletHistories.totalPages - 1)}" class="page-item">
-                                <a th:href="@{'/home/wallet?page=' + ${page} + '&size=' + ${walletHistories.size}}" th:classappend="${walletHistories.number == page} ? 'active' : ''" class="page-link" th:text="${page + 1}"></a>
-                            </li>
-                            <li th:if="${walletHistories.hasNext}" class="page-item">
-                                <a th:href="@{'/home/wallet?page=' + (${walletHistories.number + 1}) + '&size=' + ${walletHistories.size}}" class="page-link">Next</a>
-                            </li>
-                        </ul>
-                    </div>
-
-
-                </div>
-
-
-
-
-
-      </div>
     </div>
 
-
-
     <!-- Add more fields as needed -->
- </div>
+</div>
 
 
 <!-- End Contact Form -->
@@ -129,9 +114,9 @@
 <footer class="footer-section">
     <div class="container relative">
 
-        <!--        <div class="sofa-img">-->
-        <!--            <img th:src="@{/images/sofa.png}" alt="Image" class="img-fluid" src="">-->
-        <!--        </div>-->
+        <div class="sofa-img">
+            <img th:src="@{/images/sofa.png}" alt="Image" class="img-fluid" src="">
+        </div>
 
         <div class="row">
             <div class="col-lg-8">
@@ -229,6 +214,21 @@
     </div>
 </footer>
 <!-- End Footer Section -->
+
+<script>
+    function copyReferralLink() {
+        var referralLink = document.getElementById("referralLink");
+        referralLink.select();
+        document.execCommand("copy");
+
+        var copyFeedback = document.getElementById("copyFeedback");
+        copyFeedback.style.display = "block";
+
+        setTimeout(function() {
+            copyFeedback.style.display = "none";
+        }, 3000);
+    }
+</script>
 
 
 <script src="/js/bootstrap.bundle.min.js"></script>

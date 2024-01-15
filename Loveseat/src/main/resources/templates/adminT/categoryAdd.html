@@ -24,7 +24,7 @@
                 <form th:action="@{/addCategory}" th:object="${category}" onsubmit="return formValidate()" method="post">
                     <div class="form-group">
                         <label for="categoryName">Category Name:</label>
-                        <input type="text" th:field="*{name}" class="form-control-sm" id="categoryName" name="name" required>
+                        <input type="text" oninput="this.value=this.value.toUpperCase()" th:field="*{name}" class="form-control-sm" id="categoryName" name="name" required>
                         <div  id="alertBox" style="display: none; color:red;">
                            enter the proper name
                         </div>

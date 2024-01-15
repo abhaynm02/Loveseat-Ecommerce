@@ -38,7 +38,7 @@ public class SecurityConfig {
                                 ,"/js/sidebarmenu.js","/js/app.min.js","/libs/apexcharts/dist/apexcharts.min.js",
                                 "/libs/simplebar/dist/simplebar.js","/js/dashboard.js"
                         ).permitAll()
-                        .requestMatchers("/home","/shop/**","/view-product/{id}","/Product-images/{imageName}"
+                        .requestMatchers("/","/shop/**","/view-product/{id}","/Product-images/{imageName}"
                         ,"/libss/bootstrap/css/bootstrap.min.css","/libss/feather-font/css/iconfont.css"
                         ,"/libss/icomoon-font/css/icomoon.css","/libss/font-awesome/css/font-awesome.css","/libss/wpbingofont/css/wpbingofont.css"
                         ,"/libss/elegant-icons/css/elegant.css","/libss/slick/css/slick.css","/libss/slick/css/slick-theme.css" ,"/libss/mmenu/css/mmenu.min.css",

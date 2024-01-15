@@ -26,10 +26,15 @@ public class UserServiceI implements UserService{
     private EmailUtil emailUtil;
     @Autowired
     private PasswordRestTokenRepo passwordRestTokenRepo;
-
+    @Autowired
+     private WalletServiceI walletServiceI;
+      private static final double REFERAl_BONES=500;
+      private  static  final double REFERRED_BONES=300;
     @Override
-    public void save(UserDto user) {
+    public void save(UserDto user,String referLink) {
         String encodePassword =passwordEncoder.encode(user.getPassword());
+       final double JOIN_BONES=100;
+
         UserEntity userEntity =new UserEntity();
         userEntity.setName(user.getName());
         userEntity.setEmail(user.getEmail());
@@ -40,6 +45,14 @@ public class UserServiceI implements UserService{
         userEntity.setPhone(user.getPhone());
         userEntity.setPassword(encodePassword);
         userRepository.save(userEntity);
+         if (referLink!=null){
+             walletServiceI.createOrUpdateWallet(userEntity,REFERRED_BONES);
+             walletServiceI.createOrUpdateWallet(findByReferCode(referLink),REFERAl_BONES);
+         }else {
+             walletServiceI.createOrUpdateWallet(userEntity,JOIN_BONES);
+         }
+
+
 
     }
 
@@ -106,6 +119,11 @@ public class UserServiceI implements UserService{
         return false;
     }
 
+    @Override
+    public void setReferralLin(UserEntity user) {
+        userRepository.save(user);
+    }
+
     private String generateRestToken(String email) {
         UUID uuid=UUID.randomUUID();
         LocalDateTime currentTime=LocalDateTime.now();
@@ -120,5 +138,9 @@ public class UserServiceI implements UserService{
           return endpoindUrl+"/"+restToken.getToken();
       }
       return "";
+    }
+    public UserEntity findByReferCode(String referCode){
+       UserEntity user= userRepository.findByReferCode(referCode);
+        return user;
     }
 }

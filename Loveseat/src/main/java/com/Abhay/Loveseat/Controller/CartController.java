@@ -39,8 +39,10 @@ public class CartController {
         Cart cart=user.getCart();
         if (cart==null){
             model.addAttribute("message","No items in your cart");
-        }
+        }else {
             model.addAttribute("cart",cart);
+        }
+
 
 
         return "home/cart";

@@ -21,7 +21,10 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link href="css/tiny-slider.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
-    <title>Furni Free Bootstrap 5 Template for Furniture and Interior Design Websites by Untree.co </title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8sh+WyDfBUFZv3BfuGxWUcVR3uIMUEy6ZJ2FQ"
+          crossorigin="anonymous">
+    <title>Love Seat </title>
 </head>
 
 <body>
@@ -30,7 +33,7 @@
 <nav class="custom-navbar navbar navbar navbar-expand-md navbar-dark bg-dark" arial-label="Furni navigation bar">
 
     <div class="container">
-        <a class="navbar-brand" href="adminT/admin.html">Furni<span>.</span></a>
+        <a class="navbar-brand" href="adminT/admin.html">Love Seat<span>.</span></a>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsFurni" aria-controls="navbarsFurni" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -39,12 +42,12 @@
         <div class="collapse navbar-collapse" id="navbarsFurni">
             <ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
                 <li class="nav-item">
-                    <a class="nav-link" href="/home">Home</a>
+                    <a class="nav-link" href="/">Home</a>
                 </li>
                 <li><a class="nav-link" href="/shop">Shop</a></li>
-                <li><a class="nav-link" href="about.html">About us</a></li>
-                <li><a class="nav-link" href="services.html">Services</a></li>
-                <li><a class="nav-link" href="blog.html">Blog</a></li>
+                <li><a class="nav-link" href="/shop">About us</a></li>
+                <li><a class="nav-link" href="/shop">Services</a></li>
+                <li><a class="nav-link" href="/shop">Blog</a></li>
                 <li ><a class="nav-link" href="register.html">Contact us</a></li>
             </ul>
 
@@ -67,19 +70,19 @@
                 </div>
                 <div class="container">
                     <th:block th:if="${param.error}">
-                        <div class="alert alert-danger">Invalid username or password. Please try again.</div>
+                        <div class="alert alert-danger mt-3">Invalid username or password. Please try again.</div>
                     </th:block>
                     <!-- Rest of the login form -->
                 </div>
                 <div class="card-body">
                     <!-- Your login form -->
                     <form th:action="@{/login}" method="post">
-                        <div class="mb-3">
-                            <label for="username" class="form-label">Username:</label>
+                        <div class="form-group">
+                            <label for="username">Username:</label>
                             <input type="text" class="form-control" id="username" name="username" required>
                         </div>
-                        <div class="mb-3">
-                            <label for="password" class="form-label">Password:</label>
+                        <div class="form-group">
+                            <label for="password">Password:</label>
                             <input type="password" class="form-control" id="password" name="password" required>
                         </div>
                         <div class="text-center">
@@ -108,9 +111,9 @@
 <footer class="footer-section">
     <div class="container relative">
 
-        <div class="sofa-img">
-            <img th:src="@{/images/sofa.png}" alt="Image" class="img-fluid" src="">
-        </div>
+<!--        <div class="sofa-img">-->
+<!--            <img th:src="@{/images/sofa.png}" alt="Image" class="img-fluid" src="">-->
+<!--        </div>-->
 
         <div class="row">
             <div class="col-lg-8">
@@ -213,6 +216,16 @@
 <script src="js/bootstrap.bundle.min.js"></script>
 <script src="js/tiny-slider.js"></script>
 <script src="js/custom.js"></script>
+
+<!-- Bootstrap JS and Popper.js (required for Bootstrap functionality) -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+        integrity="sha384-iOJXpOFq9gqNuE6b7l5pZgD/JlZgxrVN+4FLi8e6J/dIoPi6gDciNT7Id1az36p" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+        integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8sh+WyDfBUFZv3BfuGxWUcVR3uIMUEy6ZJ2FQ"
+        crossorigin="anonymous"></script>
 </body>
 
 </html>

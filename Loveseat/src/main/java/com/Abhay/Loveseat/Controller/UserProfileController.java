@@ -104,5 +104,12 @@ public class UserProfileController {
         return "home/wallet";
 
     }
+    @GetMapping("/home/referralLink")
+    public String referralLink(Principal principal,Model model){
+        UserEntity user=userServiceI.findByEmail(principal.getName());
+        String ReferralLink=walletServiceI.ReferLink(user);
+        model.addAttribute("referLink",ReferralLink);
+        return "home/referral";
+    }
 }
 

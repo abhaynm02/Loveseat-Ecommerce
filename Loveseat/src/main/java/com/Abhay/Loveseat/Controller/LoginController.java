@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -33,9 +34,15 @@ public class LoginController {
     private OtpUtil otpUtil;
     @Autowired
     private PasswordRestTokenRepo passwordRestTokenRepo;
+    @GetMapping("/")
+    public String home(){
+        return "home/index.html";
+    }
 
     @GetMapping("/register")
-    public String register(Model model) {
+    public String register(@Param("link")String link, Model model,HttpServletRequest request) {
+        HttpSession session=request.getSession();
+        session.setAttribute("ReferLink",link);
         model.addAttribute("user", new UserDto());
 
         return "register";
@@ -62,6 +69,7 @@ public class LoginController {
 
         if (rePassword.equals(userDto.getPassword())) {
             String otp = otpUtil.generateOtp();
+            System.out.println(otp+"_________");
             session.setAttribute("storeOtp", otp);
             userService.SendOpt(userDto.getEmail(), otp);
             session.setAttribute("generateTime", LocalTime.now());
@@ -97,13 +105,14 @@ public class LoginController {
 
         HttpSession session = request.getSession();
         UserDto userDto = (UserDto) session.getAttribute("user");
+        String referLink= (String)session.getAttribute("ReferLink");
         String email = userDto.getEmail();
         System.out.println(email);
         LocalTime storedTimeOtp = (LocalTime) session.getAttribute("generateTime");
         String storeOtp = (String) session.getAttribute("storeOtp");
         if (storeOtp.equals(otp) && Duration.between(storedTimeOtp,
                 LocalTime.now()).getSeconds() < (2 * 60)) {
-            userService.save(userDto);
+            userService.save(userDto,referLink);
             session.removeAttribute("userEmail");
             return "/login";
 
