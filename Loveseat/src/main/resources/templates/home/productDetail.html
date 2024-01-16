@@ -116,10 +116,10 @@
 														<ins><span th:text="${'$' + product.sellingPrice}"></span></ins>
 													</span>
                             <div class="rating">
-                                <div class="star star-5"></div>
-                                <div class="review-count">
-                                    (3<span> reviews</span>)
-                                </div>
+<!--                                <div class="star star-5"></div>-->
+<!--                                <div class="review-count">-->
+<!--                                    (3<span> reviews</span>)-->
+<!--                                </div>-->
                             </div>
                             <div class="description">
                                 <p th:text="${product.description}"> </p>
@@ -164,7 +164,7 @@
                             </div>
                             <div class="product-meta">
                                 <span class="sku-wrapper">SKU: <span class="sku">D2300-3-2-2</span></span>
-                                <span class="posted-in">Category: <a href="shop-grid-left.html" rel="tag">Furniture</a></span>
+                                <span class="posted-in">Category: <span th:text="${product.category.name}"></span></span>
                                 <span class="tagged-as">Tags: <a href="shop-grid-left.html" rel="tag">Hot</a>, <a href="shop-grid-left.html" rel="tag">Trend</a></span>
                             </div>
                         </div>

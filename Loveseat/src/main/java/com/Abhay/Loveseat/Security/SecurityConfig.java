@@ -31,7 +31,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/resources/**","/register", "/otp-page", "/login", "/user-register", "/verify","/forgotPassword","/forgot-Password","/resetPassword/**",
+                        .requestMatchers("/register", "/otp-page", "/login", "/user-register", "/verify","/forgotPassword","/forgot-Password","/resetPassword/**",
                                 "/static/**", "/css/bootstrap.min.css", "/css/tiny-slider.css", "/css/style.css",
                                 "/resentOtp", "/images/**","/css/**","/js/**","/scss/**","/css/styles.min.css"
                                 ,"/libs/jquery/dist/jquery.min.js","/libs/bootstrap/dist/js/bootstrap.bundle.min.js"
